@@ -179,7 +179,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchdata() {
       try {
-        const res1 = await axios.get(`${config.base_url}viewShip`, {
+        const res1 = await axios.get(`${config.base_url}api/HappyMarineShipping/viewShip`, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
