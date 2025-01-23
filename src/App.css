@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+* {
+    font-family: 'Poppins', sans-serif;
+  }
+  
+
+  .back-to-top{
+    color: white;
+    position: fixed;
+    bottom: 80px;
+    inset-inline-end: 20px;
+    border-radius: 50px;
+    z-index: 10000;
+    height: 50px;
+    width: 50px;
+    line-height: 59px;
+    background-color: #7167ff;
+    cursor: pointer;
+  }
+
+
+
+.flipped {
+  transform: rotateY(360deg); /* Example transformation */
+  transition: transform 0.6s ease; /* Smooth transition */
+}
+
+.testimonial-carousel .slick-slide {
+  margin-right: 20px; /* Adjust the value as needed */
+}
+
+.testimonial-carousel .slick-track {
+  display: flex;
+  justify-content: space-between; /* Ensures the spacing is applied correctly */
+}
+  
+  .fa-ship {
+    display: inline-block; /* Ensure it respects transform */
+    transition: transform 0.6s ease-in-out;
+  }
+
+
+  nav {
+    position: relative;
+    z-index: 50; /* Ensure it stays above content */
+  }
+  
+  .fixe {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 50;
+  }
+  
+  .transition-all {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .shadow-md {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .heading-text{
+    font-family: "Caveat Brush", serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  .roboto-text{
+    font-family: "Roboto Serif", serif;
+  }
+
+  .sellboat{
+    background-image: url('./images/boats-water-alicante_1268-22016.avif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    width: 100%;
+  }
+  
+  
+
+  .capsule-3d {
+    display: inline-block; /* Ensures proper sizing */
+    padding: 10px 20px; /* Adjust padding for capsule effect */
+    border-radius: 9999px; /* Fully rounded for capsule shape */
+    background: linear-gradient(145deg, #ffffff, #d1d1d1); /* Light 3D effect */
+    border: 1px solid #e0e0e0; /* Subtle border */
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1), -2px -2px 3px rgba(255, 255, 255, 0.2); 
+    color: #333; /* Text color */
+    font-size: 16px; /* Font size */
+    text-align: center; /* Center text */
+    cursor: pointer; /* Pointer cursor for interactivity */
+    transition: all 0.3s ease-in-out; /* Smooth transition for hover */
+  }
+  
+  /* Hover effect for interactivity */
+  .capsule-3d:hover {
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1), -3px -3px 5px rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px); /* Slight lift effect */
+    background: linear-gradient(145deg, #e0e0e0, #ffffff); /* Change gradient on hover */
+  }
+  
+  /* Active effect for click */
+  .capsule-3d:active {
+    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.2), inset -4px -4px 8px rgba(255, 255, 255, 0.5);
+    transform: translateY(0); /* Reset lift effect */
+  }
+
+
+  .region-capsule-3d{
+    display: inline-block; /* Ensures proper sizing */
+    padding: 10px 20px; /* Adjust padding for capsule effect */
+    border-radius: 9999px; /* Fully rounded for capsule shape */
+    background: linear-gradient(145deg, #ffffff, #d1d1d1); /* Light 3D effect */
+    border: 1px solid #e0e0e0; /* Subtle border */
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1), -2px -2px 3px rgba(255, 255, 255, 0.2); 
+    color: #333; /* Text color */
+    font-size: 16px; /* Font size */
+    text-align: center; /* Center text */
+    cursor: pointer; /* Pointer cursor for interactivity */
+    
+
+  }
+  
