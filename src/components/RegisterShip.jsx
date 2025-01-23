@@ -89,7 +89,7 @@ const [isScrolled, setIsScrolled] = useState(false);
 
             }
             try {
-                const response = await axios.post(`${config.base_url}api/HappyMarineShipping/RegShipForSale`,data,{
+                const response = await axios.post(`${config.base_url}/api/HappyMarineShipping/RegShipForSale`,data,{
                   headers:{
                     'Content-Type':'multipart/form-data',
                     

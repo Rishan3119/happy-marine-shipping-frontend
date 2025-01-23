@@ -61,7 +61,7 @@ export default function ShipForSale() {
   useEffect(() => {
     async function fetchdata() {
       try {
-        const res1 = await axios.get(`${config.base_url}api/HappyMarineShipping/viewShip`, {
+        const res1 = await axios.get(`${config.base_url}/api/HappyMarineShipping/viewShip`, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
