@@ -1,6 +1,6 @@
 // base_url: "https://altosconnectweb.in"
 const config = {
-    base_url: "http://127.0.0.1:8000/api/HappyMarineShipping/"
+    base_url: "https://happy-marine-shipping.onrender.com/api/HappyMarineShipping/"
     // base_url: "https://altosconnectonline.com"
 
 }
