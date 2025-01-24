@@ -7,6 +7,7 @@ import Slider from "react-slick";
 import config from "../function/config";
 import axios from "axios";
 import HomeNav from "./Navbars/HomeNav";
+import video from '../components/video/IMG_2408.MP4'
 
 export default function Home() {
   const navigate = useNavigate();
@@ -213,7 +214,7 @@ export default function Home() {
           {/* Background Video */}
           <video
             className="absolute top-0 left-0 h-[500px] xm:h-[400px] w-full object-cover"
-            src="/IMG_2408.mp4"
+            src={video}
             autoPlay
             loop
             muted
