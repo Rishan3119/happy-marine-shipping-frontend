@@ -127,7 +127,7 @@ export default function Home() {
     speed: 800,
     slidesToShow: Math.min(4, allShips.length), // Show fewer slides if there are not enough cards
     slidesToScroll: 1,
-    spaceBetween: 10,
+    spaceBetween: 5,
     autoplay: true,
     arrows: true,
     dots: false, // Show dots only if there is more than 1 card
