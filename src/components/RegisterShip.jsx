@@ -215,7 +215,7 @@ const [isScrolled, setIsScrolled] = useState(false);
                           <option value="Reefer" className='text-gray-500'>Reefer</option>
                           <option value="Roro" className='text-gray-500'>Roro</option>
                           <option value="Tanker" className='text-gray-500'>Tanker</option>
-                          <option value="Trug" className='text-gray-500'>Trug</option>
+                          <option value="Trug" className='text-gray-500'>Tug</option>
                           <option value="Dredger" className='text-gray-500'>Dredger</option>
                           <option value="Floating Crane" className='text-gray-500'>Floating Crane</option>
                           <option value="Landing Craft" className='text-gray-500'>Landing Craft</option>
