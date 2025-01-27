@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import ShipForSaleNav from "./Navbars/ShipForSaleNav";
-import Footer from "./Footer";
-import config from "../function/config";
 import axios from "axios";
+import Footer from "../Footer";
+import config from "../../function/config";
+import ShipForSaleNav from "../Navbars/ShipForSaleNav";
 
-export default function ShipForSale() {
+export default function Bulk() {
   const [isScrolled, setIsScrolled] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
@@ -68,20 +68,34 @@ export default function ShipForSale() {
               "Content-Type": "multipart/form-data",
             },
             params: {
-              title: input,
+              title: input, // Pass input as a query parameter if required
             },
           }
         );
+
         if (res1.data.status === 200) {
           console.log(res1);
           console.log(input);
-          if (res1.data.data.length < 7) {
+
+          let filteredData = res1.data.data;
+
+          // Filter ships based on vessel_type
+          filteredData = filteredData.filter(
+            (ship) => ship.vessel_type === "Bulk"
+          );
+
+          // Reset page to 1 if fewer than 7 items
+          if (filteredData.length < 7) {
             setCurrentPage(1);
           }
+
+          // Reset page to reference page if input is empty
           if (input === "") {
             setCurrentPage(refPage);
           }
-          setallShips(res1.data.data.reverse());
+
+          // Update state with filtered data
+          setallShips(filteredData.reverse());
         } else {
           console.log("error");
         }
@@ -89,23 +103,18 @@ export default function ShipForSale() {
         console.log(error);
       }
     }
+
     fetchdata();
   }, [config.base_url, input]);
 
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [pathname]);
+  
 
   return (
     <div className="">
       <ShipForSaleNav />
 
       <section className="py-10 bg-gradient-to-r from-[#264861] to-[#326e99] ">
-        <h1 className="text-white text-center text-3xl font-bold">
-          Ship For Sale
-        </h1>
+        <h1 className="text-white text-center text-3xl font-bold">BULK</h1>
 
         <div className="w-[85%] Lg:w-[90%] border border-white rounded py-10 px-5  m-auto mt-10 ">
           {/* buttons for grid or list and search input */}
@@ -153,9 +162,8 @@ export default function ShipForSale() {
               <h1 className="text-2xl font-semibold text-white">
                 Types of Ships
               </h1>
-
               <ul className="text-[#d1a460] mt-3 py-3 w-[300px] xl:w-[100%] lg:w-[600px] md:w-[500px] ssm:w-[400px] xm:w-[330px] xs:w-[290px]">
-                <li className="border-b border-white py-1 text-[18px] text-white font-bold cursor-pointer hover:text-white">
+                <li className="border-b border-white py-1 text-[16px]   cursor-pointer hover:text-white">
                   <Link
                     to="/shipforsale"
                     className="text-inherit hover:no-underline"
@@ -163,17 +171,17 @@ export default function ShipForSale() {
                     All Ships
                   </Link>
                 </li>
-                <li className="border-b border-white py-1 text-[16px] cursor-pointer hover:text-white">
+                <li className="border-b border-white py-1 text-[18px]  cursor-pointer hover:text-white">
                   <Link to="/Barge" className="text-inherit hover:no-underline">
                     Barge
                   </Link>
                 </li>
-                <li className="border-b border-white py-1 text-[16px] cursor-pointer hover:text-white">
+                <li className="border-b border-white py-1 text-[18px] text-white font-bold cursor-pointer hover:text-white">
                   <Link to="/Bulk" className="text-inherit hover:no-underline">
                     Bulk
                   </Link>
                 </li>
-                <li className="border-b border-white py-1 text-[16px] cursor-pointer hover:text-white">
+                <li className="border-b border-white py-1 text-[16px]  cursor-pointer hover:text-white">
                   <Link to="/cargo" className="text-inherit hover:no-underline">
                     Cargo
                   </Link>
@@ -199,7 +207,7 @@ export default function ShipForSale() {
                   </Link>
                 </li>
                 <li className="border-b border-white py-1 text-[16px] cursor-pointer hover:text-white">
-                  <Link to="/Reefer " className="text-inherit hover:no-underline">
+                  <Link to="/Reefer" className="text-inherit hover:no-underline">
                     Reefer
                   </Link>
                 </li>
@@ -267,7 +275,8 @@ export default function ShipForSale() {
                   {paginatedGroups.length === 0 ? (
                     <div className="col-span-full text-center">
                       <p className="text-xl mt-16 text-red-600">
-                        No Ships Available...
+                        {" "}
+                        Bulk Ships not Available...
                       </p>
                     </div>
                   ) : (
@@ -399,7 +408,7 @@ export default function ShipForSale() {
                     {paginatedGroups.length === 0 ? (
                       <tr>
                         <td colSpan="6" className="text-center py-4">
-                          No Ships Available
+                          Bulk Ships not Available
                         </td>
                       </tr>
                     ) : (

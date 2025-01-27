@@ -3744,6 +3744,7 @@ export default function Logistic() {
     setSelectedCountry(null);
     setSelectedRightRegion(null);
     setSelectedRightCountry(null);
+    setFilteredShips(allships)
   };
 
   // fetch ship data
@@ -3793,12 +3794,17 @@ export default function Logistic() {
   
 
   const handleSearchRight = () => {
-    if (!selectedRightCountry) return;
+    if (!selectedCountry) {
+      setFilteredShips(allships); // Show all ships if no country is selected
+      return;
+    }
+  
     // Filter ships based on the selected country
     const results = allships.filter(
-      (ship) => ship.flag.toLowerCase() === selectedRightCountry.toLowerCase()
+      (ship) => ship.flag.toLowerCase() === selectedCountry.toLowerCase()
     );
-    setFilteredShips(results);
+  
+    setFilteredShips(results); // Update the filtered ships
   };
 
   const handleRegionClick = (region) => {
@@ -3853,9 +3859,10 @@ export default function Logistic() {
 
   const handleRightBack = () => {
     setSelectedRightCountry(null);
-    setSelectedRightRegion(null);
+    setSelectedRightCountry(null);
     setRightPorts([]);
     setCurrentPage(1);
+    setFilteredShips(allships)
   };
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -3889,7 +3896,7 @@ export default function Logistic() {
             </h1>
 
             {/* Radio Buttons */}
-            <div className="flex gap-5 mt-16 justify-center">
+            <div className="flex gap-5 mt-16 justify-center flex-wrap">
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
@@ -3918,7 +3925,7 @@ export default function Logistic() {
               {/* left side */}
               {selectedView === "ship" && (
                 <div className="">
-                  <div className="flex gap-3  items-center  ml-5">
+                  <div className="flex gap-3  items-center xm:ml-0  ml-5">
                     <img
                       className="w-[65px] rounded-full h-[65px]"
                       src={ship}
@@ -4049,16 +4056,92 @@ export default function Logistic() {
                         </>
                       </>
                     ) : (
-                      <div className="grid grid-cols-2 gap-10">
-                        {Object.keys(regions).map((region) => (
-                          <button
-                            key={region}
-                            className="capsule-3d border border-white rounded-full py-3 w-[100%] m-auto"
-                            onClick={() => handleRegionClick(region)}
-                          >
-                            {region}
-                          </button>
-                        ))}
+                      <div className="grid grid-cols-2 gap-2 ">
+                        <div className="grid grid-1 gap-5 lg:gap-3">
+                          {Object.keys(regions).map((region) => (
+                            <button
+                              key={region}
+                              className="capsule-3d border border-white rounded-full xm:rounded-3xl py-3 w-[90%] "
+                              onClick={() => handleRegionClick(region)}
+                            >
+                              {region}
+                            </button>
+                          ))}
+                        </div>
+                        {/* all ships */}
+                        <div className=" block">
+                              <div
+                                className={`grid gap-5 Lg:grid-cols-1 ${
+                                  displayedShips.length === 1
+                                    ? "grid-cols-1"
+                                    : "grid-cols-2"
+                                }`}
+                              >
+                                {displayedShips.length > 0 ? (
+                                  displayedShips.map((ship, index) => (
+                                    <div
+                                      key={index}
+                                      className="bg-white  m-auto relative h-[230px] w-[100%] xm:max-h-screen shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300 overflow-auto"
+                                    >
+                                      <img
+                                        src={ship.image}
+                                        className="h-[100px] w-full rounded-t-lg"
+                                        alt=""
+                                      />
+
+                                      <div className="px-2 py-3">
+                                        <p className="text-black font-semibold">
+                                          {ship.title}
+                                        </p>
+                                        <p className="text-black absolute bottom-5 right-0 left-0 Lg:mt-3  Lg:static Lg:bottom-auto Lg:right-auto Lg:left-auto  italic">
+                                          {ship.flag}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <p className="text-red-600 text-xl col-span-full">
+                                    No Ships Available...
+                                  </p>
+                                )}
+                              </div>
+
+                              <div>
+                                {/* Pagination Controls */}
+                                <div className="flex justify-center items-center gap-2 mt-5">
+                                  <button
+                                    className={`px-4 py-2 bg-[#123d5f] text-white rounded-sm ${
+                                      currentPage === 1
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : "hover:bg-[#172f41ed]"
+                                    }`}
+                                    onClick={() =>
+                                      handlePageChange(currentPage - 1)
+                                    }
+                                    disabled={currentPage === 1}
+                                  >
+                                    <i className="fa-solid fa-chevron-left"></i>
+                                  </button>
+                                  <span className="px-4 py-2 bg-[#d1a460] text-white rounded-sm">
+                                    {currentPage}
+                                  </span>
+                                  <button
+                                    className={`px-4 py-2 bg-[#0d2c45] text-white rounded-sm ${
+                                      currentPage === totalPages
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : "hover:bg-[#172f41ed]"
+                                    }`}
+                                    onClick={() =>
+                                      handlePageChange(currentPage + 1)
+                                    }
+                                    disabled={currentPage === totalPages}
+                                  >
+                                    <i className="fa-solid fa-chevron-right"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+
                       </div>
                     )}
                   </div>
@@ -4071,7 +4154,7 @@ export default function Logistic() {
                   <div className="flex gap-3 items-center ml-5 xl:ml-0">
                     <img
                       className="w-[65px]  
-                     h-[60px] bg-white rounded-full"
+                     h-[65px] bg-white rounded-full"
                       src={cargo}
                       alt=""
                     />
@@ -4080,142 +4163,213 @@ export default function Logistic() {
                     </h1>
                   </div>
 
-                  <div className="mt-5 flex flex-col  w-[400px] xl:w-[780px] lg:w-[730px] Lg:w-[650px] md:w-[580px] sm:w-auto  xs:w-auto text-center gap-8 text-[#d1a460] text-xl">
+                  <div className="mt-10  w-full xl:w-[780px] lg:w-[730px] Lg:w-[650px] md:w-[580px] sm:w-auto xs:w-auto text-center gap-8 text-[#d1a460] text-xl m-auto">
                     {selectedRightRegion ? (
                       <>
                         <>
-                          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xm:grid-cols-1 gap-6 w-full">
-                            {displayedShips.length > 0 ? (
-                              displayedShips.map((ship, index) => (
-                                <div
-                                  key={index}
-                                  className="bg-white relative h-[230px] shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300  "
-                                >
-                                  <img
-                                    src={ship.image}
-                                    className="h-[100px] w-full rounded-t-lg "
-                                    alt=""
-                                  />
-
-                                  <div className="px-2 py-3">
-                                    <p className="text-black font-semibold">
-                                      {ship.title}
-                                    </p>
-                                    <p className="text-black absolute bottom-0 right-0 left-0 italic ">
-                                      {ship.flag}
-                                    </p>
-                                  </div>
-                                </div>
-                              ))
-                            ) : (
-                              <p className="text-red-600 text-xl col-span-full">
-                                No Ships Available...
-                              </p>
-                            )}
-                          </div>
-                          {/* Pagination Controls */}
-                          <div className="flex justify-center items-center gap-2 mt-5">
-                            <button
-                              className={`px-4 py-2 bg-[#123d5f] text-white rounded-sm ${
-                                currentPage === 1
-                                  ? "opacity-50 cursor-not-allowed"
-                                  : "hover:bg-[#172f41ed]"
-                              }`}
-                              onClick={() => handlePageChange(currentPage - 1)}
-                              disabled={currentPage === 1}
-                            >
-                              <i className="fa-solid fa-chevron-left"></i>
-                            </button>
-                            <span className="px-4 py-2 bg-[#d1a460] text-white rounded-sm">
-                              {currentPage}
-                            </span>
-                            <button
-                              className={`px-4 py-2 bg-[#0d2c45] text-white rounded-sm ${
-                                currentPage === totalPages
-                                  ? "opacity-50 cursor-not-allowed"
-                                  : "hover:bg-[#172f41ed]"
-                              }`}
-                              onClick={() => handlePageChange(currentPage + 1)}
-                              disabled={currentPage === totalPages}
-                            >
-                              <i className="fa-solid fa-chevron-right"></i>
-                            </button>
-                          </div>
-                          {/* Back to Regions Button */}
-                          <div className="flex justify-center mt-5">
-                            <button
-                              className="capsule-3d border border-white rounded-full py-3 w-[100%] m-auto mt-2"
-                              onClick={() => {
-                                setFilteredShips([]);
-                              }}
-                            >
-                              <i className="fa-solid fa-arrow-left me-2"></i>{" "}
-                              Back to Countries
-                            </button>
-                            {selectedRightRegion ? (
-                              // Back to Regions Button
-                              <button
-                                className="capsule-3d border border-white rounded-full py-3 w-[100%] m-auto mt-2"
-                                onClick={() => {
-                                  setSelectedRightRegion(null); // Show regions
-                                  setSelectedRightCountry(null);
+                          <div className="grid grid-cols-2  sm:grid-cols-2 lg:grid-cols-3 xm:grid-cols-1 gap-6 ">
+                            <div className=" ">
+                              <Select
+                                className="rounded-full w-[100%] m-auto"
+                                options={regions[selectedRightRegion]}
+                                placeholder="Select a country"
+                                onChange={(selectedRightCountry) => {
+                                  setSelectedRightCountry(selectedRightCountry.label); // Set selected country
+                                  handleSearchRight(selectedRightCountry.label); // Trigger dynamic search
+                                  handleRightCountryChange(selectedRightCountry)
                                 }}
+                                isSearchable
+                                getOptionLabel={(e) => (
+                                  <div className="flex items-center gap-2">
+                                    <img
+                                      src={e.flag}
+                                      alt=""
+                                      className="w-5 h-5"
+                                    />
+                                    {e.label}
+                                  </div>
+                                )}
+                              />
+                              {selectedRightCountry && (
+                                <Select
+                                  className="rounded-full w-[100%] mt-10"
+                                  options={ports}
+                                  placeholder="Select a port"
+                                  isSearchable
+                                />
+                              )}
+                              <button
+                                className="capsule-3d border border-white rounded-full py-3 w-[100%] m-auto mt-10"
+                                onClick={handleRightBack}
                               >
-                                <i className="fa-solid fa-arrow-left me-2"></i>{" "}
+                                <i className="fa-solid fa-arrow-left fa-beat me-2"></i>{" "}
                                 Back to Regions
                               </button>
-                            ) : null}
-                          </div>
-                        </>
+                            </div>
 
-                        <>
-                          <Select
-                            className="rounded-full w-[100%] m-auto"
-                            options={regions[selectedRightRegion]}
-                            placeholder="Select a country"
-                            onChange={handleRightCountryChange}
-                            isSearchable
-                            getOptionLabel={(e) => (
-                              <div className="flex items-center gap-2">
-                                <img src={e.flag} alt="" className="w-5 h-5" />
-                                {e.label}
+                            <div className=" block">
+                              <div
+                                className={`grid gap-5 ${
+                                  displayedShips.length === 1
+                                    ? "grid-cols-1"
+                                    : "grid-cols-2"
+                                }`}
+                              >
+                                {displayedShips.length > 0 ? (
+                                  displayedShips.map((ship, index) => (
+                                    <div
+                                      key={index}
+                                      className="bg-white  m-auto relative h-[230px] shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300"
+                                    >
+                                      <img
+                                        src={ship.image}
+                                        className="h-[100px] w-full rounded-t-lg"
+                                        alt=""
+                                      />
+
+                                      <div className="px-2 py-3">
+                                        <p className="text-black font-semibold">
+                                          {ship.title}
+                                        </p>
+                                        <p className="text-black absolute bottom-0 right-0 left-0 italic">
+                                          {ship.flag}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <p className="text-red-600 text-xl col-span-full">
+                                    No Ships Available...
+                                  </p>
+                                )}
                               </div>
-                            )}
-                          />
-                          {selectedRightCountry && (
-                            <Select
-                              className="rounded-full w-[100%]  mt-5"
-                              options={rightPorts}
-                              placeholder="Select a port"
-                              isSearchable
-                            />
-                          )}
-                          <button
-                            onClick={handleSearchRight}
-                            className="bg-[#d1a460] hover:bg-[#d39c4a] text-white rounded-full py-3 w-[100%] m-auto mt-2"
-                          >
-                            Search
-                          </button>
-                          <button
-                            className="capsule-3d border border-white rounded-full py-3 w-[100%] m-auto mt-2"
-                            onClick={handleRightBack}
-                          >
-                            <i className="fa-solid fa-arrow-left fa-beat me-2"></i>{" "}
-                            Back to Regions
-                          </button>
+
+                              <div>
+                                {/* Pagination Controls */}
+                                <div className="flex justify-center items-center gap-2 mt-5">
+                                  <button
+                                    className={`px-4 py-2 bg-[#123d5f] text-white rounded-sm ${
+                                      currentPage === 1
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : "hover:bg-[#172f41ed]"
+                                    }`}
+                                    onClick={() =>
+                                      handlePageChange(currentPage - 1)
+                                    }
+                                    disabled={currentPage === 1}
+                                  >
+                                    <i className="fa-solid fa-chevron-left"></i>
+                                  </button>
+                                  <span className="px-4 py-2 bg-[#d1a460] text-white rounded-sm">
+                                    {currentPage}
+                                  </span>
+                                  <button
+                                    className={`px-4 py-2 bg-[#0d2c45] text-white rounded-sm ${
+                                      currentPage === totalPages
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : "hover:bg-[#172f41ed]"
+                                    }`}
+                                    onClick={() =>
+                                      handlePageChange(currentPage + 1)
+                                    }
+                                    disabled={currentPage === totalPages}
+                                  >
+                                    <i className="fa-solid fa-chevron-right"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </>
                       </>
                     ) : (
-                      // Render Region Options
-                      Object.keys(regions).map((region) => (
-                        <button
-                          key={region}
-                          className="capsule-3d border border-white rounded-full py-3 w-[100%] m-auto"
-                          onClick={() => handleRightRegionClick(region)}
-                        >
-                          {region}
-                        </button>
-                      ))
+                      <div className="grid grid-cols-2 gap-2 ">
+                        <div className="grid grid-1 gap-5 lg:gap-3">
+                          {Object.keys(regions).map((region) => (
+                            <button
+                              key={region}
+                              className="capsule-3d border border-white rounded-full xm:rounded-3xl py-3 w-[90%] "
+                              onClick={() => handleRightRegionClick(region)}
+                            >
+                              {region}
+                            </button>
+                          ))}
+                        </div>
+                        {/* all ships */}
+                        <div className=" block">
+                              <div
+                                className={`grid gap-5 Lg:grid-cols-1 ${
+                                  displayedShips.length === 1
+                                    ? "grid-cols-1"
+                                    : "grid-cols-2"
+                                }`}
+                              >
+                                {displayedShips.length > 0 ? (
+                                  displayedShips.map((ship, index) => (
+                                    <div
+                                      key={index}
+                                      className="bg-white  m-auto relative h-[230px] w-[100%] xm:max-h-screen shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300 overflow-auto"
+                                    >
+                                      <img
+                                        src={ship.image}
+                                        className="h-[100px] w-full rounded-t-lg"
+                                        alt=""
+                                      />
+
+                                      <div className="px-2 py-3">
+                                        <p className="text-black font-semibold">
+                                          {ship.title}
+                                        </p>
+                                        <p className="text-black absolute bottom-5 right-0 left-0 Lg:mt-3  Lg:static Lg:bottom-auto Lg:right-auto Lg:left-auto  italic">
+                                          {ship.flag}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <p className="text-red-600 text-xl col-span-full">
+                                    No Ships Available...
+                                  </p>
+                                )}
+                              </div>
+
+                              <div>
+                                {/* Pagination Controls */}
+                                <div className="flex justify-center items-center gap-2 mt-5">
+                                  <button
+                                    className={`px-4 py-2 bg-[#123d5f] text-white rounded-sm ${
+                                      currentPage === 1
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : "hover:bg-[#172f41ed]"
+                                    }`}
+                                    onClick={() =>
+                                      handlePageChange(currentPage - 1)
+                                    }
+                                    disabled={currentPage === 1}
+                                  >
+                                    <i className="fa-solid fa-chevron-left"></i>
+                                  </button>
+                                  <span className="px-4 py-2 bg-[#d1a460] text-white rounded-sm">
+                                    {currentPage}
+                                  </span>
+                                  <button
+                                    className={`px-4 py-2 bg-[#0d2c45] text-white rounded-sm ${
+                                      currentPage === totalPages
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : "hover:bg-[#172f41ed]"
+                                    }`}
+                                    onClick={() =>
+                                      handlePageChange(currentPage + 1)
+                                    }
+                                    disabled={currentPage === totalPages}
+                                  >
+                                    <i className="fa-solid fa-chevron-right"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+
+                      </div>
                     )}
                   </div>
                 </div>
