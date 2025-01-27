@@ -7,6 +7,7 @@ import Slider from "react-slick";
 import config from "../function/config";
 import axios from "axios";
 import HomeNav from "./Navbars/HomeNav";
+import bgImage from "../images/boats-water-alicante_1268-22016.avif";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -179,11 +180,14 @@ export default function Home() {
   useEffect(() => {
     async function fetchdata() {
       try {
-        const res1 = await axios.get(`${config.base_url}/api/HappyMarineShipping/viewShip`, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const res1 = await axios.get(
+          `${config.base_url}/api/HappyMarineShipping/viewShip`,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
         if (res1.data.status === 200) {
           console.log(res1);
           setallShips(res1.data.data.reverse());
@@ -196,7 +200,6 @@ export default function Home() {
     }
     fetchdata();
   }, [config.base_url, count]);
-
 
   const { pathname } = useLocation();
 
@@ -212,12 +215,18 @@ export default function Home() {
         <div className="relative h-[500px] xm:h-[400px] w-full overflow-hidden bg-gradient-to-r from-[#2e5775] to-[#326e99]">
           {/* Background Video */}
           <video
-            className="absolute top-0 left-0 h-[500px] xm:h-[400px] w-full object-cover"
-            src='/IMG_2408.MP4'
+            className="absolute top-0 left-0 h-[500px] w-full object-cover  xm:hidden"
+            src="/IMG_2408.MP4"
             autoPlay
             loop
             muted
           ></video>
+
+          {/* Background Image for xm screens */}
+          <div
+            className="absolute top-0 left-0 h-[500px] w-full   hidden  xm:block image"
+           
+          ></div>
 
           {/* Content Overlay */}
           <div className="relative z-10 flex h-[500px] w-full items-center justify-center bg-black bg-opacity-50 py-[50px] lg:py-10 px-3 xm:py-5 xxxm:px-3">
