@@ -87,10 +87,12 @@ export default function LogosticsNav() {
               Logistic & Transport
             </Link>
             <Link 
+            to={'/about'}
               className={`text-[#d1a460] transition-all duration-300 ${isScrolled ? "hover:text-blue-700" : "hover:text-white"}`}>
               About Us
             </Link>
             <Link 
+            to={'/contact'}
               className={`text-[#d1a460] transition-all duration-300 ${isScrolled ? "hover:text-blue-700" : "hover:text-white"}`}>
               Contact Us
             </Link>

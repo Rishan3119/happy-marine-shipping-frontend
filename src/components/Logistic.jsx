@@ -22,6 +22,8 @@ export default function Logistic() {
   const [filteredShips, setFilteredShips] = useState([]);
   const [selectedView, setSelectedView] = useState("ship"); // "ship" or "cargo"
 
+  const navigate = useNavigate()
+
   const regions = {
     Asia: [
       {
@@ -3991,6 +3993,7 @@ export default function Logistic() {
                                 {displayedShips.length > 0 ? (
                                   displayedShips.map((ship, index) => (
                                     <div
+                                    onClick={()=>navigate(`/singleShip/${ship.id}`)}
                                       key={index}
                                       className="bg-white  m-auto relative h-[230px] shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300"
                                     >
@@ -4080,6 +4083,7 @@ export default function Logistic() {
                                 {displayedShips.length > 0 ? (
                                   displayedShips.map((ship, index) => (
                                     <div
+                                    onClick={()=>navigate(`/singleShip/${ship.id}`)}
                                       key={index}
                                       className="bg-white  m-auto relative h-[230px] w-[100%] xm:max-h-screen shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300 overflow-auto"
                                     >
@@ -4218,6 +4222,7 @@ export default function Logistic() {
                                 {displayedShips.length > 0 ? (
                                   displayedShips.map((ship, index) => (
                                     <div
+                                   
                                       key={index}
                                       className="bg-white  m-auto relative h-[230px] shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300"
                                     >

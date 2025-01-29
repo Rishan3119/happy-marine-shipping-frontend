@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function AboutUsNav() {
+export default function ContactUsNav() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -147,16 +147,16 @@ export default function AboutUsNav() {
                 Logistic & Transport
               </Link>
               <Link
-                className={` font-bold text-xl transition-all duration-300 ${
-                  isScrolled ? "text-blue-500" : "text-white"
+                className={`text-[#d1a460]  transition-all duration-300 ${
+                  isScrolled ? "hover:text-blue-500" : "hover:text-gray-100"
                 }`}
               >
                 About Us
               </Link>
               <Link
               to={'/contact'}
-                className={`text-[#d1a460] transition-all duration-300 ${
-                  isScrolled ? "hover:text-blue-500" : "hover:text-gray-100"
+                className={` font-bold text-xl transition-all duration-300 ${
+                  isScrolled ? "text-blue-500" : "text-white"
                 }`}
               >
                 Contact Us
@@ -224,7 +224,7 @@ export default function AboutUsNav() {
                   <li>
                     <Link
                       to="/about"
-                      className="text-blue-500 hover:text-blue-500 block"
+                      className="text-gray-800 hover:text-blue-500 block"
                       onClick={toggleSidebar}
                     >
                       About Us
@@ -233,7 +233,7 @@ export default function AboutUsNav() {
                   <li>
                     <Link
                       to="/contact"
-                      className="text-gray-800 hover:text-blue-500 block"
+                      className="text-blue-500 hover:text-blue-500 block"
                       onClick={toggleSidebar}
                     >
                       Contact Us

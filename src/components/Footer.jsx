@@ -34,8 +34,8 @@ export default function Footer() {
                      <h1 className=' text-[#d1a460] text-lg font-semibold px-3 mb-3 '>useful Links</h1>
     
                      <div className='px-3 flex flex-col gap-2 text-gray-50'>
-                         <Link>Home</Link>
-                         <Link>About</Link>
+                         <Link to={'/'}>Home</Link>
+                         <Link to={'/about'}>About</Link>
                          <Link>Contact us</Link>
                      </div>
     
@@ -46,7 +46,7 @@ export default function Footer() {
                      <h1 className=' text-[#d1a460] text-lg font-semibold px-3 mb-3 '>Our Services</h1>
     
                      <div className='px-3 flex flex-col gap-2 text-gray-50'>
-                         <Link>Ship For Sale</Link>
+                         <Link to={'/shipforsale'}>Ship For Sale</Link>
                          <Link>Ship For Charter</Link>
                          <Link>Supply Equipments</Link>
                      </div>

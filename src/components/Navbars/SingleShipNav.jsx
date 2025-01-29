@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function AboutUsNav() {
+export default function SingleShipNav() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -45,21 +45,21 @@ export default function AboutUsNav() {
   return (
     <div>
       <nav>
-        <div className="bg-[#123d5f]   border-b border-white">
-          <div className="px-[170px] sm:px-[10px]  3xl:px-[40px] py-2 flex justify-between items-center xs:justify-center">
+        <div className="   border-b border-white ">
+          <div className="px-[170px] bg-[#123d5f] sm:px-[10px]  3xl:px-[40px] py-2 xs:pl-0 flex justify-between items-center xs:justify-center">
             <h1 className="text-white text-[18px] ">Happy Marine Shipping</h1>
-            <div className="flex items-center gap-2 xs:hidden">
+            <div className="flex items-center gap-2 ">
               <Link
                 to={
                   "whatsapp://send?phone=971503505898&text=Hello%20Happy%20Marine%20Shipping,%20I%20would%20like%20to%20inquire%20about%20your%20services."
                 }
-                className="text-white flex gap-1 items-center "
+                className="text-white xs:hidden flex gap-1 items-center "
               >
                 <i className="fa-solid fa-phone me-2"></i>{" "}
                 <p className="ssm:hidden">+971 50 350 5898 </p>
               </Link>
 
-              <div className="flex gap-4 items-center px-3 border-l-2 border-white">
+              <div className="flex gap-4 items-center px-3 border-l-2 border-white xs:border-none xs:pl-5 xs:pr-0">
                 <Link
                   to={"https://www.facebook.com/groups/2708905909353211"}
                   className=" "
@@ -80,12 +80,12 @@ export default function AboutUsNav() {
               </div>
             </div>
           </div>
-          <hr className="border-1 border-white -mt-1" />
+          <hr className="border-1 border-white " />
 
           <div
-            className={` px-[170px]  transition-all duration-300 3xl:px-[50px] py-8 flex justify-between items-center relative ${
+            className={` px-[170px] bg-[#123d5f] lg:bg-white border border-b-[#123d5f] transition-all duration-300 3xl:px-[50px] py-8 flex justify-between items-center  ${
               isScrolled
-                ? "fixe top-0 left-0 w-full bg-white text-[#d1a460] hover:text-blue-500 shadow-md z-50 pointer-events-auto"
+                ? " top-0 left-0 w-full bg-white text-[#d1a460] hover:text-blue-500 shadow-md z-50 pointer-events-auto"
                 : ""
             }`}
           >
@@ -94,7 +94,7 @@ export default function AboutUsNav() {
               onClick={toggleSidebar}
               className={`bx ${
                 isSidebarOpen ? "bx-x" : "bx-menu-alt-left"
-              } ml-10 xs:ml-1 hidden 2xl:block absolute left-0  text-[40px] cursor-pointer transition-transform duration-300 ${
+              } ml-10 xs:ml-1 hidden 2xl:block absolute left-0 lg:text-[#123d5f]  text-[40px] cursor-pointer transition-transform duration-300 ${
                 isScrolled ? "text-gray-600" : "text-white"
               }`}
             ></i>
@@ -106,7 +106,7 @@ export default function AboutUsNav() {
                 className={`${isFlipped ? "flipped" : ""}`}
               >
                 <i
-                  className={`fa-solid fa-ship  text-[40px] cursor-pointer ${
+                  className={`fa-solid fa-ship  text-[40px] cursor-pointer lg:text-[#123d5f] ${
                     isScrolled ? "text-blue-500" : "text-white"
                   }`}
                 ></i>
@@ -117,7 +117,7 @@ export default function AboutUsNav() {
             <div className="flex gap-8 items-center 2xl:hidden">
               <Link
                 to={"/"}
-                className={`text-[#d1a460]   transition-all duration-300 ${
+                className={`text-[#d1a460]  transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-500" : "hover:text-white"
                 }`}
               >
@@ -147,8 +147,9 @@ export default function AboutUsNav() {
                 Logistic & Transport
               </Link>
               <Link
-                className={` font-bold text-xl transition-all duration-300 ${
-                  isScrolled ? "text-blue-500" : "text-white"
+              to={'/about'}
+                className={`text-[#d1a460] transition-all duration-300 ${
+                  isScrolled ? "hover:text-blue-700" : "hover:text-white"
                 }`}
               >
                 About Us
@@ -156,7 +157,7 @@ export default function AboutUsNav() {
               <Link
               to={'/contact'}
                 className={`text-[#d1a460] transition-all duration-300 ${
-                  isScrolled ? "hover:text-blue-500" : "hover:text-gray-100"
+                  isScrolled ? "hover:text-blue-700" : "hover:text-white"
                 }`}
               >
                 Contact Us
@@ -188,7 +189,7 @@ export default function AboutUsNav() {
                   <li>
                     <Link
                       to="/"
-                      className="text-gray-800 hover:text-blue-500 block"
+                      className="text-blue-500 hover:text-blue-500 block"
                       onClick={toggleSidebar}
                     >
                       Home
@@ -224,7 +225,7 @@ export default function AboutUsNav() {
                   <li>
                     <Link
                       to="/about"
-                      className="text-blue-500 hover:text-blue-500 block"
+                      className="text-gray-800 hover:text-blue-500 block"
                       onClick={toggleSidebar}
                     >
                       About Us

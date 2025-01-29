@@ -24,6 +24,9 @@ import Yacht from './components/Types of ships/Yacht';
 import SupplyBoat from './components/Types of ships/SupplyBoat';
 import CrewBoat from './components/Types of ships/CrewBoat';
 import Others from './components/Types of ships/Others';
+import SingleShip from './components/SingleShip';
+import AboutUs from './components/AboutUs';
+import ContactUs from './components/ContactUs';
 
 
 
@@ -56,10 +59,14 @@ function App() {
         <Route path='/SupplyBoat' element={<SupplyBoat/>} />
         <Route path='/CrewBoat' element={<CrewBoat/>} />
         <Route path='/Others' element={<Others/>} />
+        <Route path='/singleShip/:id' element={<SingleShip/>} />
+        <Route path='/about' element={<AboutUs/>} />
+        <Route path='/contact' element={<ContactUs/>} />
 
       </Routes>
-
       
+
+
       </Router>
    
    </>

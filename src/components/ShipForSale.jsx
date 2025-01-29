@@ -32,6 +32,8 @@ export default function ShipForSale() {
   const [currentPage, setCurrentPage] = useState(1);
   const [refPage, setRefPage] = useState(1);
 
+  const navigate = useNavigate()
+
   // pagination
   const itemsPerPage = 6;
 
@@ -271,12 +273,13 @@ export default function ShipForSale() {
                       </p>
                     </div>
                   ) : (
-                    paginatedGroups.map((card, index) => (
+                    paginatedGroups.map((card, index,id) => (
                       <div
                         key={index}
                         className="w-[270px] h-[350px] md:w-[100%] hover:scale-105 duration-300 bg-gray-100 overflow-hidden transition-all rounded-lg border border-white cursor-pointer relative"
                       >
                         <img
+                        onClick={()=>navigate(`/singleShip/${card.id}`)}
                           className="w-full rounded-t-lg h-[200px] object-cover"
                           src={card.image}
                           alt={card.title}
@@ -286,12 +289,14 @@ export default function ShipForSale() {
                           <h1 className="mt-2">{card.year}</h1>
                         </div>
                         <div className="px-2 py-3 -mt-3 flex gap-3 absolute bottom-0">
-                          <button className="bg-[#123d5f] hover:bg-[#172f41ed] text-white rounded-sm px-2 py-1">
+                          <button onClick={()=>navigate(`/singleShip/${card.id}`)} className="bg-[#123d5f] hover:bg-[#172f41ed] text-white rounded-sm px-2 py-1">
                             View More
                           </button>
-                          <button className="bg-white border hover:bg-green-500 hover:border-none hover:text-white border-[#123d5f] rounded-sm px-2 py-1">
+                          <Link to={
+                    "https://wa.me/971503505898?text=Hello%20Happy%20Marine%20Shipping,%20I%20would%20like%20to%20inquire%20about%20your%20services."
+                  } className="bg-white border hover:bg-green-500 hover:border-none hover:text-white border-[#123d5f] rounded-sm px-2 py-1">
                             Enquiry Now
-                          </button>
+                          </Link>
                         </div>
                       </div>
                     ))
@@ -405,15 +410,16 @@ export default function ShipForSale() {
                     ) : (
                       paginatedGroups.map((ship, index) => (
                         <tr key={index} className="border-b">
-                          <td className="px-4 py-2 text-[#d1a460]  text-center  border-r border-white">
+                          <td onClick={()=>navigate(`/singleShip/${ship.id}`)} className="px-4 py-2 text-[#d1a460] cursor-pointer hover:underline  text-center  border-r border-white">
                             {ship.title}
                           </td>
                           <td className="px-4 py-2 text-white border-r border-white">
                             <img
+                            onClick={()=>navigate(`/singleShip/${ship.id}`)}
                               src={ship.image}
                               alt={ship.title}
                               text-center
-                              className="w-full h-30 object-cover rounded-md"
+                              className="w-full cursor-pointer h-30 object-cover rounded-md"
                             />
                           </td>
                           <td className="px-4 py-2 text-white border-r  text-center border-white">

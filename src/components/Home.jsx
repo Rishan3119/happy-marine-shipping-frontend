@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 
 import Footer from "./Footer";
@@ -19,6 +19,8 @@ export default function Home() {
   const sellBoatRef = useRef(null);
   const section4Ref = useRef(null);
   const textRef = useRef(null);
+
+  const {id} = useParams()
 
   // Generic observer hook for resetting animation state
   const useIntersectionObserver = (ref, setVisible) => {
@@ -255,6 +257,7 @@ export default function Home() {
                       <div className="w-[280px] h-[350px] bg-gray-100 overflow-hidden  transition-all rounded-lg border border-white cursor-pointer mx-auto">
                         <div>
                           <img
+                           onClick={()=>{navigate(`/singleShip/${card.id}`)}}
                             className="w-[280px] rounded-t-lg h-[200px]"
                             src={card.image}
                             alt={card.title}
@@ -267,12 +270,14 @@ export default function Home() {
                           <h1 className="mt-2">{card.year}</h1>
                         </div>
                         <div className="px-2 py-3 -mt-3 flex gap-3 absolute bottom-10">
-                          <button className="bg-[#123d5f] hover:bg-[#172f41ed] text-white rounded-sm px-2 py-1">
+                          <button onClick={()=>{navigate(`/singleShip/${card.id}`)}} className="bg-[#123d5f] hover:bg-[#172f41ed] text-white rounded-sm px-2 py-1">
                             View More
                           </button>
-                          <button className="bg-white border hover:bg-green-500 hover:border-none hover:text-white border-[#123d5f] rounded-sm px-2 py-1">
+                          <Link to={
+                    "https://wa.me/971503505898?text=Hello%20Happy%20Marine%20Shipping,%20I%20would%20like%20to%20inquire%20about%20your%20services."
+                  } className="bg-white border hover:bg-green-500 hover:border-none hover:text-white border-[#123d5f] rounded-sm px-2 py-1">
                             Enquiry Now
-                          </button>
+                          </Link>
                         </div>
                       </div>
                     </div>
