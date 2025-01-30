@@ -7,6 +7,7 @@ import ShipForSaleNav from "../Navbars/ShipForSaleNav";
 
 export default function Others() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate()
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50); // Adjust the value to when you want the effect
@@ -286,6 +287,7 @@ export default function Others() {
                         className="w-[270px] h-[350px] md:w-[100%] hover:scale-105 duration-300 bg-gray-100 overflow-hidden transition-all rounded-lg border border-white cursor-pointer relative"
                       >
                         <img
+                        onClick={()=>navigate(`/singleShip/${card.id}`)}
                           className="w-full rounded-t-lg h-[200px] object-cover"
                           src={card.image}
                           alt={card.title}
@@ -414,15 +416,16 @@ export default function Others() {
                     ) : (
                       paginatedGroups.map((ship, index) => (
                         <tr key={index} className="border-b">
-                          <td className="px-4 py-2 text-[#d1a460]  text-center  border-r border-white">
+                          <td onClick={()=>navigate(`/singleShip/${ship.id}`)} className="px-4 py-2 cursor-pointer hover:underline text-[#d1a460]  text-center  border-r border-white">
                             {ship.title}
                           </td>
                           <td className="px-4 py-2 text-white border-r border-white">
                             <img
+                            onClick={()=>navigate(`/singleShip/${ship.id}`)}
                               src={ship.image}
                               alt={ship.title}
                               text-center
-                              className="w-full h-30 object-cover rounded-md"
+                              className="w-full cursor-pointer h-30 object-cover rounded-md"
                             />
                           </td>
                           <td className="px-4 py-2 text-white border-r  text-center border-white">
