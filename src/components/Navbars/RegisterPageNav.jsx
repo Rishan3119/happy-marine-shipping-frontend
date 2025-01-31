@@ -119,6 +119,7 @@ export default function RegisterPageNav() {
                 Ship For Sale
               </Link>
               <Link
+              to="/shipreadytochart"
                 className={`text-[#d1a460] transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-500" : "hover:text-white"
                 }`}
@@ -193,7 +194,7 @@ export default function RegisterPageNav() {
                   </li>
                   <li>
                     <Link
-                      to="/shipforcharter"
+                      to="/shipreadytochart"
                       className="text-gray-800 hover:text-blue-500 block"
                       onClick={toggleSidebar}
                     >

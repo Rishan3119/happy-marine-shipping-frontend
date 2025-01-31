@@ -27,6 +27,8 @@ import Others from './components/Types of ships/Others';
 import SingleShip from './components/SingleShip';
 import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
+import ShipReadyToChart from './components/ShipReadyToChart';
+
 
 
 
@@ -40,6 +42,7 @@ function App() {
         <Route path='/' element={<Home/>} />
         <Route path='/shipforsale' element={<ShipForSale/>} />
         <Route path='/logistics' element={<Logistic/>} />
+        <Route path='/shipreadytochart' element={<ShipReadyToChart/>} />
         <Route path='/regShip' element={<RegisterShip/>} />
         <Route path='/cargo' element={<Cargo/>} />
         <Route path='/Barge' element={<Barge/>} />

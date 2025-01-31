@@ -132,6 +132,7 @@ export default function SingleShipNav() {
                 Ship For Sale
               </Link>
               <Link
+              to="/shipreadytochart"
                 className={`text-[#d1a460] transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-500" : "hover:text-white"
                 }`}
@@ -206,7 +207,7 @@ export default function SingleShipNav() {
                   </li>
                   <li>
                     <Link
-                      to="/shipforcharter"
+                     to="/shipreadytochart"
                       className="text-gray-800 hover:text-blue-500 block"
                       onClick={toggleSidebar}
                     >

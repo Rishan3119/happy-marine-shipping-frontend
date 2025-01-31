@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
-export default function LogosticsNav() {
+export default function ShipReadyToChartNav() {
 
     const [isFlipped, setIsFlipped] = useState(false);
     const navigate = useNavigate()
@@ -79,12 +79,12 @@ export default function LogosticsNav() {
             </Link>
             <Link 
             to="/shipreadytochart"
-              className={`text-[#d1a460] transition-all duration-300 ${isScrolled ? "hover:text-blue-500" : "hover:text-white"}`}>
+              className={` font-bold text-xl  transition-all duration-300 ${isScrolled ? "text-blue-500" : "text-gray-100"}`}>
               Ship For Charter
             </Link>
             <Link 
               to={'/logistics'} 
-              className={`font-bold text-xl  transition-all duration-300 ${isScrolled ? "text-blue-500" : "text-gray-100"}`}>
+              className={`text-[#d1a460] transition-all duration-300 ${isScrolled ? "hover:text-blue-500" : "hover:text-white"}`}>
               Logistic & Transport
             </Link>
             <Link 
@@ -127,16 +127,16 @@ export default function LogosticsNav() {
                 </Link>
               </li>
               <li>
-                <Link to="/shipreadytochart" className="text-gray-800 hover:text-blue-500 block" onClick={toggleSidebar}>
+              
+                <Link to="/shipreadytochart" className="text-blue-500 hover:text-blue-300 block" onClick={toggleSidebar}>
                   Ship For Charter
                 </Link>
               </li>
               <li>
-                <Link to="/logistics" className="text-blue-500 hover:text-blue-300 block" onClick={toggleSidebar}>
+                <Link to="/logistics" className="text-gray-800 hover:text-blue-300 block" onClick={toggleSidebar}>
                   Logistic & Transport
                 </Link>
               </li>
-              
               <li>
                 <Link to="/about" className="text-gray-800 hover:text-blue-500 block" onClick={toggleSidebar}>
                   About Us

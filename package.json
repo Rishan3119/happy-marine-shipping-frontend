@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@chatscope/chat-ui-kit-react": "^2.0.3",
     "axios": "^1.7.9",
     "cra-template": "1.2.0",
     "jquery": "^3.7.1",
     "leaflet": "^1.9.4",
+    "openai": "^4.81.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-leaflet": "^5.0.0",

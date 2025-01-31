@@ -8,8 +8,9 @@ import Footer from "./Footer";
 import LogosticsNav from "./Navbars/LogosticsNav";
 import config from "../function/config";
 import axios from "axios";
+import ShipReadyToChartNav from "./Navbars/ShipReadyToChartNav";
 
-export default function Logistic() {
+export default function ShipReadyToChart() {
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [ports, setPorts] = useState([]);
@@ -3889,45 +3890,43 @@ export default function Logistic() {
   return (
     <div>
       <div className="">
-        <LogosticsNav />
+        <ShipReadyToChartNav />
 
-        <section className="bg-gradient-to-r  from-[#2e5775] to-[#326e99] py-[80px] px-[80px] xl:px-[40px] md:px-[20px] xm:px-[10px] xm:py-[20px]">
+        <section className="bg-gradient-to-r from-[#2e5775] to-[#326e99] py-[50px] px-[80px] xl:px-[40px] md:px-[20px] xm:px-[10px] xm:py-[20px]">
           <div className="border-2 border-white py-5 px-5 xs:px-2">
-          <div className="flex gap-3 justify-center items-center ml-5 xl:ml-0">
+          <div className="flex gap-3 justify-center items-center ">
                     <img
-                      className="w-[65px]  
-                     h-[65px] bg-white rounded-full"
-                      src={cargo}
+                      className="w-[65px] rounded-full h-[65px]"
+                      src={ship}
                       alt=""
                     />
                     <h1 className="text-xl text-white font-semibold">
-                      Cargo Ready To Load
+                      Ship Ready To Charter
                     </h1>
                   </div>
-
 
             
             {/* main */}
             <div className="  mt-16">
-              
-              {/* right side */}
-              
-                <div>
-                 
+              {/* left side */}
+              {selectedView === "ship" && (
+                <div className="">
+                  
+
                   <div className="mt-10  w-full xl:w-[780px] lg:w-[730px] Lg:w-[650px] md:w-[580px] sm:w-auto xs:w-auto text-center gap-8 text-[#d1a460] text-xl m-auto">
-                    {selectedRightRegion ? (
+                    {selectedRegion ? (
                       <>
                         <>
                           <div className="grid grid-cols-2  sm:grid-cols-2 lg:grid-cols-3 xm:grid-cols-1 gap-6 ">
                             <div className=" ">
                               <Select
                                 className="rounded-full w-[100%] m-auto"
-                                options={regions[selectedRightRegion]}
+                                options={regions[selectedRegion]}
                                 placeholder="Select a country"
-                                onChange={(selectedRightCountry) => {
-                                  setSelectedRightCountry(selectedRightCountry.label); // Set selected country
-                                  handleSearchRight(selectedRightCountry.label); // Trigger dynamic search
-                                  handleRightCountryChange(selectedRightCountry)
+                                onChange={(selectedCountry) => {
+                                  setSelectedCountry(selectedCountry.label); // Set selected country
+                                  handleSearch(selectedCountry.label); // Trigger dynamic search
+                                  handleCountryChange(selectedCountry)
                                 }}
                                 isSearchable
                                 getOptionLabel={(e) => (
@@ -3941,7 +3940,7 @@ export default function Logistic() {
                                   </div>
                                 )}
                               />
-                              {selectedRightCountry && (
+                              {selectedCountry && (
                                 <Select
                                   className="rounded-full w-[100%] mt-10"
                                   options={ports}
@@ -3951,7 +3950,7 @@ export default function Logistic() {
                               )}
                               <button
                                 className="capsule-3d border border-white rounded-full py-3 w-[100%] m-auto mt-10"
-                                onClick={handleRightBack}
+                                onClick={handleBack}
                               >
                                 <i className="fa-solid fa-arrow-left fa-beat me-2"></i>{" "}
                                 Back to Regions
@@ -3969,7 +3968,7 @@ export default function Logistic() {
                                 {displayedShips.length > 0 ? (
                                   displayedShips.map((ship, index) => (
                                     <div
-                                   
+                                    onClick={()=>navigate(`/singleShip/${ship.id}`)}
                                       key={index}
                                       className="bg-white  m-auto relative h-[230px] shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300"
                                     >
@@ -4041,7 +4040,7 @@ export default function Logistic() {
                             <button
                               key={region}
                               className="capsule-3d border border-white rounded-full xm:rounded-3xl py-3 w-[90%] "
-                              onClick={() => handleRightRegionClick(region)}
+                              onClick={() => handleRegionClick(region)}
                             >
                               {region}
                             </button>
@@ -4059,6 +4058,7 @@ export default function Logistic() {
                                 {displayedShips.length > 0 ? (
                                   displayedShips.map((ship, index) => (
                                     <div
+                                    onClick={()=>navigate(`/singleShip/${ship.id}`)}
                                       key={index}
                                       className="bg-white  m-auto relative h-[230px] w-[100%] xm:max-h-screen shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300 overflow-auto"
                                     >
@@ -4125,7 +4125,8 @@ export default function Logistic() {
                     )}
                   </div>
                 </div>
-             
+              )}
+
             </div>
           </div>
         </section>

@@ -7,14 +7,119 @@ import Slider from "react-slick";
 import config from "../function/config";
 import axios from "axios";
 import HomeNav from "./Navbars/HomeNav";
-import bgImage from "../images/boats-water-alicante_1268-22016.avif";
+import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import {MainContainer, ChatContainer, MessageList, MessageInput, Message, TypingIndicator, MessageGroup} from '@chatscope/chat-ui-kit-react'
 
 export default function Home() {
+  const [typing,setTyping] = useState(false)
   const navigate = useNavigate();
 
   const [isSellBoatVisible, setSellBoatVisible] = useState(false);
   const [isSection4Visible, setSection4Visible] = useState(false);
   const [istextRefVisible, setTextRefVisible] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const API_KEY = "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";
+
+  const [messages, setMessages] = useState([
+    {
+      message:"Hello, I am here to assist you!",
+      sender:"chatGPT"
+    }
+  ]);
+
+  const handleSend = async (message) =>{
+    const newMessage = {
+      message: message,
+      sender:"user",
+      sentTime: "just now",
+      direction: message.sender === "assistant" ? "outgoing" : "incoming", // Ensure proper alignment
+      position: "single"
+    }
+
+    const newMessages = [...messages,newMessage]
+
+    setMessages(newMessages);
+
+    setTyping(true);
+
+    await processMessageToChatGPT(newMessages);
+
+
+
+  }
+
+  async function processMessageToChatGPT(chatMessages){
+
+    let apiMessages = chatMessages.map((messageObject)=>{
+      let role = "";
+      if(messageObject.sender === "ChatGPT"){
+        role="assistant"
+      }else{
+        role="user"
+      }
+      return {role: role, content: messageObject.message}
+
+    });
+
+    const systemMessage = {
+      role: "system",
+      content: "Expain all concepts like I am owner of ship company."
+    }
+
+    const apiRequestBody = {
+      "store": true,
+      "model": "gpt-4o-mini",
+      "messages": [
+        systemMessage,
+        ...apiMessages
+      ]
+    }
+
+    await fetch("https://api.openai.com/v1/chat/completions",{
+      method: "POST",
+      headers:{
+        "Authorization": `Bearer ${API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(apiRequestBody)
+    }).then((data)=>{
+      return data.json();
+    }).then((data)=>{
+      console.log(data);
+      console.log(data.choices[0].message.content);
+      setMessages(
+        [...chatMessages,{
+          message: data.choices[0].message.content,
+          sender: "ChatGPT"
+        }]
+      );
+      setTyping(false);
+    });
+    
+  }
+
+
+  const [input, setInput] = useState("");
+
+  // Toggle chatbot visibility
+  const toggleChatbot = () => {
+    if (isChatOpen) {
+      setMessages([
+        {
+          message: "Hello, I am here to assist you!",
+          sender: "chatGPT"
+        }
+      ]);
+    }
+    setIsChatOpen(!isChatOpen);
+    
+  };
+
+  // Handle sending message
+  
+  
+  
 
   const sellBoatRef = useRef(null);
   const section4Ref = useRef(null);
@@ -516,19 +621,59 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Go to Top Button */}
-        {isScrolled && (
+       
+
+{/* Go to Top Button */}
+{isScrolled && (
+  <div className="fixed bottom-16 right-8 z-50">
+    <div className="back-to-top px-4 hover:bg-[#615d91]" onClick={scrollToTop}>
+      <i className="fa-solid fa-arrow-up text-2xl"></i>
+    </div>
+  </div>
+)}
+
+{/* Chatbot Icon */}
+{!isChatOpen && (
+        <div className="fixed bottom-6 right-5 z-50">
           <div
-            className="fixed bottom-16 right-8 z-50 " // Ensure it's in the right position with high z-index
+            className="bg-green-500 text-white px-3 py-2 rounded-full shadow-lg cursor-pointer hover:bg-blue-600"
+            onClick={toggleChatbot}
           >
-            <div
-              className="back-to-top px-4 hover:bg-[#615d91]"
-              onClick={scrollToTop}
-            >
-              <i className="fa-solid fa-arrow-up text-2xl"></i>
-            </div>
+            <i className="fa-solid fa-message text-2xl"></i>
           </div>
-        )}
+        </div>
+      )}
+
+      {/* Chatbox UI */}
+      {isChatOpen && (
+        <div className="fixed  bg-white  bottom-10 right-10 w-[50%] lg:w-[80%] xm:w-[95%] xm:right-1 xm:mt-10 xm:px-3   h-[90%]  shadow-lg border border-gray-300 rounded z-50 flex flex-col">
+          {/* Chat Header */}
+          <div className="bg-blue-600 rounded-t text-white p-4 flex justify-between items-center">
+            <span className="font-bold text-xl">Chatbot</span>
+            <button onClick={toggleChatbot} className="text-white text-lg">
+              ✖
+            </button>
+          </div>
+
+          {/* Chat Messages */}
+          <div className="flex-1 p-4 overflow-y-auto">
+            <MainContainer>
+              <ChatContainer>
+                <MessageList  typingIndicator={typing? <TypingIndicator content="typing..."/>:null}>
+                  
+                  {messages.map((message,i)=>{
+                    return <Message key={i} model={message}/>
+                  })}
+                </MessageList>
+                <MessageInput placeholder="Type a Message...." onSend={handleSend} />
+              </ChatContainer>
+            </MainContainer>
+          </div>
+
+          
+        </div>
+      )}
+        
 
         <Footer />
       </div>
