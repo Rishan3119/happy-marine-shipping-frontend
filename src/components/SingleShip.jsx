@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import config from "../function/config";
 import axios from "axios";
 import HomeNav from "./Navbars/HomeNav";
@@ -8,6 +8,8 @@ import Footer from "./Footer";
 
 export default function SingleShip() {
   const [obj, setObj] = useState({});
+
+  const navigate = useNavigate()
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenS, setIsOpenS] = useState(true);
@@ -124,6 +126,7 @@ export default function SingleShip() {
                         </div>
                       )}
                     </div>
+                    
                   )}
 
                   {/* LOA and Built Year */}
@@ -199,6 +202,15 @@ export default function SingleShip() {
                       )}
                     </div>
                   )}
+                  
+                        <div className="w-full mt-5">
+                          <span onClick={()=>navigate(`/shipLoc/${obj.id}`)} className=" text-blue-400 cursor-pointer hover:underline ">
+                             Track Location
+                          </span>
+                          
+                        </div>
+                      
+
                 </div>
               )}
             </div>

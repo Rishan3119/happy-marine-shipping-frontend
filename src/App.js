@@ -28,6 +28,7 @@ import SingleShip from './components/SingleShip';
 import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
 import ShipReadyToChart from './components/ShipReadyToChart';
+import ShipLocation from './components/ShipLocation';
 
 
 
@@ -65,6 +66,8 @@ function App() {
         <Route path='/singleShip/:id' element={<SingleShip/>} />
         <Route path='/about' element={<AboutUs/>} />
         <Route path='/contact' element={<ContactUs/>} />
+        <Route path='/shipLoc/:id' element={<ShipLocation/>} />
+        
 
       </Routes>
       

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import ShipForSaleNav from "./Navbars/ShipForSaleNav";
 import Footer from "./Footer";
 import config from "../function/config";
@@ -18,6 +18,9 @@ export default function ShipForSale() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+ 
+ 
 
   // Scroll to the top
   const scrollToTop = () => {
@@ -99,6 +102,8 @@ export default function ShipForSale() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
+
+ 
 
   return (
     <div className="">
