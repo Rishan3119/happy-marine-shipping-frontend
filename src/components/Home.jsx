@@ -26,7 +26,7 @@ export default function Home() {
       sender:"chatGPT"
     }
   ]);
-  const API_KEY = "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"
+  const API_KEY = "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"
 
   const handleSend = async (message) =>{
     const newMessage = {
