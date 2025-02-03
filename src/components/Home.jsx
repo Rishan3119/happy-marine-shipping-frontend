@@ -29,7 +29,7 @@ export default function Home() {
   const API_KEY = "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"
 
   const handleSend = async (message) =>{
-    console.log('API Key:', process.env.REACT_APP_API_KEY);
+    
     const newMessage = {
       message: message,
       sender:"user",
