@@ -699,9 +699,9 @@ const stopVoiceResponse = () => {
 
         {/* Chatbox UI */}
         {isChatOpen && (
-          <div className="fixed bottom-10 right-10 w-[25%] lg:w-[80%] xm:w-[95%] xm:right-1 xm:mt-10 xm:px-3 h-[90%] shadow-lg border border-gray-300 rounded z-50 flex flex-col bg-white">
+          <div className="fixed bottom-10 right-10 w-[25%] 2xl:w-[40%] lg:w-[90%] xm:w-[100%] xm:justify-center xm:right-0 xm:left-0 xm:mt-10 h-[90%] shadow-lg border border-gray-300 rounded z-50 flex flex-col bg-white">
             {/* Chat Header */}
-            <div className="bg-blue-600 rounded-t text-white p-4 flex justify-between items-center">
+            <div className="bg-blue-600 rounded-t text-white  p-4 flex justify-between items-center">
               <span className="font-bold text-xl">Chatbot</span>
               <button onClick={toggleChatbot} className="text-white text-lg">
                 ✖
@@ -748,7 +748,7 @@ const stopVoiceResponse = () => {
             </div>
 
             {/* Message Input and Mic Button */}
-            <div className="p-4 bg-gray-200 flex items-center space-x-3 rounded-b">
+            <div className="p-4  bg-gray-200 flex items-center gap-3 rounded-b">
               {/* Mic Button */}
               <button
                 onClick={handleVoiceInput}
