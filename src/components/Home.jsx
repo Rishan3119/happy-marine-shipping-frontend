@@ -26,9 +26,10 @@ export default function Home() {
       sender:"chatGPT"
     }
   ]);
-  const API_KEY = "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"
+  const API_KEY = process.env.REACT_APP_APIKEY
 
   const handleSend = async (message) =>{
+    console.log("API KEY:", API_KEY);
     const newMessage = {
       message: message,
       sender:"user",
