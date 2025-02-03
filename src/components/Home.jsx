@@ -699,7 +699,7 @@ const stopVoiceResponse = () => {
 
         {/* Chatbox UI */}
         {isChatOpen && (
-          <div className="fixed bottom-10 right-10 w-[25%] 2xl:w-[40%] lg:w-[90%] xm:w-auto xm:justify-center xm:right-0 xm:left-0 xm:mt-10 h-[90%] shadow-lg border border-gray-300 rounded z-50 flex flex-col bg-white">
+          <div className="fixed bottom-10 right-10 w-[25%] 2xl:w-[40%] lg:w-[90%] xm:w-auto xm:justify-center xm:right-0 xm:left-0 xm:mt-10 h-[90%] xxm:h-[100vh] xxm:pt-10 shadow-lg border xxm:mt-16 border-gray-300 rounded z-50 flex flex-col bg-white">
             {/* Chat Header */}
             <div className="bg-blue-600 rounded-t text-white  p-4 flex justify-between items-center">
               <span className="font-bold text-xl">Chatbot</span>
@@ -748,11 +748,11 @@ const stopVoiceResponse = () => {
             </div>
 
             {/* Message Input and Mic Button */}
-<div className="p-4 bg-gray-200 flex items-center gap-2 rounded-b flex-wrap">
+<div className="p-4 xxm:px-2 xxm:py-1  bg-gray-200 flex items-center gap-2 rounded-b flex-wrap">
   {/* Mic Button */}
   <button
     onClick={handleVoiceInput}
-    className={`px-4 py-2 rounded-full shadow-lg transition-all 
+    className={`px-4 py-2 xxm:-mt-6 rounded-full shadow-lg transition-all 
     ${isRecording ? "bg-red-500 animate-pulse" : "bg-white text-black hover:bg-gray-400"}`}
   >
     <i className="fa-solid fa-microphone"></i>
@@ -764,13 +764,13 @@ const stopVoiceResponse = () => {
     value={inputText}
     onChange={(e) => setInputText(e.target.value)}
     placeholder="Type a message..."
-    className="flex-1 p-2 border rounded-lg outline-none w-full sm:w-auto"
+    className="flex-1 p-2 border xxm:py-8 xxm:mt-5 rounded-lg outline-none w-full sm:w-auto"
   />
 
   {/* Send Button */}
   <button
     onClick={() => handleSend(inputText)}
-    className="bg-blue-500 text-white px-3 py-2 rounded-full shadow-lg"
+    className="bg-blue-500 text-white px-3 py-2 xxm:-mt-10 rounded-full shadow-lg"
   >
     <i className="fa-solid fa-paper-plane"></i>
   </button>
