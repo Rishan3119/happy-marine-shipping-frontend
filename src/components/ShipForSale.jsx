@@ -19,8 +19,6 @@ export default function ShipForSale() {
     };
   }, []);
 
- 
- 
 
   // Scroll to the top
   const scrollToTop = () => {

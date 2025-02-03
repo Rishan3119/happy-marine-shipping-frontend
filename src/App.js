@@ -68,7 +68,6 @@ function App() {
         <Route path='/contact' element={<ContactUs/>} />
         <Route path='/shipLoc/:id' element={<ShipLocation/>} />
         
-
       </Routes>
       
 

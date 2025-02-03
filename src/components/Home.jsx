@@ -7,100 +7,148 @@ import Slider from "react-slick";
 import config from "../function/config";
 import axios from "axios";
 import HomeNav from "./Navbars/HomeNav";
-import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
-import {MainContainer, ChatContainer, MessageList, MessageInput, Message, TypingIndicator, MessageGroup} from '@chatscope/chat-ui-kit-react'
+import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import {
+  MainContainer,
+  ChatContainer,
+  MessageList,
+  MessageInput,
+  Message,
+  TypingIndicator,
+  MessageGroup,
+} from "@chatscope/chat-ui-kit-react";
 
 export default function Home() {
-  const [typing,setTyping] = useState(false)
+  const [typing, setTyping] = useState(false);
   const navigate = useNavigate();
+  const [inputText, setInputText] = useState("");
 
   const [isSellBoatVisible, setSellBoatVisible] = useState(false);
   const [isSection4Visible, setSection4Visible] = useState(false);
   const [istextRefVisible, setTextRefVisible] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-
   const [messages, setMessages] = useState([
     {
-      message:"Hello, I am here to assist you!",
-      sender:"chatGPT"
-    }
+      message: "Hello, I am here to assist you!",
+      sender: "chatGPT",
+    },
   ]);
-  const API_KEY = process.env.REACT_APP_APIKEY
+  const [isRecording, setIsRecording] = useState(false);
 
-  const handleSend = async (message) =>{
+  const API_KEY = process.env.REACT_APP_APIKEY;
+
+  const handleSend = async (message, isVoiceMessage = false) => {
     console.log("API KEY:", API_KEY);
+    
     const newMessage = {
       message: message,
-      sender:"user",
+      sender: "user",
       sentTime: "just now",
-      direction: message.sender === "assistant" ? "outgoing" : "incoming", // Ensure proper alignment
-      position: "single"
-    }
-
-    const newMessages = [...messages,newMessage]
-
+      direction: "outgoing",
+      position: "single",
+      isVoiceMessage, // Track if the message was sent via voice
+    };
+  
+    const newMessages = [...messages, newMessage];
     setMessages(newMessages);
-
+    setInputText("");
+  
     setTyping(true);
-
-    await processMessageToChatGPT(newMessages);
-
-
-
-  }
-
-  async function processMessageToChatGPT(chatMessages){
-
-    let apiMessages = chatMessages.map((messageObject)=>{
-      let role = "";
-      if(messageObject.sender === "ChatGPT"){
-        role="assistant"
-      }else{
-        role="user"
-      }
-      return {role: role, content: messageObject.message}
-
+  
+    // Send message to API and process response
+    await processMessageToChatGPT(newMessages, isVoiceMessage);
+  };
+  
+  async function processMessageToChatGPT(chatMessages, isVoiceMessage) {
+    let apiMessages = chatMessages.map((messageObject) => {
+      let role = messageObject.sender === "ChatGPT" ? "assistant" : "user";
+      return { role, content: messageObject.message };
     });
-
+  
     const systemMessage = {
       role: "system",
-      content: "Expain all concepts like I am owner of ship company."
-    }
-
+      content: "Explain all concepts like you are in  a ship company and you are handling the Happy Marine Shipping website were Happy Marine is a leading provider of ship sale and charter services, committed to facilitating smooth and reliable maritime transactions for clients across the globe.",
+    };
+  
     const apiRequestBody = {
-      "store": true,
-      "model": "gpt-4o-mini",
-      "messages": [
-        systemMessage,
-        ...apiMessages
-      ]
-    }
-
-    await fetch("https://api.openai.com/v1/chat/completions",{
+      store: true,
+      model: "gpt-4o-mini",
+      messages: [systemMessage, ...apiMessages],
+    };
+  
+    await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
-      headers:{
-        "Authorization": `Bearer ${API_KEY}`,
-        "Content-Type": "application/json"
+      headers: {
+        Authorization: `Bearer ${API_KEY}`,
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(apiRequestBody)
-    }).then((data)=>{
-      return data.json();
-    }).then((data)=>{
-      console.log(data);
-      console.log(data.choices[0].message.content);
-      setMessages(
-        [...chatMessages,{
-          message: data.choices[0].message.content,
-          sender: "ChatGPT"
-        }]
-      );
-      setTyping(false);
-    });
+      body: JSON.stringify(apiRequestBody),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        console.log(data);
+        const botResponse = data.choices[0].message.content;
+  
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { message: botResponse, sender: "ChatGPT" },
+        ]);
+  
+        setTyping(false);
+  
+        // Speak response **only if the user message was a voice message**
+        if (isVoiceMessage) {
+          speakResponse(botResponse);
+        }
+      });
+  }
+  
+  const handleVoiceInput = () => {
+    const recognition = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
     
+    recognition.lang = "en-US";
+    recognition.start();
+    setIsRecording(true); // Set mic button to red blinking when recording
+  
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      handleSend(transcript, true); // Send message as voice input
+    };
+  
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error", event.error);
+    };
+  
+    recognition.onend = () => {
+      setIsRecording(false); // Stop blinking effect when recording stops
+    };
+  };
+  
+  let speechInstance = null; // Store the current speech instance
+
+const speakResponse = (text) => {
+  // Stop any ongoing speech before starting a new one
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
   }
 
+  speechInstance = new SpeechSynthesisUtterance();
+  speechInstance.text = text;
+  speechInstance.lang = "en-US";
+  speechInstance.volume = 1;
+  speechInstance.rate = 1;
+  speechInstance.pitch = 1;
 
+  window.speechSynthesis.speak(speechInstance);
+};
+
+// Function to stop the voice response
+const stopVoiceResponse = () => {
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+  }
+};
   const [input, setInput] = useState("");
 
   // Toggle chatbot visibility
@@ -109,24 +157,20 @@ export default function Home() {
       setMessages([
         {
           message: "Hello, I am here to assist you!",
-          sender: "chatGPT"
-        }
+          sender: "chatGPT",
+        },
       ]);
     }
     setIsChatOpen(!isChatOpen);
-    
+    stopVoiceResponse(true)
   };
 
   // Handle sending message
-  
-  
-  
-
   const sellBoatRef = useRef(null);
   const section4Ref = useRef(null);
   const textRef = useRef(null);
 
-  const {id} = useParams()
+  const { id } = useParams();
 
   // Generic observer hook for resetting animation state
   const useIntersectionObserver = (ref, setVisible) => {
@@ -331,10 +375,7 @@ export default function Home() {
           ></video>
 
           {/* Background Image for xm screens */}
-          <div
-            className="absolute top-0 left-0 h-[500px] w-full   hidden  xm:block image"
-           
-          ></div>
+          <div className="absolute top-0 left-0 h-[500px] w-full   hidden  xm:block image"></div>
 
           {/* Content Overlay */}
           <div className="relative z-10 flex h-[500px] w-full items-center justify-center bg-black bg-opacity-50 py-[50px] lg:py-10 px-3 xm:py-5 xxxm:px-3">
@@ -363,7 +404,9 @@ export default function Home() {
                       <div className="w-[280px] h-[350px] bg-gray-100 overflow-hidden  transition-all rounded-lg border border-white cursor-pointer mx-auto">
                         <div>
                           <img
-                           onClick={()=>{navigate(`/singleShip/${card.id}`)}}
+                            onClick={() => {
+                              navigate(`/singleShip/${card.id}`);
+                            }}
                             className="w-[280px] rounded-t-lg h-[200px]"
                             src={card.image}
                             alt={card.title}
@@ -376,12 +419,20 @@ export default function Home() {
                           <h1 className="mt-2">{card.year}</h1>
                         </div>
                         <div className="px-2 py-3 -mt-3 flex gap-3 absolute bottom-10">
-                          <button onClick={()=>{navigate(`/singleShip/${card.id}`)}} className="bg-[#123d5f] hover:bg-[#172f41ed] text-white rounded-sm px-2 py-1">
+                          <button
+                            onClick={() => {
+                              navigate(`/singleShip/${card.id}`);
+                            }}
+                            className="bg-[#123d5f] hover:bg-[#172f41ed] text-white rounded-sm px-2 py-1"
+                          >
                             View More
                           </button>
-                          <Link to={
-                    "https://wa.me/971503505898?text=Hello%20Happy%20Marine%20Shipping,%20I%20would%20like%20to%20inquire%20about%20your%20services."
-                  } className="bg-white border hover:bg-green-500 hover:border-none hover:text-white border-[#123d5f] rounded-sm px-2 py-1">
+                          <Link
+                            to={
+                              "https://wa.me/971503505898?text=Hello%20Happy%20Marine%20Shipping,%20I%20would%20like%20to%20inquire%20about%20your%20services."
+                            }
+                            className="bg-white border hover:bg-green-500 hover:border-none hover:text-white border-[#123d5f] rounded-sm px-2 py-1"
+                          >
                             Enquiry Now
                           </Link>
                         </div>
@@ -622,59 +673,109 @@ export default function Home() {
           </div>
         </section>
 
-       
-
-{/* Go to Top Button */}
-{isScrolled && (
-  <div className="fixed bottom-16 right-8 z-50">
-    <div className="back-to-top px-4 hover:bg-[#615d91]" onClick={scrollToTop}>
-      <i className="fa-solid fa-arrow-up text-2xl"></i>
-    </div>
-  </div>
-)}
-
-{/* Chatbot Icon */}
-{!isChatOpen && (
-        <div className="fixed bottom-6 right-5 z-50">
-          <div
-            className="bg-green-500 text-white px-3 py-2 rounded-full shadow-lg cursor-pointer hover:bg-blue-600"
-            onClick={toggleChatbot}
-          >
-            <i className="fa-solid fa-message text-2xl"></i>
+        {/* Go to Top Button */}
+        {isScrolled && (
+          <div className="fixed bottom-16 right-8 z-50">
+            <div
+              className="back-to-top px-4 hover:bg-[#615d91]"
+              onClick={scrollToTop}
+            >
+              <i className="fa-solid fa-arrow-up text-2xl"></i>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Chatbox UI */}
-      {isChatOpen && (
-        <div className="fixed  bg-white  bottom-10 right-10 w-[25%] lg:w-[80%] xm:w-[95%] xm:right-1 xm:mt-10 xm:px-3   h-[90%]  shadow-lg border border-gray-300 rounded z-50 flex flex-col">
-          {/* Chat Header */}
-          <div className="bg-blue-600 rounded-t text-white p-4 flex justify-between items-center">
-            <span className="font-bold text-xl">Chatbot</span>
-            <button onClick={toggleChatbot} className="text-white text-lg">
-              ✖
-            </button>
+        {/* Chatbot Icon */}
+        {!isChatOpen && (
+          <div className="fixed bottom-6 right-5 z-50">
+            <div
+              className="bg-[#123d5f] text-white px-3 py-2 rounded-full shadow-lg cursor-pointer hover:bg-blue-600"
+              onClick={toggleChatbot}
+            >
+              <i className="fa-solid fa-message text-2xl"></i>
+            </div>
           </div>
+        )}
 
-          {/* Chat Messages */}
-          <div className="flex-1 p-4 overflow-y-auto">
-            <MainContainer>
-              <ChatContainer>
-                <MessageList  typingIndicator={typing? <TypingIndicator content="typing..."/>:null}>
-                  
-                  {messages.map((message,i)=>{
-                    return <Message key={i} model={message}/>
-                  })}
-                </MessageList>
-                <MessageInput placeholder="Type a Message...." onSend={handleSend} />
-              </ChatContainer>
-            </MainContainer>
+        {/* Chatbox UI */}
+        {isChatOpen && (
+          <div className="fixed bottom-10 right-10 w-[25%] lg:w-[80%] xm:w-[95%] xm:right-1 xm:mt-10 xm:px-3 h-[90%] shadow-lg border border-gray-300 rounded z-50 flex flex-col bg-white">
+            {/* Chat Header */}
+            <div className="bg-blue-600 rounded-t text-white p-4 flex justify-between items-center">
+              <span className="font-bold text-xl">Chatbot</span>
+              <button onClick={toggleChatbot} className="text-white text-lg">
+                ✖
+              </button>
+            </div>
+
+            {/* Chat Messages */}
+            <div className="flex-1 p-4 overflow-y-auto">
+              {/* Custom Message List */}
+              <div className="space-y-4">
+                {messages.map((message, i) => (
+                  <div
+                    key={i}
+                    className={`flex ${
+                      message.sender === "user"
+                        ? "justify-end"
+                        : "justify-start"
+                    }`}
+                  >
+                    <div
+                      className={`max-w-[80%] p-3 rounded-lg ${
+                        message.sender === "user"
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-200 text-black"
+                      }`}
+                    >
+                      <p>{message.message}</p>
+                    </div>
+                  </div>
+                ))}
+                {typing && (
+                  <div className="flex justify-start">
+                  <div className="max-w-[70%] py-2 px-3 rounded-full bg-gray-200 text-blue-500 flex items-center justify-center">
+  <p className="font-bold typing-dots">
+    <i className="fa-solid fa-circle fa-xs"></i>
+    <i className="fa-solid fa-circle fa-xs"></i>
+    <i className="fa-solid fa-circle fa-xs"></i>
+  </p>
+</div>
+
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Message Input and Mic Button */}
+            <div className="p-4 bg-gray-200 flex items-center space-x-3 rounded-b">
+              {/* Mic Button */}
+              <button
+                onClick={handleVoiceInput}
+                className={`px-4 py-2 rounded-full  shadow-lg transition-all  
+    ${isRecording ? "bg-red-500 animate-pulse" : "bg-white text-black hover:bg-gray-400"}`}
+              >
+                <i className="fa-solid fa-microphone"></i>
+              </button>
+              {/* Message Input */}
+              <input
+                type="text"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                placeholder="Type a message..."
+                className="flex-1 p-2 border rounded-lg outline-none"
+              />
+
+              {/* Send Button */}
+              <button
+                onClick={() => handleSend(inputText)}
+                className="bg-blue-500 text-white px-3 py-2 rounded-full shadow-lg"
+              >
+                <i className="fa-solid fa-paper-plane"></i>
+              </button>
+            </div>
           </div>
-
-          
-        </div>
-      )}
-        
+        )}
 
         <Footer />
       </div>
