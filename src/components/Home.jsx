@@ -127,21 +127,34 @@ export default function Home() {
   
   let speechInstance = null; // Store the current speech instance
 
-const speakResponse = (text) => {
-  // Stop any ongoing speech before starting a new one
-  if (window.speechSynthesis.speaking) {
-    window.speechSynthesis.cancel();
-  }
-
-  speechInstance = new SpeechSynthesisUtterance();
-  speechInstance.text = text;
-  speechInstance.lang = "en-US";
-  speechInstance.volume = 1;
-  speechInstance.rate = 1;
-  speechInstance.pitch = 1;
-
-  window.speechSynthesis.speak(speechInstance);
-};
+  const speakResponse = (text) => {
+    if ("speechSynthesis" in window) {
+      const speech = new SpeechSynthesisUtterance();
+      speech.text = text;
+      speech.lang = "en-US";
+      speech.volume = 1;
+      speech.rate = 1;
+      speech.pitch = 1;
+  
+      // Ensure the audio context is resumed before speaking
+      const synth = window.speechSynthesis;
+      if (synth.speaking) {
+        synth.cancel(); // Stop any ongoing speech before starting new
+      }
+  
+      // Resume audio context (fix for mobile)
+      if (typeof synth.resume === "function") {
+        synth.resume();
+      }
+  
+      // Speak only if triggered by user interaction
+      setTimeout(() => {
+        synth.speak(speech);
+      }, 100);
+    } else {
+      console.log("Speech synthesis not supported on this browser.");
+    }
+  };
 
 // Function to stop the voice response
 const stopVoiceResponse = () => {
