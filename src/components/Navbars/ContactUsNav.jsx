@@ -83,38 +83,40 @@ export default function ContactUsNav() {
           <hr className="border-1 border-white -mt-1" />
 
           <div
-            className={` px-[170px]  transition-all duration-300 3xl:px-[50px] py-8 flex justify-between items-center relative ${
-              isScrolled
-                ? "fixe top-0 left-0 w-full bg-white text-[#d1a460] hover:text-blue-500 shadow-md z-50 pointer-events-auto"
-                : ""
-            }`}
+           className={` px-[170px] xl:px-5  ssm:px-2  transition-all duration-300 3xl:px-[50px] py-8 flex justify-between items-center relative ${
+            isScrolled
+              ? "fixe top-0 left-0 w-full bg-white text-[#d1a460] hover:text-blue-500 shadow-md z-50 pointer-events-auto"
+              : ""
+          }`}
           >
             {/* Menu Icon - Shown only on 2xl screens */}
             <i
               onClick={toggleSidebar}
               className={`bx ${
                 isSidebarOpen ? "bx-x" : "bx-menu-alt-left"
-              } ml-10 xs:ml-1 hidden 2xl:block absolute left-0  text-[40px] cursor-pointer transition-transform duration-300 ${
+              } ml-10 xs:ml-1 hidden ssm:block absolute left-0  text-[40px] cursor-pointer transition-transform duration-300 ${
                 isScrolled ? "text-gray-600" : "text-white"
               }`}
             ></i>
 
             {/* Ship Icon - Centered when screen size is 2xl */}
-            <div className="2xl:flex-1 flex justify-center">
-              <h1
-                onClick={handleFlip}
-                className={`${isFlipped ? "flipped" : ""}`}
+            <div className="2xl:flex-1 xl:flex flex  justify-center items-center">
+              <Link
+                to={"/"} 
+                className={`xl:absolute xl:mt-2 xl:top-2 xl:left-1/2 xl:-translate-x-1/2 xl:flex xl:justify-center   ${
+                  isFlipped ? "flipped" : ""
+                }`}
               >
                 <i
                   className={`fa-solid fa-ship  text-[40px] cursor-pointer ${
                     isScrolled ? "text-blue-500" : "text-white"
                   }`}
                 ></i>
-              </h1>
+              </Link>
             </div>
 
             {/* Navigation Links - Hidden on 2xl */}
-            <div className="flex gap-8 items-center 2xl:hidden">
+            <div className="flex flex-wrap xl:mt-10 xl:m-auto justify-center  gap-8 items-center ssm:hidden">
               <Link
                 to={"/"}
                 className={`text-[#d1a460]   transition-all duration-300 ${
@@ -148,6 +150,7 @@ export default function ContactUsNav() {
                 Logistic & Transport
               </Link>
               <Link
+              to={'/about'}
                 className={`text-[#d1a460]  transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-500" : "hover:text-gray-100"
                 }`}

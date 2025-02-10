@@ -35,7 +35,7 @@ export default function AboutUs() {
 
       <section >
         <h1 className='bg-gray-200 text-gray-600 font-bold text-center  text-3xl px-5 py-16'>About Happy Marine</h1>
-        <div className='ml-[80px] 2xl:ml-0 p-3 flex flex-wrap gap-4'>
+        <div className='ml-[80px] 2xl:ml-0 p-3 flex lg:flex-wrap gap-4'>
           <div className='-mt-10 2xl:mt-10 2xl:m-auto'>
             <img src={about} className='w-[400px] h-[500px] 2xl:w-auto 2xl:h-auto' alt="" />
           </div>

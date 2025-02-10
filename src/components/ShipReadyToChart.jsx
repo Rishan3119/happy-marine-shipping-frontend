@@ -15,9 +15,7 @@ export default function ShipReadyToChart() {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [ports, setPorts] = useState([]);
 
-  const [selectedRightRegion, setSelectedRightRegion] = useState(null);
-  const [selectedRightCountry, setSelectedRightCountry] = useState(null);
-  const [rightPorts, setRightPorts] = useState([]);
+ 
 
   const [allships, setAllships] = useState([]);
   const [filteredShips, setFilteredShips] = useState([]);
@@ -3741,15 +3739,7 @@ export default function ShipReadyToChart() {
 
  
 
-  const handleViewChange = (view) => {
-    setSelectedView(view);
-    setSelectedRegion(null);
-    setSelectedCountry(null);
-    setSelectedRightRegion(null);
-    setSelectedRightCountry(null);
-    setFilteredShips(allships)
-  };
-
+ 
   // fetch ship data
   useEffect(() => {
     async function fetchdata() {
@@ -3778,7 +3768,7 @@ export default function ShipReadyToChart() {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const itemsPerPage = 2; // Number of cards per page
+  const itemsPerPage = 3; // Number of cards per page
   const totalPages = Math.ceil(filteredShips.length / itemsPerPage);
 
   const handleSearch = (selectedCountry) => {
@@ -3796,19 +3786,6 @@ export default function ShipReadyToChart() {
   };
   
 
-  const handleSearchRight = () => {
-    if (!selectedCountry) {
-      setFilteredShips(allships); // Show all ships if no country is selected
-      return;
-    }
-  
-    // Filter ships based on the selected country
-    const results = allships.filter(
-      (ship) => ship.flag.toLowerCase() === selectedCountry.toLowerCase()
-    );
-  
-    setFilteredShips(results); // Update the filtered ships
-  };
 
   const handleRegionClick = (region) => {
     setSelectedRegion(region);
@@ -3842,31 +3819,9 @@ export default function ShipReadyToChart() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const displayedShips = filteredShips.slice(startIndex, startIndex + itemsPerPage);
 
-  //   right side
-  const handleRightRegionClick = (region) => {
-    setSelectedRightRegion(region);
-    setSelectedRightCountry(null);
-    setRightPorts([]);
-  };
+  
+  
 
-  const handleRightCountryChange = (selectedOption) => {
-    setSelectedRightCountry(selectedOption?.value || null);
-
-    setRightPorts(
-      (portsData[selectedOption.value] || []).map((port) => ({
-        value: port,
-        label: port,
-      }))
-    );
-  };
-
-  const handleRightBack = () => {
-    setSelectedRightCountry(null);
-    setSelectedRightCountry(null);
-    setRightPorts([]);
-    setCurrentPage(1);
-    setFilteredShips(allships)
-  };
 
   const [isScrolled, setIsScrolled] = useState(false);
   // Track scrolling
@@ -3913,14 +3868,14 @@ export default function ShipReadyToChart() {
                 <div className="">
                   
 
-                  <div className="mt-10  w-full xl:w-[780px] lg:w-[730px] Lg:w-[650px] md:w-[580px] sm:w-auto xs:w-auto text-center gap-8 text-[#d1a460] text-xl m-auto">
+                  <div className="mt-10  w-[100%]  text-center gap-8 text-[#d1a460] text-xl m-auto">
                     {selectedRegion ? (
                       <>
                         <>
-                          <div className="grid grid-cols-2  sm:grid-cols-2 lg:grid-cols-3 xm:grid-cols-1 gap-6 ">
-                            <div className=" ">
+                          <div className="flex xl:flex-wrap   gap-2 xl:gap-10  w-[100%] ">
+                            <div className=" w-[40%] xl:w-[100%] flex-shrink-0">
                               <Select
-                                className="rounded-full w-[100%] m-auto"
+                                className="rounded-full w-[80%] m-auto"
                                 options={regions[selectedRegion]}
                                 placeholder="Select a country"
                                 onChange={(selectedCountry) => {
@@ -3942,14 +3897,14 @@ export default function ShipReadyToChart() {
                               />
                               {selectedCountry && (
                                 <Select
-                                  className="rounded-full w-[100%] mt-10"
+                                  className="rounded-full m-auto w-[80%] mt-10"
                                   options={ports}
                                   placeholder="Select a port"
                                   isSearchable
                                 />
                               )}
                               <button
-                                className="capsule-3d border border-white rounded-full py-3 w-[100%] m-auto mt-10"
+                                className="capsule-3d border border-white rounded-full py-3 w-[80%] m-auto mt-10"
                                 onClick={handleBack}
                               >
                                 <i className="fa-solid fa-arrow-left fa-beat me-2"></i>{" "}
@@ -3957,12 +3912,12 @@ export default function ShipReadyToChart() {
                               </button>
                             </div>
 
-                            <div className=" block">
+                            <div className=" ">
                               <div
-                                className={`grid gap-5 ${
+                                className={`grid gap-10  w-[100%] ssm:w-[85%] m-auto  ${
                                   displayedShips.length === 1
                                     ? "grid-cols-1"
-                                    : "grid-cols-2"
+                                    : "grid-cols-3 ssm:grid-cols-1"
                                 }`}
                               >
                                 {displayedShips.length > 0 ? (
@@ -3970,11 +3925,11 @@ export default function ShipReadyToChart() {
                                     <div
                                     onClick={()=>navigate(`/singleShip/${ship.id}`)}
                                       key={index}
-                                      className="bg-white  m-auto relative h-[230px] shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300"
+                                      className="bg-white  m-auto relative h-[280px] w-[100%]  shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300 overflow-auto"
                                     >
                                       <img
                                         src={ship.image}
-                                        className="h-[100px] w-full rounded-t-lg"
+                                        className="h-[150px] w-full rounded-t-lg"
                                         alt=""
                                       />
 
@@ -3982,7 +3937,7 @@ export default function ShipReadyToChart() {
                                         <p className="text-black font-semibold">
                                           {ship.title}
                                         </p>
-                                        <p className="text-black absolute bottom-0 right-0 left-0 italic">
+                                        <p className="text-black absolute bottom-0 right-0 left-0 Lg:mt-3  Lg:static Lg:bottom-auto Lg:right-auto Lg:left-auto  italic">
                                           {ship.flag}
                                         </p>
                                       </div>
@@ -3996,63 +3951,64 @@ export default function ShipReadyToChart() {
                               </div>
 
                               <div>
-                                {/* Pagination Controls */}
-                                <div className="flex justify-center items-center gap-2 mt-5">
-                                  <button
-                                    className={`px-4 py-2 bg-[#123d5f] text-white rounded-sm ${
-                                      currentPage === 1
-                                        ? "opacity-50 cursor-not-allowed"
-                                        : "hover:bg-[#172f41ed]"
-                                    }`}
-                                    onClick={() =>
-                                      handlePageChange(currentPage - 1)
-                                    }
-                                    disabled={currentPage === 1}
-                                  >
-                                    <i className="fa-solid fa-chevron-left"></i>
-                                  </button>
-                                  <span className="px-4 py-2 bg-[#d1a460] text-white rounded-sm">
-                                    {currentPage}
-                                  </span>
-                                  <button
-                                    className={`px-4 py-2 bg-[#0d2c45] text-white rounded-sm ${
-                                      currentPage === totalPages
-                                        ? "opacity-50 cursor-not-allowed"
-                                        : "hover:bg-[#172f41ed]"
-                                    }`}
-                                    onClick={() =>
-                                      handlePageChange(currentPage + 1)
-                                    }
-                                    disabled={currentPage === totalPages}
-                                  >
-                                    <i className="fa-solid fa-chevron-right"></i>
-                                  </button>
-                                </div>
+                              {displayedShips.length > 0 && (
+  <div>
+    {/* Pagination Controls */}
+    <div className="flex justify-center items-center gap-2 mt-5">
+      <button
+        className={`px-4 py-2 bg-[#123d5f] text-white rounded-sm ${
+          currentPage === 1
+            ? "opacity-50 cursor-not-allowed"
+            : "hover:bg-[#172f41ed]"
+        }`}
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
+        <i className="fa-solid fa-chevron-left"></i>
+      </button>
+      <span className="px-4 py-2 bg-[#d1a460] text-white rounded-sm">
+        {currentPage}
+      </span>
+      <button
+        className={`px-4 py-2 bg-[#0d2c45] text-white rounded-sm ${
+          currentPage === totalPages
+            ? "opacity-50 cursor-not-allowed"
+            : "hover:bg-[#172f41ed]"
+        }`}
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      >
+        <i className="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+)}
+                                
                               </div>
                             </div>
                           </div>
                         </>
                       </>
                     ) : (
-                      <div className="grid grid-cols-2 gap-2 ">
-                        <div className="grid grid-1 gap-5 lg:gap-3">
+                      <div className="flex xl:flex-wrap   gap-2 xl:gap-10  w-[100%]">
+                        <div className="grid grid-1 w-[40%] xl:w-[100%] m-auto xl:gap-5  flex-shrink-0  gap-6 ">
                           {Object.keys(regions).map((region) => (
                             <button
-                              key={region}
-                              className="capsule-3d border border-white rounded-full xm:rounded-3xl py-3 w-[90%] "
-                              onClick={() => handleRegionClick(region)}
-                            >
-                              {region}
-                            </button>
+                            key={region}
+                            className="capsule-3d border border-white rounded-full w-[80%] xl:w-[100%] xm:rounded-3xl py-3 text-center "
+                            onClick={() => handleRegionClick(region)}
+                          >
+                            {region}
+                          </button>
                           ))}
                         </div>
                         {/* all ships */}
-                        <div className=" block">
+                        <div className=" ">
                               <div
-                                className={`grid gap-5 Lg:grid-cols-1 ${
+                                className={`grid gap-10  w-[100%] ssm:w-[85%] m-auto  ${
                                   displayedShips.length === 1
                                     ? "grid-cols-1"
-                                    : "grid-cols-2"
+                                    : "grid-cols-3 ssm:grid-cols-1"
                                 }`}
                               >
                                 {displayedShips.length > 0 ? (
@@ -4060,11 +4016,11 @@ export default function ShipReadyToChart() {
                                     <div
                                     onClick={()=>navigate(`/singleShip/${ship.id}`)}
                                       key={index}
-                                      className="bg-white  m-auto relative h-[230px] w-[100%] xm:max-h-screen shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300 overflow-auto"
+                                      className="bg-white  m-auto relative h-[280px] w-[100%]  shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300 overflow-auto"
                                     >
                                       <img
                                         src={ship.image}
-                                        className="h-[100px] w-full rounded-t-lg"
+                                        className="h-[150px] w-full rounded-t-lg"
                                         alt=""
                                       />
 
@@ -4072,7 +4028,7 @@ export default function ShipReadyToChart() {
                                         <p className="text-black font-semibold">
                                           {ship.title}
                                         </p>
-                                        <p className="text-black absolute bottom-5 right-0 left-0 Lg:mt-3  Lg:static Lg:bottom-auto Lg:right-auto Lg:left-auto  italic">
+                                        <p className="text-black absolute bottom-0 right-0 left-0 Lg:mt-3  Lg:static Lg:bottom-auto Lg:right-auto Lg:left-auto  italic">
                                           {ship.flag}
                                         </p>
                                       </div>
@@ -4086,38 +4042,39 @@ export default function ShipReadyToChart() {
                               </div>
 
                               <div>
-                                {/* Pagination Controls */}
-                                <div className="flex justify-center items-center gap-2 mt-5">
-                                  <button
-                                    className={`px-4 py-2 bg-[#123d5f] text-white rounded-sm ${
-                                      currentPage === 1
-                                        ? "opacity-50 cursor-not-allowed"
-                                        : "hover:bg-[#172f41ed]"
-                                    }`}
-                                    onClick={() =>
-                                      handlePageChange(currentPage - 1)
-                                    }
-                                    disabled={currentPage === 1}
-                                  >
-                                    <i className="fa-solid fa-chevron-left"></i>
-                                  </button>
-                                  <span className="px-4 py-2 bg-[#d1a460] text-white rounded-sm">
-                                    {currentPage}
-                                  </span>
-                                  <button
-                                    className={`px-4 py-2 bg-[#0d2c45] text-white rounded-sm ${
-                                      currentPage === totalPages
-                                        ? "opacity-50 cursor-not-allowed"
-                                        : "hover:bg-[#172f41ed]"
-                                    }`}
-                                    onClick={() =>
-                                      handlePageChange(currentPage + 1)
-                                    }
-                                    disabled={currentPage === totalPages}
-                                  >
-                                    <i className="fa-solid fa-chevron-right"></i>
-                                  </button>
-                                </div>
+                              {displayedShips.length > 0 && (
+  <div>
+    {/* Pagination Controls */}
+    <div className="flex justify-center items-center gap-2 mt-5">
+      <button
+        className={`px-4 py-2 bg-[#123d5f] text-white rounded-sm ${
+          currentPage === 1
+            ? "opacity-50 cursor-not-allowed"
+            : "hover:bg-[#172f41ed]"
+        }`}
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
+        <i className="fa-solid fa-chevron-left"></i>
+      </button>
+      <span className="px-4 py-2 bg-[#d1a460] text-white rounded-sm">
+        {currentPage}
+      </span>
+      <button
+        className={`px-4 py-2 bg-[#0d2c45] text-white rounded-sm ${
+          currentPage === totalPages
+            ? "opacity-50 cursor-not-allowed"
+            : "hover:bg-[#172f41ed]"
+        }`}
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      >
+        <i className="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+)}
+                                
                               </div>
                             </div>
 

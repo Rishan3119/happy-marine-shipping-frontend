@@ -29,11 +29,16 @@ import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
 import ShipReadyToChart from './components/ShipReadyToChart';
 import ShipLocation from './components/ShipLocation';
+import Signin from './components/Admin/Signin';
+import AdminDashboard from './components/Admin/AdminDashboard';
 
 
 
 
 function App() {
+
+  const isAuthenticated = localStorage.getItem("token");
+  const isAdmin = localStorage.getItem("admin") === "t";
   
   return (
     <>
@@ -67,6 +72,9 @@ function App() {
         <Route path='/about' element={<AboutUs/>} />
         <Route path='/contact' element={<ContactUs/>} />
         <Route path='/shipLoc/:id' element={<ShipLocation/>} />
+        <Route path='/admin' element={<Signin/>} />
+        <Route path='/admin/Dashboard' element={<AdminDashboard/>} />
+
         
       </Routes>
       

@@ -112,7 +112,7 @@ export default function ShipForSale() {
           Ship For Sale
         </h1>
 
-        <div className="w-[85%] Lg:w-[90%] border border-white rounded py-10 px-5  m-auto mt-10 ">
+        <div className="w-[85%] xl:w-[98%]   border border-white rounded py-10 px-5  m-auto mt-10 ">
           {/* buttons for grid or list and search input */}
           <div className="flex justify-center gap-8 lg:flex-wrap lg:gap-5 items-center">
             <button
@@ -159,7 +159,7 @@ export default function ShipForSale() {
                 Types of Ships
               </h1>
 
-              <ul className="text-[#d1a460] mt-3 py-3 w-[300px] xl:w-[100%] lg:w-[600px] md:w-[500px] ssm:w-[400px] xm:w-[330px] xs:w-[290px]">
+              <ul className="text-[#d1a460] mt-3 py-3 w-[300px] xl:w-[100%] lg:w-[700px] md:w-[630px] sm:w-[540px]  ssm:w-[480px] xm:w-[330px] xs:w-[290px]">
                 <li className="border-b border-white py-1 text-[18px] text-white font-bold cursor-pointer hover:text-white">
                   <Link
                     to="/shipforsale"
@@ -263,10 +263,10 @@ export default function ShipForSale() {
 
             {/* Right: Ship Cards grid type */}
             {Type === "grid" && (
-              <div className="w-[90%] flex flex-wrap flex-col items-center">
+              <div className="w-[100%] flex flex-wrap justify-center flex-col items-center">
                 {/* Card Grid */}
                 <div
-                  className="grid grid-cols-3 gap-5 2xl:grid-cols-2 md:grid-cols-1 mt-10"
+                  className="grid grid-cols-3  gap-5  lg:gap-20 Lg:grid-cols-2  xm:grid-cols-1 mt-10"
                   style={{ minHeight: "800px" }} // Set a consistent minimum height for the grid
                 >
                   {paginatedGroups.length === 0 ? (
@@ -279,7 +279,7 @@ export default function ShipForSale() {
                     paginatedGroups.map((card, index,id) => (
                       <div
                         key={index}
-                        className="w-[270px] h-[350px] md:w-[100%] hover:scale-105 duration-300 bg-gray-100 overflow-hidden transition-all rounded-lg border border-white cursor-pointer relative"
+                        className="w-[270px] 2xl:w-[230px] Lg:w-[100%]  h-[350px] md:w-[100%] hover:scale-105 duration-300 bg-gray-100  transition-all rounded-lg border border-white cursor-pointer relative"
                       >
                         <img
                         onClick={()=>navigate(`/singleShip/${card.id}`)}

@@ -30,9 +30,9 @@ const ShipLocation = () => {
   
 
   return (
-    <div className=''>
+    <div className='bg-gray-100'>
       <SingleShipNav/>
-     <div className='py-[50px] text-center h-[100vh] bg-gray-100'>
+     <div className='py-[50px] text-center '>
        {!shipData?(
         <div>No data Availabe...</div>
        ):(
@@ -46,7 +46,7 @@ const ShipLocation = () => {
        )}
      </div>
 
-     <Footer/>
+     <div className='mt-[155px]'><Footer/></div>
 
      
     </div>

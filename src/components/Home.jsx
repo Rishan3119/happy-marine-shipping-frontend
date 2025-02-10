@@ -39,8 +39,8 @@ export default function Home() {
   const API_KEY = process.env.REACT_APP_APIKEY;
 
   const handleSend = async (message, isVoiceMessage = false) => {
-    console.log("API KEY:", API_KEY);
     
+
     const newMessage = {
       message: message,
       sender: "user",
@@ -49,34 +49,35 @@ export default function Home() {
       position: "single",
       isVoiceMessage, // Track if the message was sent via voice
     };
-  
+
     const newMessages = [...messages, newMessage];
     setMessages(newMessages);
     setInputText("");
-  
+
     setTyping(true);
-  
+
     // Send message to API and process response
     await processMessageToChatGPT(newMessages, isVoiceMessage);
   };
-  
+
   async function processMessageToChatGPT(chatMessages, isVoiceMessage) {
     let apiMessages = chatMessages.map((messageObject) => {
       let role = messageObject.sender === "ChatGPT" ? "assistant" : "user";
       return { role, content: messageObject.message };
     });
-  
+
     const systemMessage = {
       role: "system",
-      content: "Explain all concepts like you are in  a ship company and you are handling the Happy Marine Shipping website were Happy Marine is a leading provider of ship sale and charter services, committed to facilitating smooth and reliable maritime transactions for clients across the globe.",
+      content:
+        "Explain all concepts like you are in  a ship company and you are handling the Happy Marine Shipping website were Happy Marine is a leading provider of ship sale and charter services, committed to facilitating smooth and reliable maritime transactions for clients across the globe.",
     };
-  
+
     const apiRequestBody = {
       store: true,
       model: "gpt-4o-mini",
       messages: [systemMessage, ...apiMessages],
     };
-  
+
     await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -89,50 +90,51 @@ export default function Home() {
       .then((data) => {
         console.log(data);
         const botResponse = data.choices[0].message.content;
-  
+
         setMessages((prevMessages) => [
           ...prevMessages,
           { message: botResponse, sender: "ChatGPT" },
         ]);
-  
+
         setTyping(false);
-  
+
         // Speak response **only if the user message was a voice message**
         if (isVoiceMessage) {
           speakResponse(botResponse);
         }
       });
   }
-  
+
   const handleVoiceInput = () => {
-    const recognition = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
-    
+    const recognition = new (window.webkitSpeechRecognition ||
+      window.SpeechRecognition)();
+
     recognition.lang = "en-US";
     recognition.start();
     setIsRecording(true); // Set mic button to red blinking when recording
-  
+
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       handleSend(transcript, true); // Send message as voice input
     };
-  
+
     recognition.onerror = (event) => {
       console.error("Speech recognition error", event.error);
     };
-  
+
     recognition.onend = () => {
       setIsRecording(false); // Stop blinking effect when recording stops
     };
   };
-  
+
   let speechInstance = null; // Store the current speech instance
 
   const speakResponse = (text) => {
     if (!window.speechSynthesis) return;
-  
+
     const speech = new SpeechSynthesisUtterance(text);
     speech.lang = "en-US";
-  
+
     // Workaround for iOS Safari
     const silence = new SpeechSynthesisUtterance("");
     speechSynthesis.speak(silence); // Wake up audio system
@@ -140,12 +142,12 @@ export default function Home() {
       speechSynthesis.speak(speech);
     }, 100);
   };
-// Function to stop the voice response
-const stopVoiceResponse = () => {
-  if (window.speechSynthesis.speaking) {
-    window.speechSynthesis.cancel();
-  }
-};
+  // Function to stop the voice response
+  const stopVoiceResponse = () => {
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+    }
+  };
   const [input, setInput] = useState("");
 
   // Toggle chatbot visibility
@@ -159,7 +161,7 @@ const stopVoiceResponse = () => {
       ]);
     }
     setIsChatOpen(!isChatOpen);
-    stopVoiceResponse(true)
+    stopVoiceResponse(true);
   };
 
   // Handle sending message
@@ -731,47 +733,50 @@ const stopVoiceResponse = () => {
                 ))}
                 {typing && (
                   <div className="flex justify-start">
-                  <div className="max-w-[70%] py-2 px-3 rounded-full bg-gray-200 text-blue-500 flex items-center justify-center">
-  <p className="font-bold typing-dots">
-    <i className="fa-solid fa-circle fa-xs"></i>
-    <i className="fa-solid fa-circle fa-xs"></i>
-    <i className="fa-solid fa-circle fa-xs"></i>
-  </p>
-</div>
-
+                    <div className="max-w-[70%] py-2 px-3 rounded-full bg-gray-200 text-blue-500 flex items-center justify-center">
+                      <p className="font-bold typing-dots">
+                        <i className="fa-solid fa-circle fa-xs"></i>
+                        <i className="fa-solid fa-circle fa-xs"></i>
+                        <i className="fa-solid fa-circle fa-xs"></i>
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Message Input and Mic Button */}
-<div className="p-4 xxm:px-2 xxm:py-1  bg-gray-200 flex items-center gap-2 rounded-b flex-wrap">
-  {/* Mic Button */}
-  <button
-    onClick={handleVoiceInput}
-    className={`px-4 py-2 xxm:-mt-6 rounded-full shadow-lg transition-all 
-    ${isRecording ? "bg-red-500 animate-pulse" : "bg-white text-black hover:bg-gray-400"}`}
-  >
-    <i className="fa-solid fa-microphone"></i>
-  </button>
+            <div className="p-4 xxm:px-2 xxm:py-1  bg-gray-200 flex items-center gap-2 rounded-b flex-wrap">
+              {/* Mic Button */}
+              <button
+                onClick={handleVoiceInput}
+                className={`px-4 py-2 xxm:-mt-6 rounded-full shadow-lg transition-all 
+    ${
+      isRecording
+        ? "bg-red-500 animate-pulse"
+        : "bg-white text-black hover:bg-gray-400"
+    }`}
+              >
+                <i className="fa-solid fa-microphone"></i>
+              </button>
 
-  {/* Message Input */}
-  <input
-    type="text"
-    value={inputText}
-    onChange={(e) => setInputText(e.target.value)}
-    placeholder="Type a message..."
-    className="flex-1 p-2 border xxm:py-8 xxm:mt-5 rounded-lg outline-none w-full sm:w-auto"
-  />
+              {/* Message Input */}
+              <input
+                type="text"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                placeholder="Type a message..."
+                className="flex-1 p-2 border xxm:py-8 xxm:mt-5 rounded-lg outline-none w-full sm:w-auto"
+              />
 
-  {/* Send Button */}
-  <button
-    onClick={() => handleSend(inputText)}
-    className="bg-blue-500 text-white px-3 py-2 xxm:-mt-10 rounded-full shadow-lg"
-  >
-    <i className="fa-solid fa-paper-plane"></i>
-  </button>
-</div>
+              {/* Send Button */}
+              <button
+                onClick={() => handleSend(inputText)}
+                className="bg-blue-500 text-white px-3 py-2 xxm:-mt-10 rounded-full shadow-lg"
+              >
+                <i className="fa-solid fa-paper-plane"></i>
+              </button>
+            </div>
           </div>
         )}
 

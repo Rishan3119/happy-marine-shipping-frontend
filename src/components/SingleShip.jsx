@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import config from "../function/config";
 import axios from "axios";
-import HomeNav from "./Navbars/HomeNav";
 import SingleShipNav from "./Navbars/SingleShipNav";
 import Footer from "./Footer";
 
@@ -66,8 +65,8 @@ export default function SingleShip() {
 
       <div className="flex gap-3  2xl:block  xm:p-3 mt-[20px] p-10">
         {/* 1st divimage */}
-        <div className="w-[33%] 2xl:m-auto xm:w-full 2xl:w-[50%] h-[240px] bg-[#123d5f] border p-2 border-gray-400 ">
-          <img src={obj.image} className="w-full h-[218px] " alt="" />
+        <div className="w-[70%] 2xl:m-auto xm:w-full 2xl:w-[50%] h-[380px] bg-[#123d5f] border p-2 border-gray-400 ">
+          <img src={obj.image} className="w-full h-[360px] " alt="" />
         </div>
 
         {/* 2nd div description */}
@@ -258,7 +257,7 @@ export default function SingleShip() {
         </div>
 
         {/* contact */}
-        <div className="w-[40%] 2xl:w-[100%] 2xl:mt-5 h-[400px] border bg-[#123d5f] border-gray-400 rounded">
+        <div className="w-[30%] 2xl:w-[100%] 2xl:mt-5 h-[420px] border bg-[#123d5f] border-gray-400 rounded">
           <div>
             <h1 className="text-xl p-5 font-semibold border-b text-[#d1a460]  border-gray-400">
               Contact Us
@@ -278,19 +277,19 @@ export default function SingleShip() {
             </h1>
 
             <div className="mt-5 flex flex-col gap-5">
-              <Link className="">
+              <Link className="flex gap-1 items-center">
                 {" "}
                 <i className="fa-solid fa-map bg-gray-100 rounded-full text-[#d1a460] p-3 mr-2"></i>{" "}
                 <span className="text-white">
                   302,Al Ansari Building, Dubai,UAE
                 </span>
               </Link>
-              <Link to={"mailto:admin@happymarine.ae"}>
+              <Link to={"mailto:admin@happymarine.ae"} className="flex gap-1 items-center">
                 {" "}
                 <i className="fa-solid text-[#d1a460] fa-envelope bg-gray-100 rounded-full  p-3 mr-2"></i>
                 <span className="text-white"> admin@happymarine.ae</span>
               </Link>
-              <Link to={"tel:+971503505898"}>
+              <Link to={"tel:+971503505898"} className="flex- gap-1 items-center">
                 {" "}
                 <i className="fa-solid fa-phone text-[#d1a460] bg-gray-100 rounded-full p-3  mr-2"></i>{" "}
                 <span className="text-white">+971 50 350 5898</span>
