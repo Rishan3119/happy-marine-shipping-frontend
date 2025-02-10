@@ -3843,7 +3843,7 @@ export default function Logistic() {
       <div className="">
         <LogosticsNav />
 
-        <section className="bg-gradient-to-r  from-[#2e5775] to-[#326e99] py-[80px] px-[80px] xl:px-[40px] md:px-[20px] xm:px-[10px] xm:py-[20px]">
+        <section className="bg-gradient-to-r from-[#2e5775] to-[#326e99] py-[50px] px-[80px] xl:px-[40px] md:px-[20px] xm:px-[10px] xm:py-[20px]">
           <div className="border-2 border-white py-5 px-5 xs:px-2">
           <div className="flex gap-3 justify-center items-center ml-5 xl:ml-0">
                     <img
@@ -3866,7 +3866,7 @@ export default function Logistic() {
               
                 <div>
                  
-                  <div className="mt-10  w-full xl:w-[780px] lg:w-[730px] Lg:w-[650px] md:w-[580px] sm:w-auto xs:w-auto text-center gap-8 text-[#d1a460] text-xl m-auto">
+                  <div className="mt-10  w-[100%]  text-center gap-8 text-[#d1a460] text-xl m-auto">
                     {selectedRightRegion ? (
                       <>
                         <>
