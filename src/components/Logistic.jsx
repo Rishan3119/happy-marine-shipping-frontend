@@ -3989,7 +3989,7 @@ export default function Logistic() {
                       </>
                     ) : (
                       <div className="flex xl:flex-wrap   gap-2 xl:gap-10  w-[100%]">
-                        <div className="grid grid-1 w-[40%] xl:w-[100%] m-auto xl:gap-5  flex-shrink-0  gap-6 ">
+                        <div className="grid grid-1 w-[40%] xl:w-[100%] xl:m-auto xl:gap-5  flex-shrink-0  gap-6 ">
                           {Object.keys(regions).map((region) => (
                             <button
                               key={region}
