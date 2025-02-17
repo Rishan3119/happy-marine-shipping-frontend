@@ -119,7 +119,7 @@ export default function AddSubCategory() {
 
   const handleSubmit = async(e,id)=>{
     e.preventDefault();
-  //  navigate('/admin/viewSubCategory')
+   navigate('/admin/viewSubCategory')
     setLoading(true)
     const data={
         sub_category_name: CategoryTitle,

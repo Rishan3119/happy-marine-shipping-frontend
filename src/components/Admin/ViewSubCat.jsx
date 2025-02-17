@@ -261,7 +261,7 @@ export default function ViewSubCat() {
       </nav>
 
       {/* Sidebar & Content Wrapper */}
-      <div className="flex flex-1 ">
+      <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <div
           className={`${
@@ -852,7 +852,7 @@ export default function ViewSubCat() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 overflow-auto py-4">
+        <div className="flex-1 overflow-y-auto py-4">
           <div className="bg-white  shadow-sm text-xl w-full p-5">
             <div className="flex flex-wrap justify-between items-center">
               <h1>View Sub Category</h1>
