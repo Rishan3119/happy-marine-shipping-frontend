@@ -234,22 +234,16 @@ export default function SingleShip() {
                 {/* Dropdown Content */}
                 {isOpen && (
                   <div className="text-base text-[#d1a460] p-3">
-                    {obj.brief_description ? (
-                      obj.brief_description
-                        .replace(/\n+/g, " ") // Remove unintended newlines
-                        .replace(/\s{2,}/g, " ") // Remove extra spaces
-                        .replace(/\. /g, ".\n") // Add a newline after every period followed by a space
-                        .replace(/, /g, ", ") // Ensure space after commas
-                        .split(/\n/) // Split the text into lines
-                        .map((detail, index) => (
-                          <p key={index} className="mb-2">
-                            {detail.trim()}
-                          </p>
-                        ))
-                    ) : (
-                      <p className="text-red-500">No description available</p>
-                    )}
-                  </div>
+                  {obj.brief_description ? (
+                    obj.brief_description
+                      .split("\n") // Split text at newlines
+                      .map((detail, index) => (
+                        <p key={index} className="mb-2">{detail.trim()}</p>
+                      ))
+                  ) : (
+                    <p className="text-red-500">No description available</p>
+                  )}
+                </div>
                 )}
               </div>
             </div>

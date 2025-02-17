@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu } from "lucide-react"; // Icon for open/close sidebar
 import adminLogo from "./AdminImage/logo-light-icon.png";
 import config from "../../function/config";
 import axios from "axios";
 import admin from "./AdminImage/user3jpeg.jpeg";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 
-export default function AdminDashboard() {
+export default function ViewShip() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [openDropdown, setOpenDropdown] = useState(null);
-
+  const [openDropdown, setOpenDropdown] = useState(1);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 1200); // Check screen size
 
   const toggleDropdown = (id) => {
@@ -22,6 +22,49 @@ export default function AdminDashboard() {
   };
 
   const [allShips, setallShips] = useState([]);
+  const [allCategory, setallCategory] = useState([]);
+  const [allSubCategory, setallSubCategory] = useState([]);
+  const [input, setInput] = useState([]);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    async function fetchdata() {
+      try {
+        const res1 = await axios.get(
+          `${config.base_url}/api/HappyMarineShipping/viewSubCategory`,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            
+          }
+        );
+        if (res1.data.status === 200) {
+          console.log(res1);
+          setallSubCategory(res1.data.data);
+        } else {
+          console.log("error");
+        }
+        const res2 = await axios.get(
+          `${config.base_url}/api/HappyMarineShipping/viewCategory`,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        if (res2.data.status === 200) {
+          console.log(res2);
+          setallCategory(res2.data.data);
+        } else {
+          console.log("error");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchdata();
+  }, [config.base_url, input, count]);
 
   // fetch ship data
   useEffect(() => {
@@ -32,7 +75,9 @@ export default function AdminDashboard() {
           {
             headers: {
               "Content-Type": "multipart/form-data",
-            },
+            },params:{
+              'title':input
+            }
           }
         );
         if (res1.data.status === 200) {
@@ -46,7 +91,42 @@ export default function AdminDashboard() {
       }
     }
     fetchdata();
-  }, [config.base_url]);
+  }, [config.base_url,input,count]);
+
+  const navigate = useNavigate();
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(
+        `${config.base_url}/api/HappyMarineShipping/deleteShip/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.data.status === 200) {
+        setCount(id);
+        console.log(response);
+        toast.success("Ship Deleted Successfully !", {
+          autoClose: 1000,
+          position: "top-right",
+        });
+      } else {
+        console.log("error1");
+        toast.error("Error", {
+          autoClose: 2000,
+          position: "top-right",
+        });
+      }
+    } catch (err) {
+      console.log("error2", err);
+      toast.error("Error", {
+        autoClose: 2000,
+        position: "top-right",
+      });
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -108,6 +188,8 @@ export default function AdminDashboard() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
+  
+
   return (
     <div className="h-screen flex flex-col bg-gray-100">
       {/* Navbar - Full Width, Above Sidebar */}
@@ -123,19 +205,31 @@ export default function AdminDashboard() {
         {/* Menu Button (Moves on Sidebar Toggle) */}
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className={`absolute transition-all duration-300 text-white ${
+          className={`absolute xm:hidden transition-all duration-300 text-white ${
+            isSidebarOpen ? "left-60" : "left-16"
+          }`}
+        >
+          <Menu size={28} />
+        </button>
+        {/* mobile screen menu button */}
+        <button
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className={`absolute xm:block hidden transition-all duration-300 text-white ${
             isSidebarOpen ? "left-32" : "left-16"
           }`}
         >
           <Menu size={28} />
         </button>
 
-        {/* Admin Profile (Right Side) */}
+        {/* Admin Profile  (Right Side) */}
         <div className="relative ml-auto pr-5 flex items-center gap-20">
           {/* notification */}
           <div className="relative">
             {/* Envelope Icon with Blinking Dot */}
-            <div className="cursor-pointer relative" onClick={toggleDropdownNotification}>
+            <div
+              className="cursor-pointer relative"
+              onClick={toggleDropdownNotification}
+            >
               <i className="fa-regular fa-envelope text-[28px] text-gray-500"></i>
 
               {/* Blinking Notification Dot */}
@@ -192,7 +286,7 @@ export default function AdminDashboard() {
       </nav>
 
       {/* Sidebar & Content Wrapper */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 ">
         {/* Sidebar */}
         <div
           className={`${
@@ -201,13 +295,13 @@ export default function AdminDashboard() {
         >
           <ul className="mt-10 flex flex-col gap-3 ">
             {/* Dashboard */}
-            <li className="px-4 py-2 text-lg  text-[#00c292] border-l-4 border-[#00c292] flex items-center">
+            <li className="px-5 py-2 text-lg  flex items-center">
               <i className="fa-solid fa-gauge mr-3"></i>
               {isSidebarOpen && <Link to="/admin/dashboard">Dashboard</Link>}
             </li>
 
             {/* Ship For Sale Dropdown */}
-            <li className="px-2  text-lg  flex flex-col  relative">
+            <li className="px-2  text-lg  flex flex-col text-[#00c292] border-l-4 border-[#00c292] relative">
               <div
                 className="flex items-center  justify-between cursor-pointer p-2"
                 onClick={() => toggleDropdown(1)} // Toggle Ship For Sale dropdown
@@ -228,10 +322,10 @@ export default function AdminDashboard() {
               {!isSidebarOpen && openDropdown === 1 && (
                 <div className="absolute left-full top-0 bg-white shadow-lg rounded-md py-2 w-56 z-20">
                   <ul>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
+                    <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
                       <Link to="/admin/addShip">Add Ships</Link>
                     </li>
-                    <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
+                    <li className="px-4 py-1  hover:text-[#00c292]">
                       <Link to="/admin/viewShip">View Ships</Link>
                     </li>
                   </ul>
@@ -248,10 +342,10 @@ export default function AdminDashboard() {
                   }`}
                 >
                   <ul>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
+                    <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
                       <Link to="/admin/addShip">Add Ships</Link>
                     </li>
-                    <li className="px-4 text-[#8D97AD] py-1 hover:text-[#00c292]">
+                    <li className="px-4  py-1 hover:text-[#00c292]">
                       <Link to="/admin/viewShip">View Ships</Link>
                     </li>
                   </ul>
@@ -282,7 +376,7 @@ export default function AdminDashboard() {
                     <li className="px-1 py-1 w-full hover:text-[#00c292]">
                       <Link to="/admin/addCategory">Add Category</Link>
                     </li>
-                    <li className="px-1 py-1 w-full hover:text-[#00c292]">
+                    <li className="px-1 py-1 w-full  hover:text-[#00c292]">
                       <Link to="/admin/viewCategory">View Category</Link>
                     </li>
                   </ul>
@@ -335,7 +429,7 @@ export default function AdminDashboard() {
                       <Link to="/admin/addsubcategory">Add Sub Category</Link>
                     </li>
                     <li className="px-1 py-1 w-full hover:text-[#00c292]">
-                      <Link to="/admin/viewSubCategory">View Sub Category</Link>
+                      <Link to="#">View Sub Category</Link>
                     </li>
                   </ul>
                 </div>
@@ -355,7 +449,7 @@ export default function AdminDashboard() {
                       <Link to="/admin/addsubcategory">Add Sub Category</Link>
                     </li>
                     <li className="px-1 py-1 w-full hover:text-[#00c292]">
-                      <Link to="/admin/viewSubCategory">View Sub Category</Link>
+                      <Link to="#">View Sub Category</Link>
                     </li>
                   </ul>
                 </div>
@@ -528,10 +622,10 @@ export default function AdminDashboard() {
               {!isSidebarOpen && openDropdown === 1 && (
                 <div className="absolute left-full top-0 bg-white shadow-lg rounded-md py-2 w-56 z-20">
                   <ul>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
+                    <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
                       <Link to="/admin/addShip">Add Ships</Link>
                     </li>
-                    <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
+                    <li className="px-4 py-1  hover:text-[#00c292]">
                       <Link to="/admin/viewShip">View Ships</Link>
                     </li>
                   </ul>
@@ -548,10 +642,10 @@ export default function AdminDashboard() {
                   }`}
                 >
                   <ul>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
+                    <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
                       <Link to="/admin/addShip">Add Ships</Link>
                     </li>
-                    <li className="px-4 text-[#8D97AD] py-1 hover:text-[#00c292]">
+                    <li className="px-4  py-1 hover:text-[#00c292]">
                       <Link to="/admin/viewShip">View Ships</Link>
                     </li>
                   </ul>
@@ -635,7 +729,7 @@ export default function AdminDashboard() {
                       <Link to="/admin/addsubcategory">Add Sub Category</Link>
                     </li>
                     <li className="px-1 py-1 w-full hover:text-[#00c292]">
-                      <Link to="/admin/viewSubCategory">View Sub Category</Link>
+                      <Link to="#">View Sub Category</Link>
                     </li>
                   </ul>
                 </div>
@@ -655,7 +749,7 @@ export default function AdminDashboard() {
                       <Link to="/admin/addsubcategory">Add Sub Category</Link>
                     </li>
                     <li className="px-1 py-1 w-full hover:text-[#00c292]">
-                      <Link to="/admin/viewSubCategory">View Sub Category</Link>
+                      <Link to="#">View Sub Category</Link>
                     </li>
                   </ul>
                 </div>
@@ -783,27 +877,117 @@ export default function AdminDashboard() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 py-4 ">
+        <div className="flex-1 overflow-auto py-4">
           <div className="bg-white  shadow-sm text-xl w-full p-5">
-          <div className="flex justify-between items-center">
-              <h1>Dashboard</h1>
+            <div className="flex justify-between items-center">
+              <h1>View Ship</h1>
               <div className="flex text-sm gap-2">
-               <p>Home</p> <span>/</span>
-               <p className="text-[#00c292]">Dashboard</p>
+                <p>Home</p> <span>/</span>
+                <p className="text-[#00c292]">View Ship</p>
               </div>
             </div>
+
           </div>
-          <div className="p-6">
-            <Link to={'/admin/viewShip'}>
-              <div  className="bg-white mt-10  cursor-pointer hover:bg-[#00c2921b] transition-all duration-200 shadow-sm p-5 w-[250px]">
-                <h1 className="text-xl ">SHIP LIST</h1>
-                <div className="flex mt-4 justify-between items-center">
-                  <i className="bx bx-home text-blue-500 text-4xl"></i>
-                  <h1 className="text-3xl text-gray-600">{allShips.length}</h1>
+
+          <div className="w-full  py-5 px-4">
+              <div className="bg-white overflow-auto w-full max-w-full  p-6 mt-5 rounded">
+                <div className="py-3">
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Search Ship"
+                    className="rounded-lg  sm:w-[50%] w-[20%] p-2 border shadow"
+                  />
+                </div>
+
+                {/* Responsive Table Wrapper */}
+                <div className="w-full lg:w-[1500px] shadow-lg rounded-lg overflow-auto">
+                  <table className=" w-full  bg-white  shadow-lg rounded-lg overflow-auto">
+                    <thead className="bg-gray-100 border-b  border-gray-200 rounded-lg">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-gray-600">
+                          No
+                        </th>
+                        <th className="px-3 py-3  text-left text-gray-600">
+                          Reference ID
+                        </th>
+
+                        <th className="px-3 py-3 w-[200px] lg:w-[80px] text-left text-gray-600">
+                          Main Category
+                        </th>
+                        <th className="px-1 py-3 w-[200px] lg:w-[80px] text-left text-gray-600">
+                          Sub Category
+                        </th>
+                        <th className="px-3 w-[300px] text-left text-gray-600">
+                          Title
+                        </th>
+                        <th className="px-1 py-3 w-[300px] text-left text-gray-600">
+                          Hidden Data
+                        </th>
+                        <th className="px-3 py-3 w-[200px] text-left text-gray-600">
+                          Image
+                        </th>
+                        <th className="px-3 py-3 text-center text-gray-600">
+                          Status
+                        </th>
+                        <th className="px-3 py-3 text-right text-gray-600">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {allShips.length === 0 ? (
+  <tr>
+    <td colSpan="9" className="px-6 text-red-500 text-center py-4">
+      Ship not Available
+    </td>
+  </tr>
+) : (
+  allShips.map((itm, index) => (
+    <tr key={itm.id} className="border-b border-gray-200">
+      <td className="text-center text-sm py-5">{index + 1}</td>
+      <td className="py-5 px-4 text-sm text-left ">#{index + 1000}</td>
+      <td className="py-5 text-sm text-left ">
+        {allCategory.find((cat) => cat.id === itm.main_category)
+          ?.category_name || "Unknown"}
+      </td>
+      <td className="py-5 px-4 text-sm text-left ">{itm.vessel_type}</td>
+      <td className="py-5 px-4 text-sm text-left ">{itm.title}</td>
+      <td className="py-5 px-3 text-sm text-left ">{itm.hidden_details||"None"}</td>
+      <td className="py-5 px-3 text-left">
+        <img src={itm.image} className="w-full h-20 object-cover rounded-md" alt="" />
+      </td>
+      <td className="py-5 px-3 text-center ">
+        <button className="bg-[#00c292] transition-all duration-300 hover:bg-[#246656] rounded px-2 py-1 text-white">
+          Enable
+        </button>
+      </td>
+      <td className="py-5 text-left">
+        <div className="flex gap-4 sm:gap-8 items-center justify-center">
+          <button
+            className="text-blue-500 hover:underline"
+            onClick={() => navigate(`/admin/updateViewShip/${itm.id}`)}
+          >
+            <i className="fa-solid fa-pen"></i>
+          </button>
+          <button
+            onClick={() => handleDelete(itm.id)}
+            className="text-red-500 hover:underline"
+          >
+            <i className="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  ))
+)}
+
+                    </tbody>
+                  </table>
                 </div>
               </div>
-            </Link>
-          </div>
+            </div>
         </div>
       </div>
     </div>

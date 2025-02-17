@@ -31,14 +31,21 @@ import ShipReadyToChart from './components/ShipReadyToChart';
 import ShipLocation from './components/ShipLocation';
 import Signin from './components/Admin/Signin';
 import AdminDashboard from './components/Admin/AdminDashboard';
+import AddShip from './components/Admin/AddShip';
+import ViewShip from './components/Admin/ViewShip';
+import AddCategory from './components/Admin/AddCategory';
+import ViewCategory from './components/Admin/ViewCategory';
+import AddSubCategory from './components/Admin/AddSubCategory';
+import ViewSubCat from './components/Admin/ViewSubCat';
+import UpdateSubCategory from './components/Admin/UpdateSubCategory';
+import UpdaetViewShip from './components/Admin/UpdateViewShip';
 
 
 
 
 function App() {
 
-  const isAuthenticated = localStorage.getItem("token");
-  const isAdmin = localStorage.getItem("admin") === "t";
+  
   
   return (
     <>
@@ -74,6 +81,16 @@ function App() {
         <Route path='/shipLoc/:id' element={<ShipLocation/>} />
         <Route path='/admin' element={<Signin/>} />
         <Route path='/admin/Dashboard' element={<AdminDashboard/>} />
+        <Route path='/admin/addShip' element={<AddShip/>} />
+        <Route path='/admin/viewShip' element={<ViewShip/>} />
+        <Route path='/admin/addCategory' element={<AddCategory/>} />
+        <Route path='/admin/viewCategory' element={<ViewCategory/>} />
+        <Route path='/admin/addsubcategory' element={<AddSubCategory/>} />
+        <Route path='/admin/viewSubCategory' element={<ViewSubCat/>} />
+        <Route path='/admin/updateViewSubCat/:id' element={<UpdateSubCategory/>} />
+        <Route path='/admin/updateViewShip/:id' element={<UpdaetViewShip/>} />
+
+
 
         
       </Routes>

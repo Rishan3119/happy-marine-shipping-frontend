@@ -1,17 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu } from "lucide-react"; // Icon for open/close sidebar
 import adminLogo from "./AdminImage/logo-light-icon.png";
 import config from "../../function/config";
 import axios from "axios";
 import admin from "./AdminImage/user3jpeg.jpeg";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 
-export default function AdminDashboard() {
+export default function AddCategory() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [openDropdown, setOpenDropdown] = useState(null);
-
+  const [openDropdown, setOpenDropdown] = useState(2);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 1200); // Check screen size
+
+  const [loading,setLoading] = useState('')
 
   const toggleDropdown = (id) => {
     if (openDropdown === id) {
@@ -108,6 +110,60 @@ export default function AdminDashboard() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
+  const [CategoryName,setCategoryName] = useState('')
+  const [CategoryImage,setCategoryImage] = useState('')
+  const [CategoryDescription,setCategoryDescription] = useState('')
+  const navigate = useNavigate()
+
+  const handleSubmit = async(e,id)=>{
+    e.preventDefault();
+   
+    setLoading(true)
+    const data={
+        category_name: CategoryName,
+        category_image: CategoryImage,
+        category_description: CategoryDescription
+    }
+    try {
+        const response = await axios.post(`${config.base_url}/api/HappyMarineShipping/addCategory`,data,{
+          headers:{
+            'Content-Type':'multipart/form-data',
+          }
+        });
+        if(response.data.status===200){
+            navigate('/admin/viewCategory')
+          console.log(response)
+          setLoading(false)
+          toast.success("Category added Successfully!",{
+            autoClose:1500,
+            position:'top-right',
+            
+          });
+         setCategoryName("")
+         setCategoryImage("")
+         setCategoryDescription("")
+          
+        }
+        else{
+            setLoading(false)
+          console.log("error1")
+          toast.error("Fill the required Fields",{
+            autoClose:1500,
+            position: "top-right",
+          })
+        }
+        
+      } catch (err) {
+        setLoading(false)
+        console.log("error2",err)
+        toast.error("Error",{
+          autoClose:2000,
+          position: "top-right",
+        })
+      }
+    
+}
+
   return (
     <div className="h-screen flex flex-col bg-gray-100">
       {/* Navbar - Full Width, Above Sidebar */}
@@ -123,19 +179,31 @@ export default function AdminDashboard() {
         {/* Menu Button (Moves on Sidebar Toggle) */}
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className={`absolute transition-all duration-300 text-white ${
+          className={`absolute xm:hidden transition-all duration-300 text-white ${
+            isSidebarOpen ? "left-60" : "left-16"
+          }`}
+        >
+          <Menu size={28} />
+        </button>
+        {/* mobile screen menu button */}
+        <button
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className={`absolute xm:block hidden transition-all duration-300 text-white ${
             isSidebarOpen ? "left-32" : "left-16"
           }`}
         >
           <Menu size={28} />
         </button>
 
-        {/* Admin Profile (Right Side) */}
+        {/* Admin Profile  (Right Side) */}
         <div className="relative ml-auto pr-5 flex items-center gap-20">
           {/* notification */}
           <div className="relative">
             {/* Envelope Icon with Blinking Dot */}
-            <div className="cursor-pointer relative" onClick={toggleDropdownNotification}>
+            <div
+              className="cursor-pointer relative"
+              onClick={toggleDropdownNotification}
+            >
               <i className="fa-regular fa-envelope text-[28px] text-gray-500"></i>
 
               {/* Blinking Notification Dot */}
@@ -201,7 +269,7 @@ export default function AdminDashboard() {
         >
           <ul className="mt-10 flex flex-col gap-3 ">
             {/* Dashboard */}
-            <li className="px-4 py-2 text-lg  text-[#00c292] border-l-4 border-[#00c292] flex items-center">
+            <li className="px-5 py-2 text-lg  flex items-center">
               <i className="fa-solid fa-gauge mr-3"></i>
               {isSidebarOpen && <Link to="/admin/dashboard">Dashboard</Link>}
             </li>
@@ -259,7 +327,7 @@ export default function AdminDashboard() {
               )}
             </li>
 
-            <li className="px-3 py-2 text-lg flex flex-col relative">
+            <li className="px-3 py-2 text-lg flex flex-col text-[#00c292] border-l-4 border-[#00c292] relative">
               <div
                 className="flex items-center justify-between cursor-pointer p-2"
                 onClick={() => toggleDropdown(2)} // Toggle Category dropdown
@@ -282,7 +350,7 @@ export default function AdminDashboard() {
                     <li className="px-1 py-1 w-full hover:text-[#00c292]">
                       <Link to="/admin/addCategory">Add Category</Link>
                     </li>
-                    <li className="px-1 py-1 w-full hover:text-[#00c292]">
+                    <li className="px-1 py-1 w-full text-[#8D97AD] hover:text-[#00c292]">
                       <Link to="/admin/viewCategory">View Category</Link>
                     </li>
                   </ul>
@@ -302,7 +370,7 @@ export default function AdminDashboard() {
                     <li className="px-4 py-1 hover:text-[#00c292]">
                       <Link to="/admin/addCategory">Add Category</Link>
                     </li>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
+                    <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
                       <Link to="/admin/viewCategory">View Category</Link>
                     </li>
                   </ul>
@@ -335,7 +403,7 @@ export default function AdminDashboard() {
                       <Link to="/admin/addsubcategory">Add Sub Category</Link>
                     </li>
                     <li className="px-1 py-1 w-full hover:text-[#00c292]">
-                      <Link to="/admin/viewSubCategory">View Sub Category</Link>
+                      <Link to="#">View Sub Category</Link>
                     </li>
                   </ul>
                 </div>
@@ -503,11 +571,7 @@ export default function AdminDashboard() {
             </li>
 
             {/* Ship For Sale Dropdown */}
-            <li
-              className={`px-2  text-lg  flex flex-col text-[#00c292] ${
-                isSidebarOpen ? "border-l-4 border-[#00c292]" : "border-none"
-              }  relative`}
-            >
+            <li className={`px-2  text-lg  flex flex-col   relative`}>
               <div
                 className="flex items-center  justify-between cursor-pointer p-2"
                 onClick={() => toggleDropdown(1)} // Toggle Ship For Sale dropdown
@@ -559,7 +623,11 @@ export default function AdminDashboard() {
               )}
             </li>
 
-            <li className="px-3 py-2 text-lg flex flex-col relative">
+            <li
+              className={`px-3 py-2 text-lg flex flex-col text-[#00c292] ${
+                isSidebarOpen ? "border-l-4 border-[#00c292]" : "border-none"
+              }  relative`}
+            >
               <div
                 className="flex items-center justify-between cursor-pointer p-2"
                 onClick={() => toggleDropdown(2)} // Toggle Category dropdown
@@ -582,7 +650,7 @@ export default function AdminDashboard() {
                     <li className="px-1 py-1 w-full hover:text-[#00c292]">
                       <Link to="/admin/addCategory">Add Category</Link>
                     </li>
-                    <li className="px-1 py-1 w-full hover:text-[#00c292]">
+                    <li className="px-1 py-1 w-full text-[#8D97AD] hover:text-[#00c292]">
                       <Link to="/admin/viewCategory">View Category</Link>
                     </li>
                   </ul>
@@ -602,7 +670,7 @@ export default function AdminDashboard() {
                     <li className="px-4 py-1 hover:text-[#00c292]">
                       <Link to="/admin/addCategory">Add Category</Link>
                     </li>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
+                    <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
                       <Link to="/admin/viewCategory">View Category</Link>
                     </li>
                   </ul>
@@ -655,7 +723,7 @@ export default function AdminDashboard() {
                       <Link to="/admin/addsubcategory">Add Sub Category</Link>
                     </li>
                     <li className="px-1 py-1 w-full hover:text-[#00c292]">
-                      <Link to="/admin/viewSubCategory">View Sub Category</Link>
+                      <Link to="/admin/viewSubCategry">View Sub Category</Link>
                     </li>
                   </ul>
                 </div>
@@ -783,26 +851,84 @@ export default function AdminDashboard() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 py-4 ">
+        <div className="flex-1 py-4">
           <div className="bg-white  shadow-sm text-xl w-full p-5">
           <div className="flex justify-between items-center">
-              <h1>Dashboard</h1>
+              <h1>Add Category </h1>
               <div className="flex text-sm gap-2">
                <p>Home</p> <span>/</span>
-               <p className="text-[#00c292]">Dashboard</p>
+               <p className="text-[#00c292]">Add Category</p>
               </div>
             </div>
           </div>
-          <div className="p-6">
-            <Link to={'/admin/viewShip'}>
-              <div  className="bg-white mt-10  cursor-pointer hover:bg-[#00c2921b] transition-all duration-200 shadow-sm p-5 w-[250px]">
-                <h1 className="text-xl ">SHIP LIST</h1>
-                <div className="flex mt-4 justify-between items-center">
-                  <i className="bx bx-home text-blue-500 text-4xl"></i>
-                  <h1 className="text-3xl text-gray-600">{allShips.length}</h1>
+          <div className="w-full py-5 px-4">
+            <form className="bg-white  px-5 mt-5 rounded ">
+              
+              <div className="p-5 flex gap-5 items-center xm:flex-wrap xm:gap-5">
+                <div className="flex flex-col gap-1 w-[100%] ">
+                  <label htmlFor="Title" className="">
+                    Category Name
+                  </label>
+                  <input
+                    value={CategoryName}
+                    onChange={(e)=>setCategoryName(e.target.value)}
+                    placeholder="Enter the Category Name"
+                    className="w-full mt-2 rounded border border-gray-200  text-gray-500 p-2"
+                    name=""
+                    id="Title"
+                  />
                 </div>
               </div>
-            </Link>
+            
+             
+
+               {/* upoad image */}
+               <div className="p-5">
+                <label htmlFor="Upload Image" className="">
+                  category  Image
+                </label>
+                <input
+                  type="file"
+                  value={CategoryImage}
+                  onChange={(e)=>setCategoryImage(e.target.files[0])}
+                  className="imageInput w-full mt-2 rounded border border-gray-200  text-gray-500 p-2"
+                  name=""
+                  id="Upload Image"
+                />
+              </div>
+
+
+              {/* Brief Description */}
+              <div className="p-5">
+                <label htmlFor="Brief Description" className="">
+                  Category Description
+                </label>
+                <textarea
+                  rows={5}
+                  className="w-full mt-2 rounded border border-gray-200  text-gray-500 p-2"
+                  name=""
+                  id="Brief Description"
+                  placeholder="Category Description..."
+                ></textarea>
+              </div>
+
+             
+              
+              <hr className="text-gray-500 w-full" />
+              <div className="p-4">
+                <button
+                   onClick={(e) => handleSubmit(e)}
+                  type="submit"
+                  className="bg-green-600 hover:bg-green-500 text-white px-3 py-2 rounded"
+                >
+                  {loading ? (
+                    <span className="block w-[16px] h-[16px] border-2 border-b-0 border-white mt-[4px] mb-[4px] rounded-full m-auto animate-spin"></span>
+                  ) : (
+                    "Submit"
+                  )}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

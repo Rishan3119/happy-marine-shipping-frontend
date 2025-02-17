@@ -9,6 +9,10 @@
   }
   
 
+  .desc{
+    background-color: rgb(255, 255, 255); border-collapse: separate; border-color: rgb(233, 236, 239); border-style: solid; border-width: 0.727273px; clear: none; display: inline-block; float: none; margin: 0px; outline: rgb(33, 37, 41) none 0px; outline-offset: 0px; padding: 6px 12px; position: static; z-index: auto; vertical-align: baseline; text-align: start; box-sizing: border-box; box-shadow: none; border-radius: 4px; width: 320.4px; height: 118.6px; inset: auto
+  }
+
   .back-to-top{
     color: white;
     position: fixed;
