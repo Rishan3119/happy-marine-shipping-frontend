@@ -429,7 +429,7 @@ export default function ViewShip() {
                       <Link to="/admin/addsubcategory">Add Sub Category</Link>
                     </li>
                     <li className="px-1 py-1 w-full hover:text-[#00c292]">
-                      <Link to="#">View Sub Category</Link>
+                      <Link to="/admin/viewSubCategory">View Sub Category</Link>
                     </li>
                   </ul>
                 </div>
@@ -449,7 +449,7 @@ export default function ViewShip() {
                       <Link to="/admin/addsubcategory">Add Sub Category</Link>
                     </li>
                     <li className="px-1 py-1 w-full hover:text-[#00c292]">
-                      <Link to="#">View Sub Category</Link>
+                      <Link to="/admin/viewSubCategory">View Sub Category</Link>
                     </li>
                   </ul>
                 </div>
@@ -729,7 +729,7 @@ export default function ViewShip() {
                       <Link to="/admin/addsubcategory">Add Sub Category</Link>
                     </li>
                     <li className="px-1 py-1 w-full hover:text-[#00c292]">
-                      <Link to="#">View Sub Category</Link>
+                      <Link to="/admin/viewSubCategory">View Sub Category</Link>
                     </li>
                   </ul>
                 </div>
@@ -749,7 +749,7 @@ export default function ViewShip() {
                       <Link to="/admin/addsubcategory">Add Sub Category</Link>
                     </li>
                     <li className="px-1 py-1 w-full hover:text-[#00c292]">
-                      <Link to="#">View Sub Category</Link>
+                      <Link to="/admin/viewSubCategory">View Sub Category</Link>
                     </li>
                   </ul>
                 </div>
