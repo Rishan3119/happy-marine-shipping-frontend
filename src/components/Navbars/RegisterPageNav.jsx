@@ -33,7 +33,7 @@ export default function RegisterPageNav() {
     <div>
       <nav>
         <div className="bg-[#123d5f]   border-b border-white">
-          <div className="px-[170px] sm:px-[10px]  3xl:px-[40px] py-2 flex justify-between items-center xs:justify-center">
+          <div className="px-[150px] sm:px-[10px]  3xl:px-[40px] py-2 flex justify-between items-center xs:justify-center">
             <h1 className="text-white text-[18px] ">Happy Marine Shipping</h1>
             <div className="flex items-center gap-2 xs:hidden">
               <Link
@@ -70,7 +70,7 @@ export default function RegisterPageNav() {
           <hr className="border-1 border-white -mt-1" />
 
           <div
-           className={` px-[170px] xl:px-5  ssm:px-2  transition-all duration-300 3xl:px-[50px] py-8 flex justify-between items-center relative ${
+           className={` px-[150px] xl:px-5  ssm:px-2  transition-all duration-300 3xl:px-[50px] py-8 flex justify-between items-center relative ${
             isScrolled
               ? "fixe top-0 left-0 w-full bg-white text-[#d1a460] hover:text-blue-500 shadow-md z-50 pointer-events-auto"
               : ""
@@ -103,10 +103,10 @@ export default function RegisterPageNav() {
             </div>
 
             {/* Navigation Links - Hidden on 2xl */}
-            <div className="flex flex-wrap xl:mt-10 xl:m-auto justify-center  gap-8 items-center ssm:hidden">
+            <div className="flex flex-wrap xl:mt-10 xl:m-auto justify-center  gap-12 items-center ssm:hidden">
               <Link
                 to={"/"}
-                className={` text-[#d1a460] transition-all duration-300 ${
+                className={` text-[#d1a460] text-sm transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-500" : "hover:text-white"
                 }`}
               >
@@ -114,7 +114,7 @@ export default function RegisterPageNav() {
               </Link>
               <Link
                 to={"/shipforsale"}
-                className={`text-[#d1a460] transition-all duration-300 ${
+                className={`text-[#d1a460] text-sm transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-500" : "hover:text-white"
                 }`}
               >
@@ -122,7 +122,7 @@ export default function RegisterPageNav() {
               </Link>
               <Link
               to="/shipreadytochart"
-                className={`text-[#d1a460] transition-all duration-300 ${
+                className={`text-[#d1a460] text-sm transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-500" : "hover:text-white"
                 }`}
               >
@@ -130,7 +130,7 @@ export default function RegisterPageNav() {
               </Link>
               <Link
                 to={"/logistics"}
-                className={`text-[#d1a460] transition-all duration-300 ${
+                className={`text-[#d1a460] text-sm transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-500" : "hover:text-white"
                 }`}
               >
@@ -138,7 +138,7 @@ export default function RegisterPageNav() {
               </Link>
               <Link
               to={'/about'}
-                className={`text-[#d1a460] transition-all duration-300 ${
+                className={`text-[#d1a460] text-sm transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-700" : "hover:text-white"
                 }`}
               >
@@ -146,7 +146,7 @@ export default function RegisterPageNav() {
               </Link>
               <Link
               to={'/contact'}
-                className={`text-[#d1a460] transition-all duration-300 ${
+                className={`text-[#d1a460] text-sm transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-700" : "hover:text-white"
                 }`}
               >
@@ -155,7 +155,8 @@ export default function RegisterPageNav() {
               <div>
                 <Link
                   to={"/regShip"}
-                  className="bg-[#d1a460] transition-all duration-300 text-black hover:bg-[#e8be7f] rounded py-2 px-2"
+                  onClick={() => window.location.href = "/regShip"}
+                  className="bg-[#d1a460] text-sm transition-all duration-300 text-black hover:bg-[#e8be7f] rounded py-2 px-2"
                 >
                   + Register your Ship
                 </Link>

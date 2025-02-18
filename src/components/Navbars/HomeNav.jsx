@@ -108,6 +108,7 @@ export default function HomeNav() {
             <div className="2xl:flex-1 xl:flex flex  justify-center items-center">
               <Link
                 to={"/"} 
+                onClick={scrollToTop}
                 className={`xl:absolute xl:mt-2 xl:top-2 xl:left-1/2 xl:-translate-x-1/2 xl:flex xl:justify-center   ${
                   isFlipped ? "flipped" : ""
                 }`}
@@ -124,6 +125,7 @@ export default function HomeNav() {
             <div className="flex flex-wrap xl:mt-10 xl:m-auto justify-center  gap-12 items-center ssm:hidden">
               <Link
                 to={"/"}
+                onClick={() => window.location.href = "/"}
                 className={` font-bold text-lg  transition-all duration-300 ${
                   isScrolled ? "text-blue-500" : "text-gray-100"
                 }`}
