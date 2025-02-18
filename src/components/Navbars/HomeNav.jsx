@@ -50,7 +50,7 @@ export default function HomeNav() {
     <div>
       <nav>
         <div className="bg-[#123d5f]   border-b border-white">
-          <div className="px-[170px] sm:px-[10px]  3xl:px-[40px] py-2 flex justify-between items-center xs:justify-center">
+          <div className="px-[150px] sm:px-[10px]  3xl:px-[40px] py-2 flex justify-between items-center xs:justify-center">
             <h1 className="text-white text-[18px] ">Happy Marine Shipping</h1>
             <div className="flex items-center gap-2 xs:hidden">
               <Link
@@ -88,7 +88,7 @@ export default function HomeNav() {
           
 
           <div
-            className={` px-[170px] xl:px-5  ssm:px-2  transition-all duration-300 3xl:px-[50px] py-8 flex justify-between items-center relative ${
+            className={` px-[150px] xl:px-5  ssm:px-2  transition-all duration-300 3xl:px-[50px] py-8 flex justify-between items-center relative ${
               isScrolled
                 ? "fixe top-0 left-0 w-full bg-white text-[#d1a460] hover:text-blue-500 shadow-md z-50 pointer-events-auto"
                 : ""
@@ -121,10 +121,10 @@ export default function HomeNav() {
             </div>
 
             {/* Navigation Links - Hidden on 2xl */}
-            <div className="flex flex-wrap xl:mt-10 xl:m-auto justify-center  gap-8 items-center ssm:hidden">
+            <div className="flex flex-wrap xl:mt-10 xl:m-auto justify-center  gap-12 items-center ssm:hidden">
               <Link
                 to={"/"}
-                className={` font-bold text-xl  transition-all duration-300 ${
+                className={` font-bold text-lg  transition-all duration-300 ${
                   isScrolled ? "text-blue-500" : "text-gray-100"
                 }`}
               >
@@ -132,7 +132,7 @@ export default function HomeNav() {
               </Link>
               <Link
                 to={"/shipforsale"}
-                className={`text-[#d1a460] transition-all duration-300 ${
+                className={`text-[#d1a460] text-sm transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-500" : "hover:text-white"
                 }`}
               >
@@ -140,7 +140,7 @@ export default function HomeNav() {
               </Link>
               <Link
                 to={"/shipreadytochart"}
-                className={`text-[#d1a460] transition-all duration-300 ${
+                className={`text-[#d1a460] text-sm transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-500" : "hover:text-white"
                 }`}
               >
@@ -148,7 +148,7 @@ export default function HomeNav() {
               </Link>
               <Link
                 to={"/logistics"}
-                className={`text-[#d1a460] transition-all duration-300 ${
+                className={`text-[#d1a460] text-sm transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-500" : "hover:text-white"
                 }`}
               >
@@ -156,7 +156,7 @@ export default function HomeNav() {
               </Link>
               <Link
                 to={"/about"}
-                className={`text-[#d1a460] transition-all duration-300 ${
+                className={`text-[#d1a460] text-sm transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-700" : "hover:text-white"
                 }`}
               >
@@ -164,7 +164,7 @@ export default function HomeNav() {
               </Link>
               <Link
                 to={"/contact"}
-                className={`text-[#d1a460] transition-all duration-300 ${
+                className={`text-[#d1a460] text-sm transition-all duration-300 ${
                   isScrolled ? "hover:text-blue-700" : "hover:text-white"
                 }`}
               >
@@ -173,7 +173,7 @@ export default function HomeNav() {
               <div>
                 <Link
                   to={"/regShip"}
-                  className="bg-[#d1a460] transition-all duration-300 text-black hover:bg-[#e8be7f] rounded py-2 px-2"
+                  className="bg-[#d1a460] text-sm transition-all duration-300 text-black hover:bg-[#e8be7f] rounded py-2 px-2"
                 >
                   + Register your Ship
                 </Link>
