@@ -85,11 +85,9 @@ const [isScrolled, setIsScrolled] = useState(false);
               phone: MobileNO,
               brief_description: BriefDescription,
               image: Image
-
-
             }
             try {
-                const response = await axios.post(`${config.base_url}/api/HappyMarineShipping/RegShipForSale`,data,{
+                const response = await axios.post(`${config.base_url}/api/HappyMarineShipping/AddShipForSale`,data,{
                   headers:{
                     'Content-Type':'multipart/form-data',
                     
