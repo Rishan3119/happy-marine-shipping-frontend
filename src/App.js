@@ -40,6 +40,8 @@ import ViewSubCat from './components/Admin/ViewSubCat';
 import UpdateSubCategory from './components/Admin/UpdateSubCategory';
 import UpdaetViewShip from './components/Admin/UpdateViewShip';
 import VieRegisterShipForSale from './components/Admin/VieRegisterShipForSale';
+import ViewShipForCharter from './components/Admin/ViewShipForCharter';
+import ViewShipForEquipments from './components/Admin/ViewShipForEquipments';
 
 
 
@@ -91,6 +93,8 @@ function App() {
         <Route path='/admin/updateViewSubCat/:id' element={<UpdateSubCategory/>} />
         <Route path='/admin/updateViewShip/:id' element={<UpdaetViewShip/>} />
         <Route path='/admin/shipforsale' element={<VieRegisterShipForSale/>} />
+        <Route path='/admin/shipforCharter' element={<ViewShipForCharter/>} />
+        <Route path='/admin/shipforEq' element={<ViewShipForEquipments/>} />
 
 
 

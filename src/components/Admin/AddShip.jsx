@@ -35,7 +35,6 @@ export default function AddShip() {
   const [ThumbnailImage, setThumbnailImage] = useState("");
   const [count, setCount] = useState(0);
   const navigate = useNavigate();
- 
 
   const toggleDropdown = (id) => {
     if (openDropdown === id) {
@@ -63,7 +62,7 @@ export default function AddShip() {
           }
         );
         if (res1.data.status === 200) {
-          console.log(res1)
+          console.log(res1);
           setallSubCategory(res1.data.data);
         }
 
@@ -74,7 +73,7 @@ export default function AddShip() {
           }
         );
         if (res2.data.status === 200) {
-          console.log(res2)
+          console.log(res2);
           setallCategory(res2.data.data);
         }
       } catch (error) {
@@ -83,8 +82,6 @@ export default function AddShip() {
     }
     fetchData();
   }, [config.base_url, count]);
-
-
 
   // Filter subcategories when main category changes
   useEffect(() => {
@@ -120,8 +117,8 @@ export default function AddShip() {
       phone: MobileNO,
       brief_description: BriefDescription,
       image: Image,
-      thumbnail_image:ThumbnailImage,
-      main_category:selectedCategory
+      thumbnail_image: ThumbnailImage,
+      main_category: selectedCategory,
     };
     try {
       const response = await axios.post(
@@ -344,8 +341,10 @@ export default function AddShip() {
         >
           <ul className="mt-10 flex flex-col gap-3 ">
             {/* Dashboard */}
-            <li className="px-5 py-2 text-lg  flex items-center">
-              <i className="fa-solid fa-gauge mr-3"></i>
+            <li className="px-5 hover:text-[#00c292] cursor-pointer py-2 text-lg  flex items-center">
+              <Link to="/admin/dashboard">
+                <i className="fa-solid fa-gauge mr-3"></i>
+              </Link>
               {isSidebarOpen && <Link to="/admin/dashboard">Dashboard</Link>}
             </li>
 
@@ -528,13 +527,15 @@ export default function AddShip() {
                 <div className="absolute left-full top-0 bg-white shadow-lg rounded-md py-2 w-64 z-20">
                   <ul>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="/admin/shipforsale">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">
+                        Ship Sale Registration
+                      </Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
                     </li>
                   </ul>
                 </div>
@@ -551,13 +552,15 @@ export default function AddShip() {
                 >
                   <ul>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="/admin/shipforsale">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">
+                        Ship Sale Registration
+                      </Link>
                     </li>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
                     </li>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
                     </li>
                   </ul>
                 </div>
@@ -828,13 +831,15 @@ export default function AddShip() {
                 <div className="absolute left-full top-0 bg-white shadow-lg rounded-md py-2 w-64 z-20">
                   <ul>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="/admin/shipforsale">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">
+                        Ship Sale Registration
+                      </Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
                     </li>
                   </ul>
                 </div>
@@ -851,13 +856,15 @@ export default function AddShip() {
                 >
                   <ul>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="/admin/shipforsale">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">
+                        Ship Sale Registration
+                      </Link>
                     </li>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
                     </li>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
                     </li>
                   </ul>
                 </div>
@@ -995,7 +1002,9 @@ export default function AddShip() {
                     disabled={!selectedCategory}
                   >
                     <option disabled value="">
-                      {selectedCategory?"Select":"Select Main Category First"}
+                      {selectedCategory
+                        ? "Select"
+                        : "Select Main Category First"}
                     </option>
                     {filteredSubCategories.length === 0 ? (
                       <option value="" disabled>
@@ -1215,7 +1224,7 @@ export default function AddShip() {
 
               <div className="p-5">
                 <label htmlFor="Upload Image" className="">
-                  Upload  Image
+                  Upload Image
                 </label>
                 <input
                   type="file"

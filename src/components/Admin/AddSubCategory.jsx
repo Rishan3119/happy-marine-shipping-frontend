@@ -8,13 +8,12 @@ import admin from "./AdminImage/user3jpeg.jpeg";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
-
 export default function AddSubCategory() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [openDropdown, setOpenDropdown] = useState(3);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 1200); // Check screen size
 
-  const [loading,setLoading] = useState('')
+  const [loading, setLoading] = useState("");
 
   const toggleDropdown = (id) => {
     if (openDropdown === id) {
@@ -25,7 +24,7 @@ export default function AddSubCategory() {
   };
 
   const [allCategory, setallCategory] = useState([]);
-  const [count,setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   // fetch Category  data
   useEffect(() => {
@@ -36,7 +35,7 @@ export default function AddSubCategory() {
           {
             headers: {
               "Content-Type": "multipart/form-data",
-            }
+            },
           }
         );
         if (res1.data.status === 200) {
@@ -50,7 +49,7 @@ export default function AddSubCategory() {
       }
     }
     fetchdata();
-  }, [config.base_url,count]);
+  }, [config.base_url, count]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -112,60 +111,59 @@ export default function AddSubCategory() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  const [CategoryTitle,setCategoryTitle] = useState('')
-  const [Category,setCategory] = useState('')
-  const [SubCategoryDescription,setSubCategoryDescription] = useState('')
-  const navigate = useNavigate()
+  const [CategoryTitle, setCategoryTitle] = useState("");
+  const [Category, setCategory] = useState("");
+  const [SubCategoryDescription, setSubCategoryDescription] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = async(e,id)=>{
+  const handleSubmit = async (e, id) => {
     e.preventDefault();
-   navigate('/admin/viewSubCategory')
-    setLoading(true)
-    const data={
-        sub_category_name: CategoryTitle,
-        category: Category,
-        sub_category_description: SubCategoryDescription
-    }
+    navigate("/admin/viewSubCategory");
+    setLoading(true);
+    const data = {
+      sub_category_name: CategoryTitle,
+      category: Category,
+      sub_category_description: SubCategoryDescription,
+    };
     try {
-        const response = await axios.post(`${config.base_url}/api/HappyMarineShipping/addSubCategory`,data,{
-          headers:{
-            'Content-Type':'multipart/form-data',
-          }
-        });
-        if(response.data.status===200){
-            // navigate('/admin/viewSubCategory')
-          console.log(response)
-          setLoading(false)
-          setCount(id)
-          toast.success("Sub Category added Successfully!",{
-            autoClose:1500,
-            position:'top-right',
-            
-          });
-         setCategoryTitle("")
-         setCategory("")
-         setSubCategoryDescription("")
-          
+      const response = await axios.post(
+        `${config.base_url}/api/HappyMarineShipping/addSubCategory`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-        else{
-            setLoading(false)
-          console.log("error1")
-          toast.error("Fill the required Fields",{
-            autoClose:1500,
-            position: "top-right",
-          })
-        }
-        
-      } catch (err) {
-        setLoading(false)
-        console.log("error2",err)
-        toast.error("Error",{
-          autoClose:2000,
+      );
+      if (response.data.status === 200) {
+        // navigate('/admin/viewSubCategory')
+        console.log(response);
+        setLoading(false);
+        setCount(id);
+        toast.success("Sub Category added Successfully!", {
+          autoClose: 1500,
           position: "top-right",
-        })
+        });
+        setCategoryTitle("");
+        setCategory("");
+        setSubCategoryDescription("");
+      } else {
+        setLoading(false);
+        console.log("error1");
+        toast.error("Fill the required Fields", {
+          autoClose: 1500,
+          position: "top-right",
+        });
       }
-    
-}
+    } catch (err) {
+      setLoading(false);
+      console.log("error2", err);
+      toast.error("Error", {
+        autoClose: 2000,
+        position: "top-right",
+      });
+    }
+  };
 
   return (
     <div className="h-screen flex flex-col bg-gray-100">
@@ -272,8 +270,10 @@ export default function AddSubCategory() {
         >
           <ul className="mt-10 flex flex-col gap-3 ">
             {/* Dashboard */}
-            <li className="px-5 py-2 text-lg  flex items-center">
-              <i className="fa-solid fa-gauge mr-3"></i>
+            <li className="px-5 hover:text-[#00c292] cursor-pointer py-2 text-lg  flex items-center">
+              <Link to="/admin/dashboard">
+                <i className="fa-solid fa-gauge mr-3"></i>
+              </Link>
               {isSidebarOpen && <Link to="/admin/dashboard">Dashboard</Link>}
             </li>
 
@@ -456,13 +456,15 @@ export default function AddSubCategory() {
                 <div className="absolute left-full top-0 bg-white shadow-lg rounded-md py-2 w-64 z-20">
                   <ul>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="/admin/shipforsale">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">
+                        Ship Sale Registration
+                      </Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
                     </li>
                   </ul>
                 </div>
@@ -479,13 +481,15 @@ export default function AddSubCategory() {
                 >
                   <ul>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="/admin/shipforsale">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">
+                        Ship Sale Registration
+                      </Link>
                     </li>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
                     </li>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
                     </li>
                   </ul>
                 </div>
@@ -626,9 +630,7 @@ export default function AddSubCategory() {
               )}
             </li>
 
-            <li
-              className={`px-3 py-2 text-lg flex flex-col   relative`}
-            >
+            <li className={`px-3 py-2 text-lg flex flex-col   relative`}>
               <div
                 className="flex items-center justify-between cursor-pointer p-2"
                 onClick={() => toggleDropdown(2)} // Toggle Category dropdown
@@ -679,9 +681,11 @@ export default function AddSubCategory() {
               )}
             </li>
 
-            <li className={`px-3 py-2 text-lg flex flex-col text-[#00c292] ${
+            <li
+              className={`px-3 py-2 text-lg flex flex-col text-[#00c292] ${
                 isSidebarOpen ? "border-l-4 border-[#00c292]" : "border-none"
-              } relative group `}>
+              } relative group `}
+            >
               <div
                 className="flex items-center justify-between cursor-pointer p-2"
                 onClick={() => toggleDropdown(3)} // Toggle Sub Category dropdown
@@ -756,13 +760,15 @@ export default function AddSubCategory() {
                 <div className="absolute left-full top-0 bg-white shadow-lg rounded-md py-2 w-64 z-20">
                   <ul>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="/admin/shipforsale">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">
+                        Ship Sale Registration
+                      </Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
                     </li>
                   </ul>
                 </div>
@@ -779,13 +785,15 @@ export default function AddSubCategory() {
                 >
                   <ul>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="/admin/shipforsale">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">
+                        Ship Sale Registration
+                      </Link>
                     </li>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
                     </li>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
                     </li>
                   </ul>
                 </div>
@@ -856,17 +864,16 @@ export default function AddSubCategory() {
         {/* Main Content */}
         <div className="flex-1 py-4">
           <div className="bg-white  shadow-sm text-xl w-full p-5">
-          <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center">
               <h1>Add Sub Category </h1>
               <div className="flex text-sm gap-2">
-               <p>Home</p> <span>/</span>
-               <p className="text-[#00c292]">Add Sub Category</p>
+                <p>Home</p> <span>/</span>
+                <p className="text-[#00c292]">Add Sub Category</p>
               </div>
             </div>
           </div>
           <div className="w-full py-5 px-4">
             <form className="bg-white  px-5 mt-5 rounded ">
-              
               <div className="p-5 flex gap-5 items-center xm:flex-wrap xm:gap-5">
                 <div className="flex flex-col gap-1 w-[100%] ">
                   <label htmlFor="Title" className="">
@@ -874,7 +881,7 @@ export default function AddSubCategory() {
                   </label>
                   <input
                     value={CategoryTitle}
-                    onChange={(e)=>setCategoryTitle(e.target.value)}
+                    onChange={(e) => setCategoryTitle(e.target.value)}
                     placeholder="Enter the Category Name"
                     className="w-full mt-2 rounded border border-gray-200  text-gray-500 p-2"
                     name=""
@@ -882,38 +889,41 @@ export default function AddSubCategory() {
                   />
                 </div>
               </div>
-            
-             
 
-               {/* upoad image */}
-               <div className="p-5">
+              {/* upoad image */}
+              <div className="p-5">
                 <label htmlFor="Upload Image" className="">
-                  category 
+                  category
                 </label>
                 <select
                   type="file"
                   value={Category}
-                  onChange={(e)=>setCategory(e.target.value)}
+                  onChange={(e) => setCategory(e.target.value)}
                   className="imageInput w-full mt-2 rounded border border-gray-200  text-gray-500 p-2"
                   name=""
                   id="Upload Image"
                 >
-                    <option value="" selected disabled>Select Category</option>
-                    {allCategory.length===0?(
-                        <option value="" disabled>No category Available</option>
-                    ):(
-                        allCategory.map((itm)=>(
-                            <option key={itm.id} value={itm.id}>{itm.category_name}</option>
-                        ))
-                    )}
+                  <option value="" selected disabled>
+                    Select Category
+                  </option>
+                  {allCategory.length === 0 ? (
+                    <option value="" disabled>
+                      No category Available
+                    </option>
+                  ) : (
+                    allCategory.map((itm) => (
+                      <option key={itm.id} value={itm.id}>
+                        {itm.category_name}
+                      </option>
+                    ))
+                  )}
                 </select>
               </div>
-
 
               {/* Brief Description */}
               <div className="p-5">
                 <label htmlFor="Brief Description" className="">
-                 Description
+                  Description
                 </label>
                 <textarea
                   rows={5}
@@ -924,12 +934,10 @@ export default function AddSubCategory() {
                 ></textarea>
               </div>
 
-             
-              
               <hr className="text-gray-500 w-full" />
               <div className="p-4">
                 <button
-                   onClick={(e) => handleSubmit(e)}
+                  onClick={(e) => handleSubmit(e)}
                   type="submit"
                   className="bg-green-600 hover:bg-green-500 text-white px-3 py-2 rounded"
                 >

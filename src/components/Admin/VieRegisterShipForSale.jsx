@@ -257,10 +257,10 @@ export default function VieRegisterShipForSale() {
         >
           <ul className="mt-10 flex flex-col gap-3 ">
             {/* Dashboard */}
-            <li className="px-5 py-2 text-lg  flex items-center">
-              <i className="fa-solid fa-gauge mr-3"></i>
-              {isSidebarOpen && <Link to="/admin/dashboard">Dashboard</Link>}
-            </li>
+            <li className="px-5 hover:text-[#00c292] cursor-pointer py-2 text-lg  flex items-center">
+                          <Link to="/admin/dashboard"><i className="fa-solid fa-gauge mr-3"></i></Link>
+                          {isSidebarOpen && <Link to="/admin/dashboard">Dashboard</Link>}
+                        </li>
 
             {/* Ship For Sale Dropdown */}
             <li className="px-2  text-lg  flex flex-col  relative">
@@ -418,7 +418,7 @@ export default function VieRegisterShipForSale() {
               )}
             </li>
 
-            <li className="px-3 py-2 text-lg flex flex-col text-[#00c292] border-l-4 border-[#00c292] relative group">
+            <li className="px-2 py-2 text-lg flex flex-col text-[#00c292] border-l-4 border-[#00c292] relative group">
               {/* Clickable Div */}
               <div
                 className="flex items-center justify-between cursor-pointer p-2 w-full hover:text-[#00c292]"
@@ -446,10 +446,10 @@ export default function VieRegisterShipForSale() {
                       </Link>
                     </li>
                     <li className="px-4 py-2 text-[#8D97AD] hover:bg-gray-100">
-                      <Link to="#">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
                     </li>
                     <li className="px-4 py-2 text-[#8D97AD] hover:bg-gray-100">
-                      <Link to="#">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
                     </li>
                   </ul>
                 </div>
@@ -471,10 +471,10 @@ export default function VieRegisterShipForSale() {
                       </Link>
                     </li>
                     <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
-                      <Link to="#">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
                     </li>
                     <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
-                      <Link to="#">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
                     </li>
                   </ul>
                 </div>
@@ -752,10 +752,10 @@ export default function VieRegisterShipForSale() {
                       </Link>
                     </li>
                     <li className="px-4 py-2 text-[#8D97AD] hover:bg-gray-100">
-                      <Link to="#">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
                     </li>
                     <li className="px-4 py-2 text-[#8D97AD] hover:bg-gray-100">
-                      <Link to="#">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
                     </li>
                   </ul>
                 </div>
@@ -777,10 +777,10 @@ export default function VieRegisterShipForSale() {
                       </Link>
                     </li>
                     <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
-                      <Link to="#">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
                     </li>
                     <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
-                      <Link to="#">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
                     </li>
                   </ul>
                 </div>
@@ -855,7 +855,7 @@ export default function VieRegisterShipForSale() {
               <h1>View Details</h1>
               <div className="flex text-sm gap-2">
                 <p>Home</p> <span>/</span>
-                <p className="text-[#00c292]">View Ship</p>
+                <p className="text-[#00c292]">View Ship Sale Registration</p>
               </div>
             </div>
           </div>
