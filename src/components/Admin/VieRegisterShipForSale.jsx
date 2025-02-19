@@ -8,9 +8,9 @@ import admin from "./AdminImage/user3jpeg.jpeg";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
-export default function ViewShip() {
+export default function VieRegisterShipForSale() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [openDropdown, setOpenDropdown] = useState(1);
+  const [openDropdown, setOpenDropdown] = useState(4);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 1200); // Check screen size
 
   const toggleDropdown = (id) => {
@@ -27,57 +27,21 @@ export default function ViewShip() {
   const [input, setInput] = useState([]);
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    async function fetchdata() {
-      try {
-        const res1 = await axios.get(
-          `${config.base_url}/api/HappyMarineShipping/viewSubCategory`,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            
-          }
-        );
-        if (res1.data.status === 200) {
-          console.log(res1);
-          setallSubCategory(res1.data.data);
-        } else {
-          console.log("error");
-        }
-        const res2 = await axios.get(
-          `${config.base_url}/api/HappyMarineShipping/viewCategory`,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        if (res2.data.status === 200) {
-          console.log(res2);
-          setallCategory(res2.data.data);
-        } else {
-          console.log("error");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchdata();
-  }, [config.base_url, input, count]);
+ 
 
   // fetch ship data
   useEffect(() => {
     async function fetchdata() {
       try {
         const res1 = await axios.get(
-          `${config.base_url}/api/HappyMarineShipping/viewShip`,
+          `${config.base_url}/api/HappyMarineShipping/viewShipForSale`,
           {
             headers: {
               "Content-Type": "multipart/form-data",
-            },params:{
-              'title':input
-            }
+            },
+            params: {
+              title: input,
+            },
           }
         );
         if (res1.data.status === 200) {
@@ -91,7 +55,7 @@ export default function ViewShip() {
       }
     }
     fetchdata();
-  }, [config.base_url,input,count]);
+  }, [config.base_url, input, count]);
 
   const navigate = useNavigate();
 
@@ -187,8 +151,6 @@ export default function ViewShip() {
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
-
-  
 
   return (
     <div className="h-screen flex flex-col bg-gray-100">
@@ -301,7 +263,7 @@ export default function ViewShip() {
             </li>
 
             {/* Ship For Sale Dropdown */}
-            <li className="px-2  text-lg  flex flex-col text-[#00c292] border-l-4 border-[#00c292] relative">
+            <li className="px-2  text-lg  flex flex-col  relative">
               <div
                 className="flex items-center  justify-between cursor-pointer p-2"
                 onClick={() => toggleDropdown(1)} // Toggle Ship For Sale dropdown
@@ -342,7 +304,7 @@ export default function ViewShip() {
                   }`}
                 >
                   <ul>
-                    <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
+                    <li className="px-4 py-1  hover:text-[#00c292]">
                       <Link to="/admin/addShip">Add Ships</Link>
                     </li>
                     <li className="px-4  py-1 hover:text-[#00c292]">
@@ -456,7 +418,7 @@ export default function ViewShip() {
               )}
             </li>
 
-            <li className="px-3 py-2 text-lg flex flex-col relative group">
+            <li className="px-3 py-2 text-lg flex flex-col text-[#00c292] border-l-4 border-[#00c292] relative group">
               {/* Clickable Div */}
               <div
                 className="flex items-center justify-between cursor-pointer p-2 w-full hover:text-[#00c292]"
@@ -479,12 +441,14 @@ export default function ViewShip() {
                 <div className="absolute left-full top-0 bg-white shadow-lg rounded-md py-2 w-64 z-20">
                   <ul>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="/admin/shipforsale">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">
+                        Ship Sale Registration
+                      </Link>
                     </li>
-                    <li className="px-4 py-2 hover:bg-gray-100">
+                    <li className="px-4 py-2 text-[#8D97AD] hover:bg-gray-100">
                       <Link to="#">Ship For Charter Registration</Link>
                     </li>
-                    <li className="px-4 py-2 hover:bg-gray-100">
+                    <li className="px-4 py-2 text-[#8D97AD] hover:bg-gray-100">
                       <Link to="#">Supply Equipment Registration</Link>
                     </li>
                   </ul>
@@ -502,12 +466,14 @@ export default function ViewShip() {
                 >
                   <ul>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="/admin/shipforsale">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">
+                        Ship Sale Registration
+                      </Link>
                     </li>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
+                    <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
                       <Link to="#">Ship For Charter Registration</Link>
                     </li>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
+                    <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
                       <Link to="#">Supply Equipment Registration</Link>
                     </li>
                   </ul>
@@ -598,9 +564,7 @@ export default function ViewShip() {
 
             {/* Ship For Sale Dropdown */}
             <li
-              className={`px-2  text-lg  flex flex-col text-[#00c292] ${
-                isSidebarOpen ? "border-l-4 border-[#00c292]" : "border-none"
-              }  relative`}
+              className={`px-2  text-lg  flex flex-col text-[#00c292]  relative`}
             >
               <div
                 className="flex items-center  justify-between cursor-pointer p-2"
@@ -756,7 +720,11 @@ export default function ViewShip() {
               )}
             </li>
 
-            <li className="px-3 py-2 text-lg flex flex-col relative group">
+            <li
+              className={`px-3 py-2 text-lg flex flex-col ${
+                isSidebarOpen ? "border-l-4 border-[#00c292]" : "border-none"
+              }  relative group`}
+            >
               {/* Clickable Div */}
               <div
                 className="flex items-center justify-between cursor-pointer p-2 w-full hover:text-[#00c292]"
@@ -779,12 +747,14 @@ export default function ViewShip() {
                 <div className="absolute left-full top-0 bg-white shadow-lg rounded-md py-2 w-64 z-20">
                   <ul>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">
+                        Ship Sale Registration
+                      </Link>
                     </li>
-                    <li className="px-4 py-2 hover:bg-gray-100">
+                    <li className="px-4 py-2 text-[#8D97AD] hover:bg-gray-100">
                       <Link to="#">Ship For Charter Registration</Link>
                     </li>
-                    <li className="px-4 py-2 hover:bg-gray-100">
+                    <li className="px-4 py-2 text-[#8D97AD] hover:bg-gray-100">
                       <Link to="#">Supply Equipment Registration</Link>
                     </li>
                   </ul>
@@ -802,12 +772,14 @@ export default function ViewShip() {
                 >
                   <ul>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">
+                        Ship Sale Registration
+                      </Link>
                     </li>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
+                    <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
                       <Link to="#">Ship For Charter Registration</Link>
                     </li>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
+                    <li className="px-4 py-1 text-[#8D97AD] hover:text-[#00c292]">
                       <Link to="#">Supply Equipment Registration</Link>
                     </li>
                   </ul>
@@ -880,114 +852,156 @@ export default function ViewShip() {
         <div className="flex-1 overflow-auto py-4">
           <div className="bg-white  shadow-sm text-xl w-full p-5">
             <div className="flex justify-between items-center">
-              <h1>View Ship</h1>
+              <h1>View Details</h1>
               <div className="flex text-sm gap-2">
                 <p>Home</p> <span>/</span>
                 <p className="text-[#00c292]">View Ship</p>
               </div>
             </div>
-
           </div>
 
           <div className="w-full  py-5 px-4">
-              <div className="bg-white overflow-auto w-full max-w-full  p-6 mt-5 rounded">
-                <div className="py-3">
-                  <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Search Ship"
-                    className="rounded-lg  sm:w-[50%] w-[20%] p-2 border shadow"
-                  />
-                </div>
+            <div className="bg-white overflow-auto w-full max-w-full  p-6 mt-5 rounded">
+              <div className="py-3">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Search Ship"
+                  className="rounded-lg  sm:w-[50%] w-[20%] p-2 border shadow"
+                />
+              </div>
 
-                {/* Responsive Table Wrapper */}
-                <div className="w-full lg:w-[1500px] shadow-lg rounded-lg overflow-auto">
-                  <table className=" w-full  bg-white  shadow-lg rounded-lg overflow-auto">
-                    <thead className="bg-gray-100 border-b  border-gray-200 rounded-lg">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-gray-600">
-                          No
-                        </th>
-                        <th className="px-3 py-3  text-left text-gray-600">
-                          Reference ID
-                        </th>
+              {/* Responsive Table Wrapper */}
+              <div className="w-full lg:w-[1500px] shadow-lg rounded-lg overflow-auto">
+                <table className=" w-full  bg-white  shadow-lg rounded-lg overflow-auto">
+                  <thead className="bg-gray-100 border-b border-gray-200">
+                    <tr>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[50px]">
+                        No
+                      </th>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
+                        Vessel Type
+                      </th>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[250px]">
+                        Short Description
+                      </th>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[150px]">
+                        Nationality
+                      </th>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[120px]">
+                        Year Built
+                      </th>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[120px]">
+                        Capacity
+                      </th>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[150px]">
+                        Length Overall
+                      </th>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[150px]">
+                        Service Speed
+                      </th>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
+                        Classification Society
+                      </th>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[120px]">
+                        Price
+                      </th>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[250px]">
+                        Brief Details
+                      </th>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
+                        Email
+                      </th>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[150px]">
+                        Mobile
+                      </th>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[180px]">
+                        Image
+                      </th>
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[120px]">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
 
-                        <th className="px-3 py-3 w-[200px] lg:w-[80px] text-left text-gray-600">
-                          Main Category
-                        </th>
-                        <th className="px-1 py-3 w-[200px] lg:w-[80px] text-left text-gray-600">
-                          Sub Category
-                        </th>
-                        <th className="px-3 w-[300px] text-left text-gray-600">
-                          Title
-                        </th>
-                        <th className="px-1 py-3 w-[300px] text-left text-gray-600">
-                          Hidden Data
-                        </th>
-                        <th className="px-3 py-3 w-[200px] text-left text-gray-600">
-                          Image
-                        </th>
-                        <th className="px-3 py-3 text-center text-gray-600">
-                          Status
-                        </th>
-                        <th className="px-3 py-3 text-right text-gray-600">
-                          Actions
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                  <tbody>
                     {allShips.length === 0 ? (
-  <tr>
-    <td colSpan="9" className="px-6 text-red-500 text-center py-4">
-      Ship not Available
-    </td>
-  </tr>
-) : (
-  allShips.map((itm, index) => (
-    <tr key={itm.id} className="border-b border-gray-200">
-      <td className="text-center text-sm py-5">{index + 1}</td>
-      <td className="py-5 px-4 text-sm text-left ">#{index + 1000}</td>
-      <td className="py-5 text-sm text-left ">
-        {allCategory.find((cat) => cat.id === itm.main_category)
-          ?.category_name || "Unknown"}
-      </td>
-      <td className="py-5 px-4 text-sm text-left ">{itm.vessel_type}</td>
-      <td className="py-5 px-4 text-sm text-left ">{itm.title}</td>
-      <td className="py-5 px-3 text-sm text-left ">{itm.hidden_details||"None"}</td>
-      <td className="py-5 px-3 text-left">
-        <img src={itm.image} className="w-full h-20 object-cover rounded-md" alt="" />
-      </td>
-      <td className="py-5 px-3 text-center ">
-        <button className="bg-[#00c292] transition-all duration-300 hover:bg-[#246656] rounded px-2 py-1 text-white">
-          Enable
-        </button>
-      </td>
-      <td className="py-5 text-left">
-        <div className="flex gap-4 sm:gap-8 items-center justify-center">
-          <button
-            className="text-blue-500 hover:underline"
-            onClick={() => navigate(`/admin/updateViewShip/${itm.id}`)}
-          >
-            <i className="fa-solid fa-pen"></i>
-          </button>
-          <button
-            onClick={() => handleDelete(itm.id)}
-            className="text-red-500 hover:underline"
-          >
-            <i className="fa-solid fa-trash"></i>
-          </button>
-        </div>
-      </td>
-    </tr>
-  ))
-)}
-
-                    </tbody>
-                  </table>
-                </div>
+                      <tr>
+                        <td
+                          colSpan="9"
+                          className="px-6 text-red-500 text-center py-4"
+                        >
+                          Ship not Available
+                        </td>
+                      </tr>
+                    ) : (
+                      allShips.map((itm, index) => (
+                        <tr key={itm.id} className="border-b border-gray-200">
+                          <td className="text-center text-sm py-5">
+                            {index + 1}
+                          </td>
+                          <td className="py-5 px-4 text-sm text-left ">
+                            {itm.vessel_type}
+                          </td>
+                          <td className="py-5 text-sm text-left ">
+                            {itm.short_description}
+                          </td>
+                          <td className="py-5 px-4 text-sm text-left ">
+                            {itm.flag}
+                          </td>
+                          <td className="py-5 px-4 text-sm text-left ">
+                            {itm.year_built}
+                          </td>
+                          <td className="py-5 px-3 text-sm text-left ">
+                            {itm.capacity}
+                          </td>
+                          <td className="py-5 px-3 text-sm text-left ">
+                            {itm.LOA}
+                          </td>
+                          <td className="py-5 px-3 text-sm text-left ">
+                            
+                          </td>
+                          <td className="py-5 px-3 text-sm text-left ">
+                            {itm.Class}
+                          </td>
+                          <td className="py-5 px-3 text-sm text-left ">
+                            {itm.Price}
+                          </td>
+                          <td className="py-5 px-3 text-sm text-left ">
+                            {itm.brief_description}
+                          </td>
+                          <td className="py-5 px-3 text-sm text-left ">
+                            {itm.email}
+                          </td>
+                          <td className="py-5 px-3 text-sm text-left ">
+                            {itm.phone}
+                          </td>
+                          <td className="py-5 px-3 text-left">
+                            <img
+                              src={itm.image}
+                              className="w-full h-20 object-cover rounded-md"
+                              alt=""
+                            />
+                          </td>
+                          <td className="py-5 text-left">
+                            <div className="flex gap-4 sm:gap-8 items-center justify-center">
+                              <button
+                                onClick={() => handleDelete(itm.id)}
+                                className="text-red-500 hover:underline"
+                              >
+                                <i className="fa-solid fa-trash"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
+          </div>
         </div>
       </div>
     </div>
