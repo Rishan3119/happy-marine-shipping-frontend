@@ -82,7 +82,7 @@ export default function Signin() {
   return (
     <div>
       <section className="bg-[#123D5f] flex items-center justify-center h-screen">
-        <div className="bg-white p-5 max-h-screen w-[35%]">
+        <div className="bg-white p-5 max-h-screen w-[35%] xl:w-[80%]">
           {Signin === "Signin" && (
             <>
               <div>
@@ -90,7 +90,15 @@ export default function Signin() {
                 <h1 className="text-center text-[24px] -mt-5">Signin</h1>
               </div>
 
-              <form className="flex flex-col gap-7 mx-auto mt-5">
+              <form
+                className="flex flex-col gap-7 mx-auto mt-5"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleSubmit();
+                  }
+                }}
+              >
                 {/* Username Field */}
                 <div className="relative w-full group">
                   <input
@@ -134,6 +142,7 @@ export default function Signin() {
                     <span className="text-sm">Remember Me</span>
                   </label>
                   <button
+                    type="button"
                     onClick={() => setSignin("resetpswd")}
                     className="text-sm text-blue-500 hover:underline"
                   >
@@ -172,10 +181,7 @@ export default function Signin() {
                   </p>
                 </div>
                 ̥{/* Back Icon */}
-                <button
-                  onClick={()=> setSignin("Signin")}
-                  className=" -mt-6"
-                >
+                <button onClick={() => setSignin("Signin")} className=" -mt-6">
                   <i className="bx bx-arrow-back text-3xl text-blue-500 hover:text-blue-700 transition-all duration-300 ease-in-out transform hover:rotate-180"></i>
                 </button>
               </div>
