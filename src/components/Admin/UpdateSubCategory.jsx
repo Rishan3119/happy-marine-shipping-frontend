@@ -484,7 +484,7 @@ export default function UpdateSubCategory() {
                 <div className="absolute left-full top-0 bg-white shadow-lg rounded-md py-2 w-64 z-20">
                   <ul>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">Ship Sale Registration</Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-100">
                       <Link to="#">Ship For Charter Registration</Link>
@@ -507,7 +507,7 @@ export default function UpdateSubCategory() {
                 >
                   <ul>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">Ship Sale Registration</Link>
                     </li>
                     <li className="px-4 py-1 hover:text-[#00c292]">
                       <Link to="#">Ship For Charter Registration</Link>
@@ -782,7 +782,7 @@ export default function UpdateSubCategory() {
                 <div className="absolute left-full top-0 bg-white shadow-lg rounded-md py-2 w-64 z-20">
                   <ul>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">Ship Sale Registration</Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-100">
                       <Link to="#">Ship For Charter Registration</Link>
@@ -805,7 +805,7 @@ export default function UpdateSubCategory() {
                 >
                   <ul>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Ship Sale Registration</Link>
+                      <Link to="/admin/shipforsale">Ship Sale Registration</Link>
                     </li>
                     <li className="px-4 py-1 hover:text-[#00c292]">
                       <Link to="#">Ship For Charter Registration</Link>
