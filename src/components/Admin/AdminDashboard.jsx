@@ -120,15 +120,25 @@ export default function AdminDashboard() {
           )}
         </div>
 
-        {/* Menu Button (Moves on Sidebar Toggle) */}
-        <button
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className={`absolute transition-all duration-300 text-white ${
-            isSidebarOpen ? "left-60" : "left-16"
-          }`}
-        >
-          <Menu size={28} />
-        </button>
+         {/* Menu Button (Moves on Sidebar Toggle) */}
+                <button
+                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                  className={`absolute xm:hidden transition-all duration-300 text-white ${
+                    isSidebarOpen ? "left-60" : "left-16"
+                  }`}
+                >
+                  <Menu size={28} />
+                </button>
+
+             {/* mobile screen menu button */}
+                    <button
+                      onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                      className={`absolute xm:block hidden transition-all duration-300 text-white ${
+                        isSidebarOpen ? "left-32" : "left-16"
+                      }`}
+                    >
+                      <Menu size={28} />
+                    </button>
 
         {/* Admin Profile (Right Side) */}
         <div className="relative ml-auto pr-5 flex items-center gap-20">
