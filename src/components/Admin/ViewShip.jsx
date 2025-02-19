@@ -919,7 +919,7 @@ export default function ViewShip() {
                         <th className="px-1 py-3 w-[200px] lg:w-[80px] text-left text-gray-600">
                           Sub Category
                         </th>
-                        <th className="px-3 w-[300px] text-left text-gray-600">
+                        <th className="px-3 w-[300px] text-center text-gray-600">
                           Title
                         </th>
                         <th className="px-1 py-3 w-[300px] text-left text-gray-600">
