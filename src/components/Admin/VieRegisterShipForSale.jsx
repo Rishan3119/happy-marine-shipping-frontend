@@ -248,7 +248,7 @@ export default function VieRegisterShipForSale() {
       </nav>
 
       {/* Sidebar & Content Wrapper */}
-      <div className="flex flex-1 ">
+      <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <div
           className={`${
@@ -564,7 +564,7 @@ export default function VieRegisterShipForSale() {
 
             {/* Ship For Sale Dropdown */}
             <li
-              className={`px-2  text-lg  flex flex-col text-[#00c292]  relative`}
+              className={`px-2  text-lg  flex flex-col  relative`}
             >
               <div
                 className="flex items-center  justify-between cursor-pointer p-2"
@@ -722,7 +722,7 @@ export default function VieRegisterShipForSale() {
 
             <li
               className={`px-3 py-2 text-lg flex flex-col ${
-                isSidebarOpen ? "border-l-4 border-[#00c292]" : "border-none"
+                isSidebarOpen ? "border-l-4 text-[#00c292]  border-[#00c292]" : "border-none"
               }  relative group`}
             >
               {/* Clickable Div */}
@@ -883,7 +883,7 @@ export default function VieRegisterShipForSale() {
                       <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
                         Vessel Type
                       </th>
-                      <th className="px-4 py-3 text-center text-gray-600 min-w-[250px]">
+                      <th className="px-4 py-3 text-left text-gray-600 min-w-[250px]">
                         Short Description
                       </th>
                       <th className="px-4 py-3 text-center text-gray-600 min-w-[150px]">
@@ -937,54 +937,54 @@ export default function VieRegisterShipForSale() {
                       </tr>
                     ) : (
                       allShips.map((itm, index) => (
-                        <tr key={itm.id} className="border-b border-gray-200">
-                          <td className="text-center text-sm py-5">
+                        <tr key={itm.id} className="border-b  border-gray-200">
+                          <td className="text-center text-sm min-w-[50px]">
                             {index + 1}
                           </td>
-                          <td className="py-5 px-4 text-sm text-left ">
+                          <td className=" px-4 min-w-[200px]  text-center text-sm  ">
                             {itm.vessel_type}
                           </td>
-                          <td className="py-5 text-sm text-left ">
+                          <td className=" text-sm px-4   min-w-[250px]">
                             {itm.short_description}
                           </td>
-                          <td className="py-5 px-4 text-sm text-left ">
+                          <td className=" px-4  text-center text-sm  ">
                             {itm.flag}
                           </td>
-                          <td className="py-5 px-4 text-sm text-left ">
+                          <td className=" px-4  text-center text-sm  ">
                             {itm.year_built}
                           </td>
-                          <td className="py-5 px-3 text-sm text-left ">
+                          <td className=" px-4  text-center text-sm  ">
                             {itm.capacity}
                           </td>
-                          <td className="py-5 px-3 text-sm text-left ">
+                          <td className=" px-4  text-center text-sm  ">
                             {itm.LOA}
                           </td>
-                          <td className="py-5 px-3 text-sm text-left ">
+                          <td className=" px-4  text-center text-sm  ">
                             
                           </td>
-                          <td className="py-5 px-3 text-sm text-left ">
+                          <td className=" px-4  text-center text-sm  ">
                             {itm.Class}
                           </td>
-                          <td className="py-5 px-3 text-sm text-left ">
+                          <td className=" px-4  text-center text-sm  ">
                             {itm.Price}
                           </td>
-                          <td className="py-5 px-3 text-sm text-left ">
-                            {itm.brief_description}
+                          <td className="px-4 text-left py-2 text-sm">
+                           <div className=" min-w-[250px] max-h-[100px] overflow-hidden overflow-y-auto">{itm.brief_description}</div>
                           </td>
-                          <td className="py-5 px-3 text-sm text-left ">
+                          <td className=" px-4  text-center text-sm  ">
                             {itm.email}
                           </td>
-                          <td className="py-5 px-3 text-sm text-left ">
+                          <td className=" px-4  text-center text-sm  ">
                             {itm.phone}
                           </td>
-                          <td className="py-5 px-3 text-left">
+                          <td className=" px-4  text-center ">
                             <img
                               src={itm.image}
                               className="w-full h-20 object-cover rounded-md"
                               alt=""
                             />
                           </td>
-                          <td className="py-5 text-left">
+                          <td className=" text-left">
                             <div className="flex gap-4 sm:gap-8 items-center justify-center">
                               <button
                                 onClick={() => handleDelete(itm.id)}

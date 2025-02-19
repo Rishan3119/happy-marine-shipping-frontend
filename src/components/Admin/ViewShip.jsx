@@ -286,7 +286,7 @@ export default function ViewShip() {
       </nav>
 
       {/* Sidebar & Content Wrapper */}
-      <div className="flex flex-1 ">
+      <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <div
           className={`${
