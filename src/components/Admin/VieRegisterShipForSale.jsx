@@ -62,7 +62,7 @@ export default function VieRegisterShipForSale() {
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(
-        `${config.base_url}/api/HappyMarineShipping/deleteShip/${id}`,
+        `${config.base_url}/api/HappyMarineShipping/deleteShipForSale/${id}`,
         {
           headers: {
             "Content-Type": "application/json",
