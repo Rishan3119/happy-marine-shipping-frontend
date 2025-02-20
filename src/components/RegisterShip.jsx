@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import config from '../function/config';
 import axios from 'axios';
 import RegisterPageNav from './Navbars/RegisterPageNav';
+import { Phone } from 'lucide-react';
 
 export default function RegisterShip() {
 
@@ -53,6 +54,15 @@ const [isScrolled, setIsScrolled] = useState(false);
           const[MobileNO,setMobileNO] = useState('')
           const[BriefDescription,setBriefDescription] = useState('')
           const[Image,setImage] = useState('')
+
+          const [Nationality,setNationality] = useState('')
+          const [BuyAsScrap,setBuyAsScrap] = useState('')
+          const [From,setFrom] = useState('')
+          const [To,setTo] = useState('')
+          const [InspectionCountry,setInspectionCountry] = useState('')
+
+          const [Category,setCategory] = useState('')
+          const [Subject,setSubject] = useState('')
 
           
 
@@ -142,6 +152,135 @@ const [isScrolled, setIsScrolled] = useState(false);
               }
             
         }
+
+
+
+        const handleSubmitCharter = async(e,id)=>{
+          e.preventDefault();
+         
+          setLoading(true)
+          const data={
+            vessel_type: vesselType,
+            short_description: ShortDescription,
+            nationality: Nationality,
+            year_built: YearBuilt,
+            inspection_country:InspectionCountry,
+            desirable_capacity: Capacity,
+            Class: Class,
+            from_price: From,
+            to_price: To,
+            buy_as_scrap:BuyAsScrap,
+            email: Email,
+            phone: MobileNO,
+            brief_description: BriefDescription,
+            image: Image
+          }
+          try {
+              const response = await axios.post(`${config.base_url}/api/HappyMarineShipping/RegShipForCharter`,data,{
+                headers:{
+                  'Content-Type':'multipart/form-data',
+                  
+                }
+              });
+              if(response.data.status===200){
+                navigate('/')
+                console.log(response)
+                setLoading(false)
+                toast.success(" Registered Successfully!",{
+                  autoClose:1500,
+                  position:'top-right',
+                  
+                });
+                setCount(id)
+               
+                setvesselType('')
+                setShortDescription('')
+                setNationality('')
+                setCapacity('')
+                setEmail('')
+                setImage('')
+                setMobileNO('')
+                setFrom('')
+                setTo('')
+                setYearBuilt('')
+                setBriefDescription('')
+                
+              }
+              else{
+                  setLoading(false)
+                console.log("error1")
+                toast.error("Fill the required Fields",{
+                  autoClose:1500,
+                  position: "top-right",
+                })
+              }
+              
+            } catch (err) {
+              setLoading(false)
+              console.log("error2",err)
+              toast.error("Error",{
+                autoClose:2000,
+                position: "top-right",
+              })
+            }
+          
+      }
+
+      const handleSubmitEqupment = async(e,id)=>{
+        e.preventDefault();
+       
+        setLoading(true)
+        const data={
+          category: Category,
+          subject: Subject,
+          email: Email,
+          phone: MobileNO,
+          brief_description: BriefDescription,
+        }
+        try {
+            const response = await axios.post(`${config.base_url}/api/HappyMarineShipping/RegShipForEquipments`,data,{
+              headers:{
+                'Content-Type':'multipart/form-data',
+                
+              }
+            });
+            if(response.data.status===200){
+              navigate('/')
+              console.log(response)
+              setLoading(false)
+              toast.success(" Registered Successfully!",{
+                autoClose:1500,
+                position:'top-right',
+                
+              });
+              setCount(id)
+             setCategory("")
+             setSubject("")
+             setEmail('')
+             setMobileNO('')
+             setBriefDescription("")
+             
+              
+            }
+            else{
+                setLoading(false)
+              console.log("error1")
+              toast.error("Fill the required Fields",{
+                autoClose:1500,
+                position: "top-right",
+              })
+            }
+            
+          } catch (err) {
+            setLoading(false)
+            console.log("error2",err)
+            toast.error("Error",{
+              autoClose:2000,
+              position: "top-right",
+            })
+          }
+        
+    }
 
         const { pathname } = useLocation();
 
@@ -354,107 +493,100 @@ const [isScrolled, setIsScrolled] = useState(false);
                 {/* vessel type */}
                 <div className='p-5'>
                     <label htmlFor="VesselType" className='font-semibold'>Vessel Type</label>
-                    <select className='w-full mt-2 rounded border border-gray-400 p-2 text-[#d1a460]' name="vesselType" id="VesselType">
-                        <option  hidden selected value="">-Select-</option>
-                        <option  disabled className='text-gray-500 font-semibold' value="">Catagories</option>
-                        <option value="" className='text-gray-500'>Barge</option>
-                        <option value="" className='text-gray-500'>Bulk</option>
-                        <option value="" className='text-gray-500'>cargo</option>
-                        <option value="" className='text-gray-500'>Container</option>
-                        <option value="" className='text-gray-500'>Fishing</option>
-                        <option value="" className='text-gray-500'>Multipurpose</option>
-                        <option value="" className='text-gray-500'>Passenger</option>
-    
-                    </select>
+                    <select value={vesselType} onChange={(e)=>setvesselType(e.target.value)} className='w-full mt-2 rounded border border-gray-400 p-2 text-[#d1a460]' name="vesselType" id="VesselType">
+                          <option  hidden selected value="">-Select-</option>
+                          <option  disabled className='text-gray-500 font-semibold' value="">Catagories</option>
+                          <option value="Barge" className='text-gray-500'>Barge</option>
+                          <option value="Bulk" className='text-gray-500'>Bulk</option>
+                          <option value="Cargo" className='text-gray-500'>cargo</option>
+                          <option value="Container" className='text-gray-500'>Container</option>
+                          <option value="Fishing" className='text-gray-500'>Fishing</option>
+                          <option value="Multipurpose" className='text-gray-500'>Multipurpose</option>
+                          <option value="Passenger" className='text-gray-500'>Passenger</option>
+                          <option value="Reefer" className='text-gray-500'>Reefer</option>
+                          <option value="Roro" className='text-gray-500'>Roro</option>
+                          <option value="Tanker" className='text-gray-500'>Tanker</option>
+                          <option value="Trug" className='text-gray-500'>Tug</option>
+                          <option value="Dredger" className='text-gray-500'>Dredger</option>
+                          <option value="Floating Crane" className='text-gray-500'>Floating Crane</option>
+                          <option value="Landing Craft" className='text-gray-500'>Landing Craft</option>
+                          <option value="Yatch" className='text-gray-500'>Yatch</option>
+                          <option value="War Ship" className='text-gray-500'>War Ship</option>
+                          <option value="Special Vessel" className='text-gray-500'>Special Vessel</option>
+                          <option value="Other " className='text-gray-500'>Other</option>
+  
+      
+                      </select>
                 </div>
                 {/* short description */}
                 <div className='p-5'>
-                <label htmlFor="shortDescription" className='font-semibold'>Short Description</label>
-                <textarea className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="shortDescription"  ></textarea>
+                <label htmlFor="shortDescription"   className='font-semibold'>Short Description</label>
+                <textarea value={ShortDescription} onChange={(e)=>setShortDescription(e.target.value)} className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="shortDescription"  ></textarea>
                 </div>
 
-                {/* nationality and radio buttons */}
+                {/* nationality and inspection */}
                 <div className='p-5 flex justify-between xm:flex-wrap gap-5 items-center '>
                 <div className='flex flex-col gap-1 w-[50%] xm:w-[100%]'>
-                    <label htmlFor="Inspection Country" className='font-semibold'>Inspection Country</label>
-                    <input className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Inspection Country"  />
+                    <label htmlFor="Nationality"  className='font-semibold'>Nationality</label>
+                    <input value={Nationality} onChange={(e)=>setNationality(e.target.value)} className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Nationality"  />
                 </div>
-                {/* Year Built */}
+                {/* inspection country */}
                 <div className='w-[50%] xm:w-[100%]'>
-                    <label htmlFor="Year Built" className='font-semibold'>Year Built</label>
-                    <input className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Year Built"  />
+                    <label htmlFor="Inspection Country" className='font-semibold'>Inspection Country</label>
+                    <input value={InspectionCountry} onChange={(e)=>setInspectionCountry(e.target.value)} className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Inspection Country"  />
                 </div>
+                </div>
+
+                {/* Year of Built */}
+                <div className='p-5 flex justify-between xm:flex-wrap gap-5 items-center '>
+                <div className='flex flex-col gap-1 w-[100%] '>
+                    <label htmlFor="Year Of Built"  className='font-semibold'>Year Of Built</label>
+                    <input value={YearBuilt} onChange={(e)=>setYearBuilt(e.target.value)} className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Year Of Built"  />
+                </div>
+                
+                
                 </div>
 
                 {/* Capacity and radio buttons */}
                 <div className='p-5 flex gap-10 items-center xm:flex-wrap '>
                 <div className='flex flex-col gap-1 w-[50%] xm:w-[100%]'>
                     <label htmlFor="Desirable Capacity" className='font-semibold'>Desirable Capacity</label>
-                    <input className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Desirable Capacity"  />
+                    <input value={Capacity} onChange={(e)=>setCapacity(e.target.value)} className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Desirable Capacity"  />
                 </div>
                 <div className='flex flex-col gap-1 w-[50%] xm:w-[100%]'>
-                    <label htmlFor="Length of all" className='font-semibold'>Length of all:LOA(m)</label>
-                    <input className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Length of all"  />
+                    <label htmlFor="Buy as Scrap" className='font-semibold'>Buy as Scrap</label>
+                    <input value={BuyAsScrap} onChange={(e)=>setBuyAsScrap(e.target.value)} className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Buy as Scrap"  />
                 </div>
                
                 </div>
 
                {/* class */}
-                <div className='p-5 flex gap-16 items-center xm:flex-wrap xm:gap-5'>
-                <div className='flex flex-col gap-1 w-[35%] xm:w-[100%]'>
-                    <label htmlFor="Class" className='font-semibold'>Class</label>
-                    <input className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Class"  />
-                </div>
-
-                <div className='flex flex-col gap-1 w-[35%] xm:w-[100%]'>
-                    <label htmlFor="GRT/NRT" className='font-semibold'>GRT/NRT</label>
-                    <input className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="GRT/NRT"  />
-                </div>
- 
-                <div className='flex flex-col gap-1 w-[35%] xm:w-[100%]'>
-                    <label htmlFor="Teu" className='font-semibold'>Teu</label>
-                    <input className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Teu"  />
-                </div>
-
                 
-                </div>
 
                 {/* main engine dwt */}
                 <div className='p-5 flex gap-16 items-center xm:flex-wrap xm:gap-5'>
                 <div className='flex flex-col gap-1 w-[50%] xm:w-[100%]'>
-                    <label htmlFor="Main Engine" className='font-semibold'>Main Engine</label>
-                    <input className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Main Engine"  />
+                    <label htmlFor="From" className='font-semibold'>Desirable Price Range (USD)</label>
+                    <div className='flex gap-2 items-center'>
+                    <input value={From} onChange={(e)=>setFrom(e.target.value)}  type='number' placeholder='From' className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="From"  />
+                    <input value={To} onChange={(e)=>setTo(e.target.value)} type='number' placeholder='To' className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="To"  />
+                    </div>
+                    
                 </div>
 
-                <div className='flex flex-col gap-1 w-[50%] xm:w-[100%]'>
-                    <label htmlFor="DWT" className='font-semibold'>DWT</label>
-                    <input className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="DWT"  />
-                </div>
                 
-                </div>
-
-
-                 {/* Price and scrap */}
-                 <div className='p-5 '>
-                <div className='flex flex-col gap-1 w-[50%] xm:w-[100%]'>
-                    <label htmlFor="Price" className='font-semibold'>Price(USD)</label>
-                    <input className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Price"  />
-                </div>
-
-               
-                
-                </div>
+                </div>                 
 
                  {/* Email Phone */}
                  <div className='p-5 flex gap-16 items-center xm:flex-wrap xm:gap-5'>
                 <div className='flex flex-col gap-1 w-[50%] xm:w-[100%]'>
                     <label htmlFor="Email" className='font-semibold'>Email</label>
-                    <input className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Email"  />
+                    <input value={Email} onChange={(e)=>setEmail(e.target.value)} className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Email"  />
                 </div>
 
                 <div className='flex flex-col gap-1 w-[50%] xm:w-[100%]'>
                     <label htmlFor="Mobile No" className='font-semibold'>Mobile No</label>
-                    <input className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Mobile No"  />
+                    <input value={MobileNO} onChange={(e)=>setMobileNO(e.target.value)} className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Mobile No"  />
                 </div>
                 
                 </div>
@@ -463,20 +595,20 @@ const [isScrolled, setIsScrolled] = useState(false);
                 {/* Brief Description */}
                 <div className='p-5'>
                 <label htmlFor="Brief Description" className='font-semibold'>Brief Description</label>
-                <textarea rows={5} className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Brief Description"  ></textarea>
+                <textarea value={BriefDescription} onChange={(e)=>setBriefDescription(e.target.value)} rows={5} className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Brief Description"  ></textarea>
                 </div>
 
                
                 {/* upoad image */}
                 <div className='p-5'>
                     <label htmlFor="Upload Image" className='font-semibold'>Upload Image</label>
-                    <input type='file' className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Upload Image"  />
+                    <input onChange={(e)=>setImage(e.target.files[0])} type='file' className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Upload Image"  />
                 </div>
 
 
                 <hr className='text-gray-500 w-full' />
         <div className='p-4'>
-            <button type='submit' className='bg-green-600 hover:bg-green-500 text-white px-3 py-2 rounded'>Submit</button>
+            <button type='submit' onClick={(e) => handleSubmitCharter(e)} className='bg-green-600 hover:bg-green-500 text-white px-3 py-2 rounded'>Submit</button>
             </div>
         </form>
       )}
@@ -488,34 +620,69 @@ const [isScrolled, setIsScrolled] = useState(false);
           </div>
           <hr className="text-gray-100 w-full" />
           <div className="p-5">
-            <label htmlFor="EquipmentType" className="font-semibold">
-              Equipment Type
+            <label htmlFor="Category" className="font-semibold">
+              Category 
             </label>
             <select
+            value={Category}
+            onChange={(e)=>setCategory(e.target.value)}
               className="w-full mt-2 rounded border border-gray-400 p-2 text-[#d1a460]"
               id="EquipmentType"
             >
               <option hidden selected value="">
                 -Select-
               </option>
-              <option value="crane">Crane</option>
-              <option value="engine">Engine</option>
-              <option value="propeller">Propeller</option>
+              <option value="Engine Stores">Engine Stores</option>
+              <option value="Deck Stores">Deck Stores</option>
+              <option value="Cabin Stores">Cabin Stores</option>
+              <option value="Electrical Stores">Electrical Stores </option>
+              <option value="Safety Stores">Safety Stores</option>
+              <option value="Provision Stores">Provision Stores</option>
               {/* Additional options */}
             </select>
+          </div>
+          <div className="p-5">
+            <label htmlFor="Subject" className="font-semibold">
+              Subject 
+            </label>
+            <input
+            value={Subject}
+            onChange={(e)=>setSubject(e.target.value)}
+              className="w-full mt-2 rounded border border-gray-400 p-2 text-gray-500"
+              id="Subject"
+            />
+           
           </div>
           <div className="p-5">
             <label htmlFor="Description" className="font-semibold">
               Description
             </label>
             <textarea
+            value={BriefDescription}
+            onChange={(e)=>setBriefDescription(e.target.value)}
               rows={5}
               className="w-full mt-2 rounded border border-gray-400 p-2 text-gray-500"
               id="Description"
             ></textarea>
           </div>
+
+          <div className='p-5 flex gap-16 items-center xm:flex-wrap xm:gap-5'>
+                <div className='flex flex-col gap-1 w-[50%] xm:w-[100%]'>
+                    <label htmlFor="Email" className='font-semibold'>Email</label>
+                    <input value={Email} onChange={(e)=>setEmail(e.target.value)} className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Email"  />
+                </div>
+
+                <div className='flex flex-col gap-1 w-[50%] xm:w-[100%]'>
+                    <label htmlFor="Mobile No" className='font-semibold'>Mobile No</label>
+                    <input value={MobileNO} onChange={(e)=>setMobileNO(e.target.value)} className='w-full mt-2 rounded border border-gray-400  text-gray-500 p-2' name="" id="Mobile No"  />
+                </div>
+                
+                </div>
+
+
           <div className="p-4">
-            <button  className="bg-green-600 hover:bg-green-500 text-white px-3 py-2 rounded">
+            <button 
+            onClick={(e)=>handleSubmitEqupment(e)} className="bg-green-600 hover:bg-green-500 text-white px-3 py-2 rounded">
               Submit
             </button>
           </div>

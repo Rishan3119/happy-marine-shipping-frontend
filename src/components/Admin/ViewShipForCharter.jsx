@@ -34,13 +34,13 @@ export default function ViewShipForCharter() {
     async function fetchdata() {
       try {
         const res1 = await axios.get(
-          `${config.base_url}/api/HappyMarineShipping/viewShipForSale`,
+          `${config.base_url}/api/HappyMarineShipping/viewShipForCharter`,
           {
             headers: {
               "Content-Type": "multipart/form-data",
             },
             params: {
-              title: input,
+              short_description: input,
             },
           }
         );
@@ -62,7 +62,7 @@ export default function ViewShipForCharter() {
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(
-        `${config.base_url}/api/HappyMarineShipping/deleteShipForSale/${id}`,
+        `${config.base_url}/api/HappyMarineShipping/deleteCharter/${id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -72,7 +72,7 @@ export default function ViewShipForCharter() {
       if (response.data.status === 200) {
         setCount(id);
         console.log(response);
-        toast.success("Ship Deleted Successfully !", {
+        toast.success(" Deleted Successfully !", {
           autoClose: 1000,
           position: "top-right",
         });
@@ -883,41 +883,41 @@ export default function ViewShipForCharter() {
                       <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
                         Vessel Type
                       </th>
-                      <th className="px-4 py-3 text-left text-gray-600 min-w-[250px]">
+                      <th className="px-4 py-3 text-left text-gray-600 min-w-[200px]">
                         Short Description
                       </th>
-                      <th className="px-4 py-3 text-center text-gray-600 min-w-[150px]">
+                      <th className="px-4 py-3 text-left text-gray-600 min-w-[200px]">
                         Nationality
                       </th>
-                      <th className="px-4 py-3 text-center text-gray-600 min-w-[150px]">
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
                         Inspection Country
                       </th>
-                      <th className="px-4 py-3 text-center text-gray-600 min-w-[120px]">
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
                         Year Built
                       </th>
-                      <th className="px-4 py-3 text-center text-gray-600 min-w-[120px]">
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
                         Capacity
                       </th>
                      
-                      <th className="px-4 py-3 text-center text-gray-600 min-w-[120px]">
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
                         Price
                       </th>
-                      <th className="px-4 py-3 text-center text-gray-600 min-w-[120px]">
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
                         Buy as Scrap
                       </th>
-                      <th className="px-4 py-3 text-center text-gray-600 min-w-[250px]">
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
                         Brief Details
                       </th>
                       <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
                         Email
                       </th>
-                      <th className="px-4 py-3 text-center text-gray-600 min-w-[150px]">
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
                         Mobile
                       </th>
-                      <th className="px-4 py-3 text-center text-gray-600 min-w-[180px]">
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
                         Image
                       </th>
-                      <th className="px-4 py-3 text-center text-gray-600 min-w-[120px]">
+                      <th className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
                         Actions
                       </th>
                     </tr>
@@ -925,51 +925,68 @@ export default function ViewShipForCharter() {
 
                   <tbody>
                       
-                  <tr>
-                      <td className="px-4 py-3 text-center text-gray-600 min-w-[50px]">
-                        1
+                  {
+                    allShips.length===0?(
+                      <tr>
+                      <td
+                        colSpan="6"
+                        className="px-6 text-red-500 text-center py-4"
+                      >
+                          Unavailable
                       </td>
-                      <td className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
-                        Vessel Type
+                    </tr>
+                    ):(
+                     allShips.map((item,index)=>{
+                      return(
+                        <tr>
+                      <td className="px-6 py-3 text-center text-gray-600 min-w-[50px]">
+                        {index + 1}
                       </td>
-                      <td className="px-4 py-3 text-left text-gray-600 min-w-[250px]">
-                        Short Description
+                      <td className="px-6 py-3 text-center text-gray-600 min-w-[200px]">
+                        {item.vessel_type}
                       </td>
-                      <td className="px-4 py-3 text-center text-gray-600 min-w-[150px]">
-                        Nationality
+                      <td className="px-6 py-3 text-left text-gray-600 min-w-[250px]">
+                        {item.short_description}
                       </td>
-                      <td className="px-4 py-3 text-center text-gray-600 min-w-[150px]">
-                        Inspection Country
+                      <td className="px-6 py-3 text-left text-gray-600 min-w-[150px]">
+                        {item.nationality}
                       </td>
-                      <td className="px-4 py-3 text-center text-gray-600 min-w-[120px]">
-                        Year Built
+                      <td className="px-6 py-3 text-center text-gray-600 min-w-[150px]">
+                        {item.inspection_country}
                       </td>
-                      <td className="px-4 py-3 text-center text-gray-600 min-w-[120px]">
-                        Capacity
+                      <td className="px-6 py-3 text-center text-gray-600 min-w-[120px]">
+                        {item.year_built}
+                      </td>
+                      <td className="px-6 py-3 text-center text-gray-600 min-w-[120px]">
+                        {item.desirable_capacity}
                       </td>
                      
-                      <td className="px-4 py-3 text-center text-gray-600 min-w-[120px]">
-                        Price
+                      <td className="px-6 py-3 text-center text-gray-600 min-w-[120px]">
+                        {item.from_price} - {item.to_price}
                       </td>
-                      <td className="px-4 py-3 text-center text-gray-600 min-w-[120px]">
-                        Buy as Scrap
+                      <td className="px-6 py-3 text-center text-gray-600 min-w-[120px]">
+                        {item.buy_as_scrap}
                       </td>
-                      <td className="px-4 py-3 text-center text-gray-600 min-w-[250px]">
-                        Brief Details
+                      <td className="px-6 py-3 text-center text-gray-600 min-w-[250px]">
+                        {item.brief_description}
                       </td>
-                      <td className="px-4 py-3 text-center text-gray-600 min-w-[200px]">
-                        Email
+                      <td className="px-6 py-3 text-center text-gray-600 min-w-[200px]">
+                        {item.email}
                       </td>
-                      <td className="px-4 py-3 text-center text-gray-600 min-w-[150px]">
-                        Mobile
+                      <td className="px-6 py-3 text-center text-gray-600 min-w-[150px]">
+                        {item.phone}
                       </td>
-                      <td className="px-4 py-3 text-center text-gray-600 min-w-[180px]">
-                        Image
+                      <td className="px-6 py-3 text-center text-gray-600 min-w-[180px]">
+                      <img
+                              src={item.image}
+                              className="w-full h-20 object-cover rounded-md"
+                              alt=""
+                            />
                       </td>
-                      <td className="px-4 py-3 text-center text-gray-600 min-w-[120px]">
+                      <td className="px-6 py-3 text-center text-gray-600 min-w-[120px]">
                       <div className="flex gap-4 sm:gap-8 items-center justify-center">
                               <button
-                               
+                               onClick={()=>handleDelete(item.id)}
                                 className="text-red-500 hover:underline"
                               >
                                 <i className="fa-solid fa-trash"></i>
@@ -977,6 +994,13 @@ export default function ViewShipForCharter() {
                             </div>
                       </td>
                     </tr>
+                      )
+                     }) 
+                     
+                    )
+                    
+                    
+                    }
                   </tbody>
                 </table>
               </div>

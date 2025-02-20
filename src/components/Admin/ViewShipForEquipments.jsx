@@ -34,13 +34,13 @@ export default function ViewShipForEquipments() {
     async function fetchdata() {
       try {
         const res1 = await axios.get(
-          `${config.base_url}/api/HappyMarineShipping/viewShipForSale`,
+          `${config.base_url}/api/HappyMarineShipping/viewShipForEquipments`,
           {
             headers: {
               "Content-Type": "multipart/form-data",
             },
             params: {
-              title: input,
+              category: input,
             },
           }
         );
@@ -62,7 +62,7 @@ export default function ViewShipForEquipments() {
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(
-        `${config.base_url}/api/HappyMarineShipping/deleteShipForSale/${id}`,
+        `${config.base_url}/api/HappyMarineShipping/deleteEquipments/${id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -904,36 +904,53 @@ export default function ViewShipForEquipments() {
 
                   <tbody>
                       
-                  <tr>
-                      <td className="px-4 py-3 text-center  ">
-                        1
-                      </td>
-                      <td className="px-4 py-3 text-center  ">
-                      Engine Stores
-                      </td>
-                      <td className="px-4 py-3 text-left  ">
-                       Subject
-                      </td>
-                      <td className="px-4 py-3 text-center  ">
-                        Details
-                      </td>
-                     
-                      <td className="px-4 py-3 text-center  ">
-                      swe@gmail.com
-                      </td>
-                      <td className="px-4 py-3 text-center  ">
-                        1234567890
-                      </td>
-                      
-                      <td className="px-4 py-3 text-center  ">
-                      <button
-                               
-                               className="text-red-500 hover:underline"
-                             >
-                               <i className="fa-solid fa-trash"></i>
-                             </button>
+                  {
+                    allShips.length===0?(
+                      <tr>
+                      <td
+                        colSpan="6"
+                        className="px-6 text-red-500 text-center py-4"
+                      >
+                          Unavailable
                       </td>
                     </tr>
+                    ):(
+                      allShips.map((itm,index)=>{
+                        return(
+                          <tr key={itm.id}>
+                          <td className="px-4 py-3 text-center  ">
+                            {index + 1}
+                          </td>
+                          <td className="px-4 py-3 text-center  ">
+                          {itm.category}
+                          </td>
+                          <td className="px-4 py-3 text-left  ">
+                           {itm.subject}
+                          </td>
+                          <td className="px-4 py-3 text-center  ">
+                            {itm.brief_description}
+                          </td>
+                         
+                          <td className="px-4 py-3 text-center  ">
+                          {itm.email}
+                          </td>
+                          <td className="px-4 py-3 text-center  ">
+                            {itm.phone}
+                          </td>
+                          
+                          <td className="px-4 py-3 text-center  ">
+                          <button
+                                   onClick={()=>handleDelete(itm.id)}
+                                   className="text-red-500 hover:underline"
+                                 >
+                                   <i className="fa-solid fa-trash"></i>
+                                 </button>
+                          </td>
+                        </tr>
+                        )
+                      })
+                    )
+                    }
                   </tbody>
                 </table>
               </div>
