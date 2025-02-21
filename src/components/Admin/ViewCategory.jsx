@@ -130,7 +130,7 @@ export default function ViewCategory() {
   };
 
   const handleSave = async () => {
-    setLoading(true); 
+    setLoading(true);
     const data = {
       category_name: editedCategoryName,
     };
@@ -149,8 +149,14 @@ export default function ViewCategory() {
       if (response.data.status === 200) {
         console.log(response);
   
-        // Ensure count is updated correctly
-        setCount((prevCount) => prevCount + 1); // This will trigger a re-fetch of categories
+        // ✅ Update the local state directly to prevent reordering
+        setallCategory((prevShips) =>
+          prevShips.map((ship) =>
+            ship.id === selectedCategory.id
+              ? { ...ship, category_name: editedCategoryName }
+              : ship
+          )
+        );
   
         setLoading(false);
   
@@ -159,7 +165,7 @@ export default function ViewCategory() {
           position: "top-right",
         });
   
-        // Close modal
+        // ✅ Close modal
         closeModal();
       } else {
         setLoading(false);
@@ -179,7 +185,7 @@ export default function ViewCategory() {
       });
     }
   };
-
+  
 
   const handleDelete = async (id) => {
     try {
@@ -542,7 +548,10 @@ export default function ViewCategory() {
 
             <li className="px-5  cursor-pointer w-full relative hover:text-[#00c292] py-2 text-lg flex items-center">
               <i className="fa-solid fa-gauge mr-2"></i>
-              {isSidebarOpen && "Amenities"}
+              {isSidebarOpen && (
+                              <Link to={'/admin/amenities'}>Amenities</Link>
+                            )
+                            }
             </li>
 
             {/* Settings Dropdown */}
@@ -842,7 +851,10 @@ export default function ViewCategory() {
 
             <li className="px-5  cursor-pointer w-full relative hover:text-[#00c292] py-2 text-lg flex items-center">
               {isSidebarOpen && <i className="fa-solid fa-gauge mr-2"></i>}
-              {isSidebarOpen && "Amenities"}
+              {isSidebarOpen && (
+                <Link to={'/admin/amenities'}>Amenities</Link>
+              )
+              }
             </li>
 
             {/* Settings Dropdown */}

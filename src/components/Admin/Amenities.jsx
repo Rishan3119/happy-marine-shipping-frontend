@@ -25,29 +25,27 @@ export default function Amenities() {
   const [allCategory, setallCategory] = useState([]);
   const [allSubCategory, setallSubCategory] = useState([]);
   const [addInput, setAddInput] = useState([]);
-  const [input,setInput] = useState('')
+  const [input, setInput] = useState("");
   const [count, setCount] = useState(0);
-
- 
 
   // fetch ship data
   useEffect(() => {
     async function fetchdata() {
       try {
         const res1 = await axios.get(
-          `${config.base_url}/api/HappyMarineShipping/viewShipForEquipments`,
+          `${config.base_url}/api/HappyMarineShipping/viewAmenities`,
           {
             headers: {
               "Content-Type": "multipart/form-data",
             },
             params: {
-              category: input,
+              amenities: input,
             },
           }
         );
         if (res1.data.status === 200) {
           console.log(res1);
-          setallShips(res1.data.data.reverse());
+          setallShips(res1.data.data);
         } else {
           console.log("error");
         }
@@ -63,7 +61,7 @@ export default function Amenities() {
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(
-        `${config.base_url}/api/HappyMarineShipping/deleteEquipments/${id}`,
+        `${config.base_url}/api/HappyMarineShipping/deleteAmenities/${id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -71,9 +69,9 @@ export default function Amenities() {
         }
       );
       if (response.data.status === 200) {
-        setCount(id);
+        setCount((prevCount)=> prevCount  + 1);
         console.log(response);
-        toast.success("Ship Deleted Successfully !", {
+        toast.success(" Deleted Successfully !", {
           autoClose: 1000,
           position: "top-right",
         });
@@ -117,6 +115,8 @@ export default function Amenities() {
     setIsOpen((prev) => !prev);
   };
 
+  const [loading, setLoading] = useState(false);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -153,6 +153,120 @@ export default function Amenities() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
+  const handleSubmit = async (e, id) => {
+    e.preventDefault();
+
+    setLoading(true);
+    const data = {
+      amenities: addInput,
+    };
+    try {
+      const response = await axios.post(
+        `${config.base_url}/api/HappyMarineShipping/AddAmenities`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.data.status === 200) {
+        console.log(response);
+        setLoading(false);
+        setCount((prevCount)=> prevCount  + 1);
+        setAddInput("");
+        toast.success("Amenities added Successfully!", {
+          autoClose: 1500,
+          position: "top-right",
+        });
+      } else {
+        setLoading(false);
+        console.log("error1");
+        toast.error("Fill the required Fields", {
+          autoClose: 1500,
+          position: "top-right",
+        });
+      }
+    } catch (err) {
+      setLoading(false);
+      console.log("error2", err);
+      toast.error("Error", {
+        autoClose: 2000,
+        position: "top-right",
+      });
+    }
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [editedCategoryName, setEditedCategoryName] = useState("");
+ 
+
+  const openModal = (category) => {
+    setSelectedCategory(category);
+    setEditedCategoryName(category.amenities);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCategory(null);
+  };
+
+  const handleSave = async (id) => {
+    const data = {
+      amenities: editedCategoryName,
+    };
+  
+    try {
+      const response = await axios.put(
+        `${config.base_url}/api/HappyMarineShipping/updateAmenities/${selectedCategory.id}`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      if (response.data.status === 200) {
+        console.log(response);
+  
+        setallShips((prevShips) =>
+            prevShips.map((ship) =>
+              ship.id === selectedCategory.id
+                ? { ...ship, amenities: editedCategoryName }
+                : ship
+            )
+          );
+  
+        setLoading(false);
+  
+        toast.success(" Updated Successfully!", {
+          autoClose: 1500,
+          position: "top-right",
+        });
+  
+        // Close modal
+        closeModal();
+      } else {
+        setLoading(false);
+        console.log("error1");
+        toast.error("Fill the required Fields", {
+          autoClose: 1500,
+          position: "top-right",
+        });
+      }
+    } catch (err) {
+      setLoading(false);
+      console.log("error2", err);
+  
+      toast.error("Error Updating Category", {
+        autoClose: 2000,
+        position: "top-right",
+      });
+    }
+  };
   return (
     <div className="h-screen flex flex-col bg-gray-100">
       {/* Navbar - Full Width, Above Sidebar */}
@@ -259,9 +373,11 @@ export default function Amenities() {
           <ul className="mt-10 flex flex-col gap-3 ">
             {/* Dashboard */}
             <li className="px-5 hover:text-[#00c292] cursor-pointer py-2 text-lg  flex items-center">
-                          <Link to="/admin/dashboard"><i className="fa-solid fa-gauge mr-3"></i></Link>
-                          {isSidebarOpen && <Link to="/admin/dashboard">Dashboard</Link>}
-                        </li>
+              <Link to="/admin/dashboard">
+                <i className="fa-solid fa-gauge mr-3"></i>
+              </Link>
+              {isSidebarOpen && <Link to="/admin/dashboard">Dashboard</Link>}
+            </li>
 
             {/* Ship For Sale Dropdown */}
             <li className="px-2  text-lg  flex flex-col  relative">
@@ -447,10 +563,14 @@ export default function Amenities() {
                       </Link>
                     </li>
                     <li className="px-4 py-2 text-[#8D97AD] hover:bg-gray-100">
-                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">
+                        Ship For Charter Registration
+                      </Link>
                     </li>
                     <li className="px-4 py-2  hover:bg-gray-100">
-                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">
+                        Supply Equipment Registration
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -472,19 +592,23 @@ export default function Amenities() {
                       </Link>
                     </li>
                     <li className="px-4 py-1 text-[#8D97AD]  hover:text-[#00c292]">
-                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">
+                        Ship For Charter Registration
+                      </Link>
                     </li>
                     <li className="px-4 py-1  hover:text-[#00c292]">
-                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">
+                        Supply Equipment Registration
+                      </Link>
                     </li>
                   </ul>
                 </div>
               )}
             </li>
 
-            <li className="px-5  cursor-pointer w-full text-[#00c292] border-l-4 border-[#00c292] relative hover:text-[#00c292] py-2 text-lg flex items-center">
+            <li className="px-3  cursor-pointer w-full text-[#00c292] border-l-4 border-[#00c292] relative hover:text-[#00c292] py-2 text-lg flex items-center">
               <i className="fa-solid fa-gauge mr-2"></i>
-              {isSidebarOpen && "Amenities"}
+              {isSidebarOpen && <Link to={"/admin/amenities"}>Amenities</Link>}
             </li>
 
             {/* Settings Dropdown */}
@@ -564,9 +688,7 @@ export default function Amenities() {
             </li>
 
             {/* Ship For Sale Dropdown */}
-            <li
-              className={`px-2  text-lg  flex flex-col  relative`}
-            >
+            <li className={`px-2  text-lg  flex flex-col  relative`}>
               <div
                 className="flex items-center  justify-between cursor-pointer p-2"
                 onClick={() => toggleDropdown(1)} // Toggle Ship For Sale dropdown
@@ -721,9 +843,7 @@ export default function Amenities() {
               )}
             </li>
 
-            <li
-              className={`px-3 py-2 text-lg flex flex-col   relative group`}
-            >
+            <li className={`px-3 py-2 text-lg flex flex-col   relative group`}>
               {/* Clickable Div */}
               <div
                 className="flex items-center justify-between cursor-pointer p-2 w-full hover:text-[#00c292]"
@@ -751,10 +871,14 @@ export default function Amenities() {
                       </Link>
                     </li>
                     <li className="px-4 py-2 text-[#8D97AD] hover:bg-gray-100">
-                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">
+                        Ship For Charter Registration
+                      </Link>
                     </li>
                     <li className="px-4 py-2  hover:bg-gray-100">
-                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">
+                        Supply Equipment Registration
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -776,21 +900,29 @@ export default function Amenities() {
                       </Link>
                     </li>
                     <li className="px-4 py-1 text-[#8D97AD]  hover:text-[#00c292]">
-                      <Link to="/admin/shipforCharter">Ship For Charter Registration</Link>
+                      <Link to="/admin/shipforCharter">
+                        Ship For Charter Registration
+                      </Link>
                     </li>
                     <li className="px-4 py-1  hover:text-[#00c292]">
-                      <Link to="/admin/shipforEq">Supply Equipment Registration</Link>
+                      <Link to="/admin/shipforEq">
+                        Supply Equipment Registration
+                      </Link>
                     </li>
                   </ul>
                 </div>
               )}
             </li>
 
-            <li className={`px-5 ${
-                isSidebarOpen ? "border-l-4 text-[#00c292]  border-[#00c292]" : "border-none"
-              }  cursor-pointer w-full relative hover:text-[#00c292] py-2 text-lg flex items-center`}>
+            <li
+              className={`px-5 ${
+                isSidebarOpen
+                  ? "border-l-4 text-[#00c292]  border-[#00c292]"
+                  : "border-none"
+              }  cursor-pointer w-full relative hover:text-[#00c292] py-2 text-lg flex items-center`}
+            >
               {isSidebarOpen && <i className="fa-solid fa-gauge mr-2"></i>}
-              {isSidebarOpen && "Amenities"}
+              {isSidebarOpen && <Link to={"/admin/amenities"}>Amenities</Link>}
             </li>
 
             {/* Settings Dropdown */}
@@ -862,7 +994,7 @@ export default function Amenities() {
           </div>
 
           <div className="w-full  py-5 px-4">
-            <div className="bg-white overflow-auto w-full max-w-full  p-6 mt-5 rounded">
+            <div className="bg-white  w-full max-w-full  p-6 mt-5 rounded">
               <div className="py-3 flex gap-3 items-center">
                 <input
                   type="text"
@@ -871,64 +1003,109 @@ export default function Amenities() {
                   placeholder="Enter Amenities"
                   className="rounded-lg  sm:w-[50%] w-[20%] p-2 border shadow"
                 />
-                <button className="bg-[#00c292] p-2 text-white font-semibold rounded-lg">Add</button>
+                {
+                  <button
+                    onClick={(e) => handleSubmit(e)}
+                    type="submit"
+                    className="bg-[#00c292] p-2 text-white font-semibold rounded-lg"
+                  >
+                    {loading ? (
+                      <span className="block w-[16px] h-[16px] border-2 border-b-0 border-white mt-[4px] mb-[4px] rounded-full m-auto animate-spin"></span>
+                    ) : (
+                      "Add"
+                    )}
+                  </button>
+                }
               </div>
 
               {/* Responsive Table Wrapper */}
-              <div className="w-full lg:w-[1500px] shadow-lg rounded-lg overflow-auto">
+              <div className="w-full shadow-lg rounded-lg overflow-auto">
                 <table className=" w-full  bg-white  shadow-lg rounded-lg overflow-auto">
                   <thead className="bg-gray-100 border-b border-gray-200">
                     <tr>
-                      <th className="px-4 py-3 text-center text-gray-600 ">
+                      <th className=" py-3 text-center text-gray-600 ">
                         No
                       </th>
-                      <th className="px-4 py-3 text-center text-gray-600 ">
+                      <th className=" py-3 text-center text-gray-600 ">
                         Amenities
                       </th>
-                      <th className="px-4 py-3 text-center text-gray-600 ">
+                      <th className=" py-3 text-center text-gray-600 ">
                         Actions
                       </th>
                     </tr>
                   </thead>
 
                   <tbody>
-                      
-                  {
-                    allShips.length===0?(
+                    {allShips.length === 0 ? (
                       <tr>
-                      <td
-                        colSpan="2"
-                        className="px-6 text-red-500 text-center py-4"
-                      >
+                        <td></td>
+                        <td className="px-1 text-red-500 text-center py-4">
                           Unavailable
-                      </td>
-                    </tr>
-                    ):(
-                      allShips.map((itm,index)=>{
-                        return(
+                        </td>
+                        <td></td>
+                      </tr>
+                    ) : (
+                      allShips.map((itm, index) => {
+                        return (
                           <tr key={itm.id}>
-                          <td className="px-4 py-3 text-center  ">
-                            {index + 1}
-                          </td>
-                          <td className="px-4 py-3 text-center  ">
-                          {itm.amenities}
-                          </td>
-                          <td className="px-4 py-3 text-center  ">
-                          <button
-                                   onClick={()=>handleDelete(itm.id)}
-                                   className="text-red-500 hover:underline"
-                                 >
-                                   <i className="fa-solid fa-trash"></i>
-                                 </button>
-                          </td>
-                        </tr>
-                        )
+                            <td className=" py-3 text-center  ">
+                              {index + 1}
+                            </td>
+                            <td className=" py-3 text-center  ">
+                              {itm.amenities}
+                            </td>
+                            <td className=" py-3 text-center   ">
+                             
+                                  <button
+                                    className="text-blue-500 me-5 hover:underline"
+                                    onClick={() => openModal(itm)}
+                                  >
+                                    <i className="fa-solid fa-pen"></i>
+                                  </button>
+                                  <button
+                                    onClick={() => handleDelete(itm.id)}
+                                    className="text-red-500 hover:underline"
+                                  >
+                                    <i className="fa-solid fa-trash"></i>
+                                  </button>
+                              
+                            </td>
+                          </tr>
+                        );
                       })
-                    )
-                    }
+                    )}
                   </tbody>
                 </table>
+                
               </div>
+               {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 className="text-lg font-semibold mb-4">Edit Category</h2>
+            <input
+              type="text"
+              value={editedCategoryName}
+              onChange={(e) => setEditedCategoryName(e.target.value)}
+              className="w-full p-2 border rounded"
+            />
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-gray-400 text-white rounded mr-2"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSave}
+                className="px-4 py-2 bg-blue-500 text-white rounded"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
             </div>
           </div>
         </div>

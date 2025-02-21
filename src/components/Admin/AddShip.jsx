@@ -46,6 +46,7 @@ export default function AddShip() {
 
   const [allCategory, setallCategory] = useState([]);
   const [allSubCategory, setallSubCategory] = useState([]);
+  
 
   // fetch Category  data
 
@@ -83,6 +84,44 @@ export default function AddShip() {
     fetchData();
   }, [config.base_url, count]);
 
+  const [amenities, setAmenities] = useState([]);
+  const [formData, setFormData] = useState({});
+
+  // Fetch amenities from the backend
+  // fetch ship data
+  useEffect(() => {
+    async function fetchdata() {
+      try {
+        const res1 = await axios.get(
+          `${config.base_url}/api/HappyMarineShipping/viewAmenities`,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+           
+          }
+        );
+        if (res1.data.status === 200) {
+          console.log(res1);
+          setAmenities(res1.data.data);
+        } else {
+          console.log("error");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchdata();
+  }, [config.base_url, count]);
+
+  const handleChange = (e, amenity) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,  // This updates the specific amenity input in formData
+    }));
+  };
+
   // Filter subcategories when main category changes
   useEffect(() => {
     if (selectedCategory) {
@@ -97,8 +136,10 @@ export default function AddShip() {
 
   const handleSubmitSale = async (e, id) => {
     e.preventDefault();
-
+  
     setLoading(true);
+  
+    // Collect form data
     const data = {
       title: Title,
       vessel_type: vesselType,
@@ -107,19 +148,16 @@ export default function AddShip() {
       year_built: YearBuilt,
       capacity: Capacity,
       LOA: LOA,
-      Class: Class,
-      GRT_NRT: GRTNRT,
-      Teu: Teu,
       hidden_details: HiddenDetails,
-      main_engine: MainEngine,
-      DWT: DWT,
       email: Email,
       phone: MobileNO,
       brief_description: BriefDescription,
       image: Image,
       thumbnail_image: ThumbnailImage,
       main_category: selectedCategory,
+      value:formData
     };
+  
     try {
       const response = await axios.post(
         `${config.base_url}/api/HappyMarineShipping/RegShipForSale`,
@@ -130,6 +168,7 @@ export default function AddShip() {
           },
         }
       );
+  
       if (response.data.status === 200) {
         navigate("/admin/viewShip");
         console.log(response);
@@ -139,7 +178,8 @@ export default function AddShip() {
           position: "top-right",
         });
         setCount(id);
-
+  
+        // Reset form data after successful submission
         setvesselType("");
         setShortDescription("");
         setFlag("");
@@ -569,7 +609,10 @@ export default function AddShip() {
 
             <li className="px-5  cursor-pointer w-full relative hover:text-[#00c292] py-2 text-lg flex items-center">
               <i className="fa-solid fa-gauge mr-2"></i>
-              {isSidebarOpen && "Amenities"}
+              {isSidebarOpen && (
+                              <Link to={'/admin/amenities'}>Amenities</Link>
+                            )
+                            }
             </li>
 
             {/* Settings Dropdown */}
@@ -873,7 +916,10 @@ export default function AddShip() {
 
             <li className="px-5  cursor-pointer w-full relative hover:text-[#00c292] py-2 text-lg flex items-center">
               {isSidebarOpen && <i className="fa-solid fa-gauge mr-2"></i>}
-              {isSidebarOpen && "Amenities"}
+              {isSidebarOpen && (
+                              <Link to={'/admin/amenities'}>Amenities</Link>
+                            )
+                            }
             </li>
 
             {/* Settings Dropdown */}
@@ -1082,84 +1128,32 @@ export default function AddShip() {
                 </div>
               </div>
 
-              <div className="w-full  p-5 ">
-                <div>
-                  <h1 className="text-xl border-gray-300 border-b">
-                    Amenities
-                  </h1>
-                </div>
-              </div>
-              {/* class */}
-              <div className="p-5  gap-5 grid grid-cols-3 xm:grid-cols-2 xs:grid-cols-1 items-center ">
-                <div className="flex flex-col gap-1  xm:w-[100%]">
-                  <label htmlFor="Class" className="">
-                    Class
-                  </label>
-                  <input
-                    value={Class}
-                    onChange={(e) => setClass(e.target.value)}
-                    className="w-full mt-2 rounded border border-gray-400  text-gray-500 p-2"
-                    placeholder="Enter the Class"
-                    name=""
-                    id="Class"
-                  />
-                </div>
+              <div className="w-full p-5">
+      <div>
+        <h1 className="text-xl border-gray-300 border-b">Amenities</h1>
+      </div>
 
-                <div className="flex flex-col gap-1  xm:w-[100%]">
-                  <label htmlFor="GRT/NRT" className="">
-                    GRT/NRT
-                  </label>
-                  <input
-                    value={GRTNRT}
-                    onChange={(e) => setGRTNRT(e.target.value)}
-                    className="w-full mt-2 rounded border border-gray-400  text-gray-500 p-2"
-                    name=""
-                    id="GRT/NRT"
-                    placeholder="Enter GRT/NRT"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-1  xm:w-[100%]">
-                  <label htmlFor="Teu" className="">
-                    Teu
-                  </label>
-                  <input
-                    value={Teu}
-                    onChange={(e) => setTeu(e.target.value)}
-                    className="w-full mt-2 rounded border border-gray-400  text-gray-500 p-2"
-                    name=""
-                    id="Teu"
-                    placeholder="Enter Teu"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-1  xm:w-[100%]">
-                  <label htmlFor="Main Engine" className="">
-                    Main Engine
-                  </label>
-                  <input
-                    value={MainEngine}
-                    onChange={(e) => setMainEngine(e.target.value)}
-                    className="w-full mt-2 rounded border border-gray-400  text-gray-500 p-2"
-                    name=""
-                    id="Main Engine"
-                    placeholder="Enter Main Engine"
-                  />
-                </div>
-                <div className="flex flex-col gap-1  xm:w-[100%]">
-                  <label htmlFor="DWT" className="">
-                    DWT
-                  </label>
-                  <input
-                    value={DWT}
-                    onChange={(e) => setDWT(e.target.value)}
-                    className="w-full mt-2 rounded border border-gray-400  text-gray-500 p-2"
-                    name=""
-                    id="DWT"
-                    placeholder="Enter DWT"
-                  />
-                </div>
-              </div>
+      <div  className="p-5 gap-5 grid grid-cols-3 xm:grid-cols-2 xs:grid-cols-1 items-center">
+        {amenities.map((amenity, index) => {
+          return (
+            <div key={index} className="flex flex-col gap-1 xm:w-[100%]">
+            <label htmlFor={amenity.amenities} className="">
+              {amenity.amenities}
+            </label>
+            <input
+              value={formData[amenity.amenities] || ""}
+              onChange={(e) => handleChange(e, amenity.amenities)}
+              className="w-full mt-2 rounded border border-gray-400 text-gray-500 p-2"
+              placeholder={`Enter ${amenity.amenities}`}
+              name={amenity.amenities}
+              id={amenity.amenities}
+            />
+          </div>
+          )
+         
+})}
+      </div>
+    </div>
 
               {/*Hidden Details */}
               <div className="p-5 ">

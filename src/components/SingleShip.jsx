@@ -8,7 +8,7 @@ import Footer from "./Footer";
 export default function SingleShip() {
   const [obj, setObj] = useState({});
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenS, setIsOpenS] = useState(true);
@@ -29,6 +29,32 @@ export default function SingleShip() {
         if (res.data.status === 200) {
           console.log(res);
           setObj(res.data.data);
+        } else {
+          console.log(res);
+        }
+      } catch (err) {
+        console.log("error2", err);
+      }
+    }
+    fetchdata();
+  }, [config.base_url]);
+
+  const [Amenities,setAmenities] = useState([])
+
+  useEffect(() => {
+    async function fetchdata() {
+      try {
+        const res = await axios.get(
+          `${config.base_url}/api/HappyMarineShipping/singleAmenity/${id}`,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        if (res.data.status === 200) {
+          console.log(res);
+          setAmenities(res.data.data);
         } else {
           console.log(res);
         }
@@ -125,7 +151,6 @@ export default function SingleShip() {
                         </div>
                       )}
                     </div>
-                    
                   )}
 
                   {/* LOA and Built Year */}
@@ -153,25 +178,37 @@ export default function SingleShip() {
                   )}
 
                   {/* Class and GRT/NRT */}
-                  {(obj.Class || obj.GRT_NRT) && (
+                  {Amenities && (
                     <div className="flex justify-between border-b border-gray-300 py-1 mt-3">
-                      {obj.Class && (
+                      {Amenities.find(
+                        (amenity) => amenity.name === "Class"
+                      ) && (
                         <div className="w-full">
                           <span className="font-semibold bg-gray-200">
                             Class:
                           </span>
                           <span className="text-[#d1a460] ml-2">
-                            {obj.Class}
+                            {
+                              Amenities.find(
+                                (amenity) => amenity.name === "Class"
+                              ).value
+                            }
                           </span>
                         </div>
                       )}
-                      {obj.GRT_NRT && (
+                      {Amenities.find(
+                        (amenity) => amenity.name === "GRT/NRT"
+                      ) && (
                         <div className="w-full">
                           <span className="font-semibold bg-gray-200">
                             GRT/NRT:
                           </span>
                           <span className="text-[#d1a460] ml-2">
-                            {obj.GRT_NRT}
+                            {
+                              Amenities.find(
+                                (amenity) => amenity.name === "GRT/NRT"
+                              ).value
+                            }
                           </span>
                         </div>
                       )}
@@ -179,75 +216,87 @@ export default function SingleShip() {
                   )}
 
                   {/* Main Engine and DWT */}
-                  {(obj.main_engine || obj.DWT) && (
+                  {Amenities && (
                     <div className="flex justify-between mt-3">
-                      {obj.main_engine && (
+                      {Amenities.find(
+                        (amenity) => amenity.name === "Main Engine"
+                      ) && (
                         <div className="w-full">
                           <span className="font-semibold bg-gray-200">
                             Main Engine:
                           </span>
                           <span className="text-[#d1a460] ml-2">
-                            {obj.main_engine}
+                            {
+                              Amenities.find(
+                                (amenity) => amenity.name === "Main Engine"
+                              ).value
+                            }
                           </span>
                         </div>
                       )}
-                      {obj.DWT && (
+                      {Amenities.find((amenity) => amenity.name === "DWT") && (
                         <div className="w-full">
                           <span className="font-semibold bg-gray-200">
                             DWT:
                           </span>
-                          <span className="text-[#d1a460] ml-2">{obj.DWT}</span>
+                          <span className="text-[#d1a460] ml-2">
+                            {
+                              Amenities.find(
+                                (amenity) => amenity.name === "DWT"
+                              ).value
+                            }
+                          </span>
                         </div>
                       )}
                     </div>
                   )}
-                  
-                        <div className="w-full mt-5">
-                          <span onClick={()=>navigate(`/shipLoc/${obj.id}`)} className=" text-blue-400 cursor-pointer hover:underline ">
-                             Track Location
-                          </span>
-                          
-                        </div>
-                      
 
+                  <div className="w-full mt-5">
+                    <span
+                      onClick={() => navigate(`/shipLoc/${obj.id}`)}
+                      className=" text-blue-400 cursor-pointer hover:underline "
+                    >
+                      Track Location
+                    </span>
+                  </div>
                 </div>
               )}
             </div>
-
           </div>
 
           <div className=" px-3 py-3">
-              <div className="border border-gray-400">
-                {/* Dropdown Header */}
-                <div
-                  className="flex justify-between items-center bg-[#d1a460] py-3 text-white font-bold text-xl px-4 cursor-pointer"
-                  onClick={() => setIsOpen(!isOpen)}
-                >
-                  <h1>Brief Description</h1>
-                  {isOpen ? (
-                    <i className="fa-solid fa-chevron-up text-xl"></i>
-                  ) : (
-                    <i className="fa-solid fa-chevron-right text-xl"></i>
-                  )}
-                </div>
+            <div className="border border-gray-400">
+              {/* Dropdown Header */}
+              <div
+                className="flex justify-between items-center bg-[#d1a460] py-3 text-white font-bold text-xl px-4 cursor-pointer"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                <h1>Brief Description</h1>
+                {isOpen ? (
+                  <i className="fa-solid fa-chevron-up text-xl"></i>
+                ) : (
+                  <i className="fa-solid fa-chevron-right text-xl"></i>
+                )}
+              </div>
 
-                {/* Dropdown Content */}
-                {isOpen && (
-                  <div className="text-base text-[#d1a460] p-3">
+              {/* Dropdown Content */}
+              {isOpen && (
+                <div className="text-base text-[#d1a460] p-3">
                   {obj.brief_description ? (
                     obj.brief_description
                       .split("\n") // Split text at newlines
                       .map((detail, index) => (
-                        <p key={index} className="mb-2">{detail.trim()}</p>
+                        <p key={index} className="mb-2">
+                          {detail.trim()}
+                        </p>
                       ))
                   ) : (
                     <p className="text-red-500">No description available</p>
                   )}
                 </div>
-                )}
-              </div>
+              )}
             </div>
-
+          </div>
         </div>
 
         {/* contact */}
@@ -258,10 +307,18 @@ export default function SingleShip() {
             </h1>
           </div>
           <div className="p-5 flex justify-center gap-3">
-            <Link to={"tel:+971503505898"} className="border w-[50%] rounded hover:bg-gray-50 px-3 py-2 text-center bg-white border-gray-400">
+            <Link
+              to={"tel:+971503505898"}
+              className="border w-[50%] rounded hover:bg-gray-50 px-3 py-2 text-center bg-white border-gray-400"
+            >
               Call
             </Link>
-            <Link to={"https://wa.me/971503505898?text=Hello%20Happy%20Marine%20Shipping,%20I%20would%20like%20to%20inquire%20about%20your%20services."} className="border w-[50%] rounded hover:bg-gray-50 px-3 py-2 text-center  bg-white border-gray-400">
+            <Link
+              to={
+                "https://wa.me/971503505898?text=Hello%20Happy%20Marine%20Shipping,%20I%20would%20like%20to%20inquire%20about%20your%20services."
+              }
+              className="border w-[50%] rounded hover:bg-gray-50 px-3 py-2 text-center  bg-white border-gray-400"
+            >
               Whatsapp
             </Link>
           </div>
@@ -278,12 +335,18 @@ export default function SingleShip() {
                   302,Al Ansari Building, Dubai,UAE
                 </span>
               </Link>
-              <Link to={"mailto:admin@happymarine.ae"} className="flex gap-1 items-center">
+              <Link
+                to={"mailto:admin@happymarine.ae"}
+                className="flex gap-1 items-center"
+              >
                 {" "}
                 <i className="fa-solid text-[#d1a460] fa-envelope bg-gray-100 rounded-full  p-3 mr-2"></i>
                 <span className="text-white"> admin@happymarine.ae</span>
               </Link>
-              <Link to={"tel:+971503505898"} className="flex- gap-1 items-center">
+              <Link
+                to={"tel:+971503505898"}
+                className="flex- gap-1 items-center"
+              >
                 {" "}
                 <i className="fa-solid fa-phone text-[#d1a460] bg-gray-100 rounded-full p-3  mr-2"></i>{" "}
                 <span className="text-white">+971 50 350 5898</span>
@@ -291,7 +354,6 @@ export default function SingleShip() {
             </div>
           </div>
         </div>
-
       </div>
 
       <Footer />

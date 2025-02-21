@@ -498,7 +498,10 @@ export default function AddSubCategory() {
 
             <li className="px-5  cursor-pointer w-full relative hover:text-[#00c292] py-2 text-lg flex items-center">
               <i className="fa-solid fa-gauge mr-2"></i>
-              {isSidebarOpen && "Amenities"}
+              {isSidebarOpen && (
+                              <Link to={'/admin/amenities'}>Amenities</Link>
+                            )
+                            }
             </li>
 
             {/* Settings Dropdown */}
@@ -802,7 +805,10 @@ export default function AddSubCategory() {
 
             <li className="px-5  cursor-pointer w-full relative hover:text-[#00c292] py-2 text-lg flex items-center">
               {isSidebarOpen && <i className="fa-solid fa-gauge mr-2"></i>}
-              {isSidebarOpen && "Amenities"}
+              {isSidebarOpen && (
+                              <Link to={'/admin/amenities'}>Amenities</Link>
+                            )
+                            }
             </li>
 
             {/* Settings Dropdown */}
