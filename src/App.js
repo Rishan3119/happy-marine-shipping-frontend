@@ -43,6 +43,7 @@ import VieRegisterShipForSale from './components/Admin/VieRegisterShipForSale';
 import ViewShipForCharter from './components/Admin/ViewShipForCharter';
 import ViewShipForEquipments from './components/Admin/ViewShipForEquipments';
 import Amenities from './components/Admin/Amenities';
+import Profile from './components/Admin/Profile';
 
 
 
@@ -97,6 +98,7 @@ function App() {
         <Route path='/admin/shipforCharter' element={<ViewShipForCharter/>} />
         <Route path='/admin/shipforEq' element={<ViewShipForEquipments/>} />
         <Route path='/admin/amenities' element={<Amenities/>} />
+        <Route path='/admin/profile' element={<Profile/>} />
 
 
 
