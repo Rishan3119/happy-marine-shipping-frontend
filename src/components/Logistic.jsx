@@ -3867,6 +3867,14 @@ export default function Logistic() {
                 <div>
                  
                   <div className="mt-10  w-[100%]  text-center gap-8 text-[#d1a460] text-xl m-auto">
+                     {/* Heading Section */}
+                     <h1 className="text-3xl text-center font-bold mb-6">
+                      {selectedRightCountry
+                        ? selectedRightCountry
+                        : selectedRightRegion
+                        ? selectedRightRegion
+                        : "Select a Region"}
+                    </h1>
                     {selectedRightRegion ? (
                       <>
                         <>
@@ -3911,20 +3919,20 @@ export default function Logistic() {
                             </div>
 
                             <div className="">
-                              <div
-                                 className={`grid gap-10  w-[100%] ssm:w-[85%] m-auto  ${
-                                  displayedShips.length === 1
-                                    ? "grid-cols-1"
-                                    : "grid-cols-3 ssm:grid-cols-1"
-                                }`}
-                              >
+                            <div
+  className={`grid gap-10 w-[100%] ssm:w-[85%] m-auto ${
+    displayedShips.length === 1 ? "grid-cols-1 place-items-center" : "grid-cols-3 ssm:grid-cols-1"
+  }`}
+>
                                 {displayedShips.length > 0 ? (
                                   displayedShips.map((ship, index) => (
                                     <div
-                                    onClick={()=>navigate(`/singleShip/${ship.id}`)}
-                                    key={index}
-                                    className="bg-white  m-auto relative h-[280px] w-[100%]  shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300 overflow-auto"
-                                    >
+  onClick={() => navigate(`/singleShip/${ship.id}`)}
+  key={index}
+  className={`bg-white m-auto relative h-[280px] ${
+    displayedShips.length === 1 ? "w-[250px]" : "w-[100%]"
+  } shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300 overflow-auto`}
+>
                                       <img
                                         src={ship.image}
                                         className="h-[150px] w-full rounded-t-lg"
@@ -4003,19 +4011,19 @@ export default function Logistic() {
                         {/* all ships */}
                         <div className=" block">
                         <div
-                                className={`grid gap-10  w-[100%] ssm:w-[85%] m-auto  ${
-                                  displayedShips.length === 1
-                                    ? "grid-cols-1"
-                                    : "grid-cols-3 ssm:grid-cols-1"
-                                }`}
-                              >
+  className={`grid gap-10 w-[100%] ssm:w-[85%] m-auto ${
+    displayedShips.length === 1 ? "grid-cols-1 place-items-center" : "grid-cols-3 ssm:grid-cols-1"
+  }`}
+>
                                 {displayedShips.length > 0 ? (
                                   displayedShips.map((ship, index) => (
                                     <div
-                                    onClick={()=>navigate(`/singleShip/${ship.id}`)}
-                                      key={index}
-                                      className="bg-white  m-auto relative h-[280px] w-[100%]  shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300 overflow-auto"
-                                    >
+  onClick={() => navigate(`/singleShip/${ship.id}`)}
+  key={index}
+  className={`bg-white m-auto relative h-[280px] ${
+    displayedShips.length === 1 ? "w-[250px]" : "w-[100%]"
+  } shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300 overflow-auto`}
+>
                                       <img
                                         src={ship.image}
                                         className="h-[150px] w-full rounded-t-lg"

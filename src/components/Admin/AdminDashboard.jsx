@@ -108,6 +108,8 @@ export default function AdminDashboard() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
+  
+
   return (
     <div className="h-screen flex flex-col bg-gray-100">
       {/* Navbar - Full Width, Above Sidebar */}
@@ -191,8 +193,8 @@ export default function AdminDashboard() {
                   <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                     <Link to={'/admin/profile'}>Profile</Link>
                   </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Logout
+                  <li className="px-3 py-2 hover:bg-gray-100 cursor-pointer">
+                  <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
                   </li>
                 </ul>
               </motion.div>
@@ -465,7 +467,7 @@ export default function AdminDashboard() {
                       <Link to="/admin/profile">Profile</Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="/admin">Logout</Link>
+                    <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
                     </li>
                   </ul>
                 </div>
@@ -484,8 +486,8 @@ export default function AdminDashboard() {
                     <li className="px-4 py-1 hover:text-[#00c292]">
                       <Link to="/admin/profile">Profile</Link>
                     </li>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Logout</Link>
+                    <li className="px-3 py-1 hover:text-[#00c292]">
+                     <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
                     </li>
                   </ul>
                 </div>
@@ -767,8 +769,8 @@ export default function AdminDashboard() {
                     <li className="px-4 py-2 hover:bg-gray-100">
                       <Link to="/admin/profile">Profile</Link>
                     </li>
-                    <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Logout</Link>
+                    <li className="px-3 py-1 hover:text-[#00c292]">
+                     <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
                     </li>
                   </ul>
                 </div>
@@ -787,8 +789,8 @@ export default function AdminDashboard() {
                     <li className="px-4 py-1 hover:text-[#00c292]">
                       <Link to="/admin/profile">Profile</Link>
                     </li>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Logout</Link>
+                    <li className="px-3 py-1 hover:text-[#00c292]">
+                     <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
                     </li>
                   </ul>
                 </div>

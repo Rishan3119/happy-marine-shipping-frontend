@@ -688,10 +688,10 @@ export default function Home() {
         {!isChatOpen && (
           <div className="fixed bottom-6 right-5 z-50">
             <div
-              className="bg-[#123d5f] text-white px-3 py-2 rounded-full shadow-lg cursor-pointer hover:bg-blue-600"
+              className="bg-[#123d5f] text-white px-2 py-2 rounded-full shadow-lg cursor-pointer hover:bg-blue-600"
               onClick={toggleChatbot}
             >
-              <i className="fa-solid fa-message text-2xl"></i>
+              <i class="fa-solid fa-robot text-2xl"></i>
             </div>
           </div>
         )}

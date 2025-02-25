@@ -197,7 +197,7 @@ export default function SingleShip() {
                         </div>
                       )}
                       {Amenities.find(
-                        (amenity) => amenity.name === "GRT/NRT"
+                        (amenity) => amenity.name === "Grt/Nrt"
                       ) && (
                         <div className="w-full">
                           <span className="font-semibold bg-gray-200">
@@ -206,7 +206,7 @@ export default function SingleShip() {
                           <span className="text-[#d1a460] ml-2">
                             {
                               Amenities.find(
-                                (amenity) => amenity.name === "GRT/NRT"
+                                (amenity) => amenity.name === "Grt/Nrt"
                               ).value
                             }
                           </span>

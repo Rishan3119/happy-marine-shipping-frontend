@@ -188,7 +188,61 @@ export default function ViewShip() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
+  const token = localStorage.getItem("token");
+
   
+
+  const handleStatus = async (id)=>{
+    const data={
+    }
+    try {
+        const response = await axios.put(`${config.base_url}/api/HappyMarineShipping/status/update/${id}`, data, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        });
+
+        if (response.data.status === 200) {
+           console.log("Success")
+           setCount(count +1)
+            toast.success("Disabled Succesfully",{
+                       autoClose:1500,
+                       position:'top-right',
+                       
+                     });
+        } else {
+            console.log("Error while marking as completed");
+        }
+    } catch (err) {
+        console.log("Error:", err);
+    }
+}
+
+const handleStatusD = async (id)=>{
+  const data={
+  }
+  try {
+      const response = await axios.put(`${config.base_url}/api/HappyMarineShipping/statusD/update/${id}`, data, {
+          headers: {
+              'Authorization': `Token ${token}`
+          }
+      });
+
+      if (response.data.status === 200) {
+         console.log("Success")
+         setCount(count +1)
+          toast.success(" Enabled Successfully!",{
+                     autoClose:1500,
+                     position:'top-right',
+                     
+                   });
+      } else {
+          console.log("Error while marking as completed");
+      }
+  } catch (err) {
+      console.log("Error:", err);
+  }
+}
 
   return (
     <div className="h-screen flex flex-col bg-gray-100">
@@ -273,10 +327,10 @@ export default function ViewShip() {
               >
                 <ul className="text-gray-700">
                   <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Profile
+                    <Link to={'/admin/profile'}>Profile</Link>
                   </li>
                   <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Logout
+                  <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
                   </li>
                 </ul>
               </motion.div>
@@ -546,11 +600,11 @@ export default function ViewShip() {
               {!isSidebarOpen && openDropdown === 5 && (
                 <div className="absolute left-full top-0 bg-white shadow-lg transition-all duration-300 w-40 py-2 rounded-lg z-20">
                   <ul>
-                    <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Profile</Link>
+                    <li className="px-4 py-1 hover:text-[#00c292]">
+                      <Link to="/admin/profile">Profile</Link>
                     </li>
-                    <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Logout</Link>
+                    <li className="px-3 py-1 hover:text-[#00c292]">
+                      <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
                     </li>
                   </ul>
                 </div>
@@ -567,10 +621,10 @@ export default function ViewShip() {
                 >
                   <ul>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Profile</Link>
+                      <Link to="/admin/profile">Profile</Link>
                     </li>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Logout</Link>
+                    <li className="px-3 py-1 hover:text-[#00c292]">
+                      <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
                     </li>
                   </ul>
                 </div>
@@ -849,11 +903,11 @@ export default function ViewShip() {
               {!isSidebarOpen && openDropdown === 5 && (
                 <div className="absolute left-full top-0 bg-white shadow-lg transition-all duration-300 w-40 py-2 rounded-lg z-20">
                   <ul>
-                    <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Profile</Link>
+                    <li className="px-4 py-1 hover:text-[#00c292]">
+                      <Link to="/admin/profile">Profile</Link>
                     </li>
-                    <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Logout</Link>
+                    <li className="px-3 py-1 hover:text-[#00c292]">
+                      <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
                     </li>
                   </ul>
                 </div>
@@ -870,10 +924,10 @@ export default function ViewShip() {
                 >
                   <ul>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Profile</Link>
+                      <Link to="/admin/profile">Profile</Link>
                     </li>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Logout</Link>
+                    <li className="px-3 py-1 hover:text-[#00c292]">
+                      <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
                     </li>
                   </ul>
                 </div>
@@ -965,9 +1019,16 @@ export default function ViewShip() {
         <img src={itm.image} className="w-full h-20 object-cover rounded-md" alt="" />
       </td>
       <td className="py-5 px-3 text-center ">
-        <button className="bg-[#00c292] transition-all duration-300 hover:bg-[#246656] rounded px-2 py-1 text-white">
+        {itm.is_status===false?(
+          <button onClick={(e)=>{e.preventDefault();handleStatus(itm.id)}} className="bg-[#00c292] transition-all duration-300 hover:bg-[#246656] rounded px-2 py-1 text-white">
           Enable
         </button>
+        ):(
+          <button onClick={(e)=>{e.preventDefault();handleStatusD(itm.id)}} className="bg-red-500 transition-all duration-300 hover:bg-red-400 rounded px-2 py-1 text-white">
+          Disable
+        </button>
+        )}
+        
       </td>
       <td className="py-5 text-left">
         <div className="flex gap-4 sm:gap-8 items-center justify-center">

@@ -246,11 +246,11 @@ export default function AddCategory() {
               >
                 <ul className="text-gray-700">
                   <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Profile
+                    <Link to={'/admin/profile'}>Profile</Link>
                   </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Logout
-                  </li>
+                   <li className="px-3 py-1 hover:text-[#00c292]">
+                      <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
+                    </li>
                 </ul>
               </motion.div>
             )}
@@ -526,10 +526,10 @@ export default function AddCategory() {
                 <div className="absolute left-full top-0 bg-white shadow-lg transition-all duration-300 w-40 py-2 rounded-lg z-20">
                   <ul>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Profile</Link>
+                      <Link to="/admin/profile">Profile</Link>
                     </li>
-                    <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Logout</Link>
+                     <li className="px-3 py-1 hover:text-[#00c292]">
+                         <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
                     </li>
                   </ul>
                 </div>
@@ -546,11 +546,11 @@ export default function AddCategory() {
                 >
                   <ul>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Profile</Link>
+                      <Link to="/admin/profile">Profile</Link>
                     </li>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Logout</Link>
-                    </li>
+                    <li className="px-3 py-1 hover:text-[#00c292]">
+                                        <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
+                                       </li>
                   </ul>
                 </div>
               )}
@@ -833,11 +833,11 @@ export default function AddCategory() {
                 <div className="absolute left-full top-0 bg-white shadow-lg transition-all duration-300 w-40 py-2 rounded-lg z-20">
                   <ul>
                     <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Profile</Link>
+                      <Link to="/admin/profile">Profile</Link>
                     </li>
-                    <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="#">Logout</Link>
-                    </li>
+                     <li className="px-3 py-1 hover:text-[#00c292]">
+                                         <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
+                                        </li>
                   </ul>
                 </div>
               )}
@@ -853,10 +853,10 @@ export default function AddCategory() {
                 >
                   <ul>
                     <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Profile</Link>
+                      <Link to="/admin/profile">Profile</Link>
                     </li>
-                    <li className="px-4 py-1 hover:text-[#00c292]">
-                      <Link to="#">Logout</Link>
+                    <li className="px-3 py-1 hover:text-[#00c292]">
+                      <Link to={'/admin'} className="text-red-500"><i class='bx bx-log-out'></i> Logout</Link>
                     </li>
                   </ul>
                 </div>
