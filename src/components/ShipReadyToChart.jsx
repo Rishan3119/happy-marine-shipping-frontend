@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import Select from "react-select";
 import ship from "../images/ship.jpeg";
@@ -14,6 +14,7 @@ export default function ShipReadyToChart() {
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [ports, setPorts] = useState([]);
+  const [count,setCount] = useState(0)
 
   const [allships, setAllships] = useState([]);
   const [filteredShips, setFilteredShips] = useState([]);
@@ -188,8 +189,8 @@ export default function ShipReadyToChart() {
         flag: "https://flagcdn.com/w320/sg.png",
       },
       {
-        value: "South Korea",
-        label: "South Korea",
+        value: "Korea",
+        label: "Korea",
         flag: "https://flagcdn.com/w320/kr.png",
       },
       {
@@ -3735,6 +3736,7 @@ export default function ShipReadyToChart() {
     "San Marino": ["Acquaviva"],
   };
 
+  const {id}  = useParams()
   // fetch ship data
   useEffect(() => {
     async function fetchdata() {
@@ -3750,7 +3752,8 @@ export default function ShipReadyToChart() {
         if (res1.data.status === 200) {
           console.log(res1);
           setAllships(res1.data.data.reverse());
-          setFilteredShips(res1.data.data.reverse());
+          setFilteredShips(res1.data.data);
+         
         } else {
           console.log("error");
         }
@@ -3759,7 +3762,7 @@ export default function ShipReadyToChart() {
       }
     }
     fetchdata();
-  }, [config.base_url]);
+  }, [config.base_url,count]);
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -3834,6 +3837,31 @@ export default function ShipReadyToChart() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const [allImages,setallImages] = useState([])
+  
+  useEffect(() => {
+    async function fetchdata() {
+      try {
+        const res3 = await axios.get(
+          `${config.base_url}/api/HappyMarineShipping/ship_images`,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            }
+          }
+        );
+        if (res3.data.status === 200) {
+          console.log("Images :",res3);
+          setallImages(res3.data.data);
+        } else {
+          console.log("error");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchdata();
+  }, [config.base_url,count]);
   return (
     <div>
       <div className="">
@@ -3904,10 +3932,7 @@ export default function ShipReadyToChart() {
 
                             <button
                               className="capsule-3d border border-white rounded-full py-3 w-[80%] m-auto mt-10"
-                              onClick={() => {
-                                setSelectedRegion(null);
-                                setSelectedCountry(null); // Reset country when going back to regions
-                              }}
+                              onClick={handleBack}
                             >
                               <i className="fa-solid fa-arrow-left fa-beat me-2"></i>{" "}
                               Back to Regions
@@ -3926,7 +3951,7 @@ export default function ShipReadyToChart() {
                                 displayedShips.map((ship, index) => (
                                   <div
                                     onClick={() =>
-                                      navigate(`/singleShip/${ship.id}`)
+                                      navigate(`/singleShipCharter/${ship.id}`)
                                     }
                                     key={index}
                                     className={`bg-white m-auto relative h-[280px] ${
@@ -3935,8 +3960,19 @@ export default function ShipReadyToChart() {
                                         : "w-[100%]"
                                     } shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300 overflow-auto`}
                                   >
+                                    {ship.is_status && (
+        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
+          <span className="text-red-600 text-3xl font-bold rotate-[-20deg]">Out of Stock</span>
+        </div>
+      )}
                                     <img
-                                      src={ship.image}
+                                      src={
+                                    allImages.find(
+                                      (img) =>
+                                        img.ship === ship.id &&
+                                        img.thumbnail_image
+                                    )?.thumbnail_image || "fallback-image-url"
+                                  }
                                       className="h-[150px] w-full rounded-t-lg"
                                       alt=""
                                     />
@@ -4019,14 +4055,25 @@ export default function ShipReadyToChart() {
                               {displayedShips.length > 0 ? (
                                 displayedShips.map((ship, index) => (
                                   <div
-  onClick={() => navigate(`/singleShip/${ship.id}`)}
+  onClick={() => navigate(`/singleShipCharter/${ship.id}`)}
   key={index}
   className={`bg-white m-auto relative h-[280px] ${
     displayedShips.length === 1 ? "w-[250px] " : "w-[100%]"
   } shadow-lg rounded-lg transition-all cursor-pointer hover:scale-105 duration-300 overflow-auto`}
 >
+{ship.is_status && (
+        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
+          <span className="text-red-600 text-3xl font-bold rotate-[-20deg]">Out of Stock</span>
+        </div>
+      )}
                                     <img
-                                      src={ship.image}
+                                      src={
+                                    allImages.find(
+                                      (img) =>
+                                        img.ship === ship.id &&
+                                        img.thumbnail_image
+                                    )?.thumbnail_image || "fallback-image-url"
+                                  }
                                       className="h-[150px] w-full rounded-t-lg"
                                       alt=""
                                     />

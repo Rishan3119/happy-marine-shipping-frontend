@@ -40,7 +40,7 @@ export default function Home() {
 
   const handleSend = async (message, isVoiceMessage = false) => {
     
-
+    console.log("API Key:", API_KEY);
     const newMessage = {
       message: message,
       sender: "user",
@@ -217,6 +217,26 @@ export default function Home() {
     </button>
   );
 
+
+  // carousel customer
+  const NextArrowShip = ({ onClick }) => (
+    <button
+      onClick={onClick}
+      className="absolute -right-3 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-2 w-[50px] h-[50px] rounded-full shadow-lg"
+    >
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  );
+
+  const PrevArrowShip = ({ onClick }) => (
+    <button
+      onClick={onClick}
+      className="absolute z-10 -left-4 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-2 w-[50px] h-[50px] rounded-full shadow-lg"
+    >
+      <i className="fa-solid fa-chevron-left"></i>
+    </button>
+  );
+
   const settings = {
     dots: true,
     infinite: true,
@@ -287,13 +307,19 @@ export default function Home() {
     beforeChange: (current, next) => {
       setCurrentSlideShip(next);
     },
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrowShip />,
+    prevArrow: <PrevArrowShip />,
     responsive: [
+      {
+        breakpoint: 1300,
+        settings: {
+          slidesToShow: Math.min(3, allShips.length),
+        },
+      },
       {
         breakpoint: 1200,
         settings: {
-          slidesToShow: Math.min(4, allShips.length),
+          slidesToShow: Math.min(3, allShips.length),
         },
       },
       {
@@ -342,6 +368,7 @@ export default function Home() {
         if (res1.data.status === 200) {
           console.log(res1);
           setallShips(res1.data.data.reverse());
+          setCount(id)
         } else {
           console.log("error");
         }
@@ -357,6 +384,34 @@ export default function Home() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
+
+
+  const [allImages,setallImages] = useState([])
+  
+  useEffect(() => {
+    async function fetchdata() {
+      try {
+        const res3 = await axios.get(
+          `${config.base_url}/api/HappyMarineShipping/ship_images`,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            }
+          }
+        );
+        if (res3.data.status === 200) {
+          console.log("Images :",res3);
+          setallImages(res3.data.data);
+        } else {
+          console.log("error");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchdata();
+  }, [config.base_url,input,count]);
+  
 
   return (
     <div>
@@ -390,7 +445,7 @@ export default function Home() {
         </div>
 
         <section className="bg-gradient-to-r from-[#2e5775] to-[#326e99]">
-          <div className="py-[30px] px-[150px] xl:px-10 xxm:px-3">
+          <div className="py-[30px] px-[160px] xl:px-10 xxm:px-3">
             <h1 className="text-white text-center font-bold text-[30px]">
               Ships For Sale
             </h1>
@@ -398,46 +453,50 @@ export default function Home() {
             <div className="cards-main mt-5 relative testimonial-carousel">
               <div className="testimonial-slide mt-10 py-5 relative">
                 <Slider ref={ShipsliderRef} {...ship}>
-                  {allShips.map((card, index) => (
-                    <div key={index} className="py-[30px]">
-                      <div className="w-[280px] h-[350px] bg-gray-100 overflow-hidden  transition-all rounded-lg border border-white cursor-pointer mx-auto">
-                        <div>
-                          <img
-                            onClick={() => {
-                              navigate(`/singleShip/${card.id}`);
-                            }}
-                            className="w-[280px] rounded-t-lg h-[200px]"
-                            src={card.image}
-                            alt={card.title}
-                          />
-                        </div>
-                        <div className="px-2 py-3 mt-2">
-                          <h1 className="font-bold">
-                            {card.short_description}
-                          </h1>
-                          <h1 className="mt-2">{card.year}</h1>
-                        </div>
-                        <div className="px-2 py-3 -mt-3 flex gap-3 absolute bottom-10">
-                          <button
-                            onClick={() => {
-                              navigate(`/singleShip/${card.id}`);
-                            }}
-                            className="bg-[#123d5f] hover:bg-[#172f41ed] text-white rounded-sm px-2 py-1"
-                          >
-                            View More
-                          </button>
-                          <Link
-                            to={
-                              "https://wa.me/971503505898?text=Hello%20Happy%20Marine%20Shipping,%20I%20would%20like%20to%20inquire%20about%20your%20services."
-                            }
-                            className="bg-white border hover:bg-green-500 hover:border-none hover:text-white border-[#123d5f] rounded-sm px-2 py-1"
-                          >
-                            Enquiry Now
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                {allShips.map((card, index) => (
+  <div key={index} className="py-[20px] relative">
+    <div className="w-[280px] h-[350px] bg-gray-100 overflow-hidden transition-all rounded-lg border border-white cursor-pointer m-auto relative">
+      {/* Show "Out of Stock" watermark if is_status is false */}
+      {card.is_status && (
+        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
+          <span className="text-red-600 text-3xl font-bold rotate-[-20deg]">Out of Stock</span>
+        </div>
+      )}
+      <div>
+      <img
+  onClick={() => navigate(`/singleShiphome/${card.id}`)}
+  className="w-[280px] rounded-t-lg h-[200px] "
+  src={
+    allImages.find((img) => img.ship === card.id && img.thumbnail_image)?.thumbnail_image || "fallback-image-url"
+  }
+  alt={card.title}
+/>
+      </div>
+
+      <div className="px-2 py-3 mt-2">
+        <h1 className="font-bold">{card.title}</h1>
+        
+      </div>
+
+      <div className="px-2 py-3 flex gap-3 absolute bottom-0">
+        <button
+          onClick={() => navigate(`/singleShip/${card.id}`)}
+          className="bg-[#123d5f] hover:bg-[#172f41ed] text-white rounded-sm px-2 py-1"
+        >
+          View More
+        </button>
+        <Link
+          to="https://wa.me/971503505898?text=Hello%20Happy%20Marine%20Shipping,%20I%20would%20like%20to%20inquire%20about%20your%20services."
+          className="bg-white border hover:bg-green-500 hover:border-none hover:text-white border-[#123d5f] rounded-sm px-2 py-1"
+        >
+          Enquiry Now
+        </Link>
+      </div>
+    </div>
+  </div>
+))}
+
+
                 </Slider>
               </div>
 

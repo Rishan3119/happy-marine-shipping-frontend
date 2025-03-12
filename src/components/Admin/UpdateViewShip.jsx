@@ -119,7 +119,6 @@ export default function UpdaetViewShip() {
     const [MobileNO, setMobileNO] = useState("");
     const [BriefDescription, setBriefDescription] = useState("");
     const [Image, setImage] = useState("");
-    const [thumbnailImage, setThumbnailImage] = useState("");
     const [ci,setCi] = useState('')
     const [cImage,setCImage] = useState('')
     const [am,setAm] = useState('')
@@ -134,7 +133,7 @@ const mergeAmenities = (shipAmenities, allAmenities) => {
     acc[amenity.amenities] = found ? found.value : ""; // If found, set value, else empty
     return acc;
   }, {});
-  setFormData((prev) => ({ ...prev, ...merged }));
+  setFormDataA((prev) => ({ ...prev, ...merged }));
 };
 
 // Fetch ship data and categories
@@ -159,8 +158,8 @@ useEffect(() => {
         setHidden(res1.data.data.hidden_details)
         setShortDescription(res1.data.data.short_description)
         setBriefDescription(res1.data.data.brief_description)
-        setCi(res1.data.data.thumbnail_image)
-        setCImage(res1.data.data.image)
+        
+        
         setAm(shipAmenities);
 
         const res2 = await axios.get(`${config.base_url}/api/HappyMarineShipping/viewAmenities`);
@@ -177,7 +176,7 @@ useEffect(() => {
 }, [config.base_url, id]);
 
   const [amenities, setAmenities] = useState([]);
-  const [formData, setFormData] = useState({});
+  const [formDataA, setFormDataA] = useState({});
 
   // Fetch amenities from the backend
   // fetch ship data
@@ -209,7 +208,7 @@ useEffect(() => {
  // Handle input change
 const handleChange = (e, name) => {
   const { value } = e.target;
-  setFormData((prev) => ({ ...prev, [name]: value }));
+  setFormDataA((prev) => ({ ...prev, [name]: value }));
 };
 
   const [Amenity,setAmenity] = useState([])
@@ -273,6 +272,43 @@ const handleChange = (e, name) => {
   }, [config.base_url, count]);
 
 
+  const [allImages,setAllImages] = useState([])
+
+  const [thumbnailImage, setThumbnailImage] = useState('');
+  const [mainImages, setMainImages] = useState([]); // Array to store multiple images
+  
+  useEffect(() => {
+    async function fetchShipImages() {
+      try {
+        const response = await axios.get(`${config.base_url}/api/HappyMarineShipping/singleShipImage/${id}`);
+  
+        if (response.data.status === 200 && response.data.data.length > 0) {
+          console.log("Fetched Images Data:", response.data.data);
+  
+          // Extract thumbnail image
+          const thumbnailImageData = response.data.data.find(img => img.thumbnail_image !== null);
+          setThumbnailImage(thumbnailImageData ? thumbnailImageData.thumbnail_image : "");
+  
+          // Extract all main images
+          const mainImagesData = response.data.data.filter(img => img.image !== null);
+setMainImages(mainImagesData);
+  
+          console.log("Thumbnail Image URL:", thumbnailImageData ? thumbnailImageData.thumbnail_image : "No Thumbnail Found");
+          console.log("Main Images Array:", mainImagesData);
+        }
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
+    }
+  
+    fetchShipImages();
+  }, [id]);
+  
+  const handleImageChange = (e) => {
+    // Ensure only selected files are added to the state
+    setMainImages([...mainImages, ...e.target.files]);
+  };
+  
 
   // Filter subcategories when main category changes
   useEffect(() => {
@@ -286,68 +322,122 @@ const handleChange = (e, name) => {
     }
   }, [selectedCategory, allSubCategory]);
 
-  const handleSubmit = async(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-   navigate('/admin/viewShip')
-    setLoading(true)
-    const data = {
-        title: Title,
-        vessel_type: vesselType,
-        short_description: ShortDescription,
-        flag: Flag,
-        year_built: YearBuilt,
-        capacity: Capacity,
-        LOA: LOA,
-        Class: Class,
-        GRT_NRT: GRTNRT,
-        Teu: Teu,
-        hidden_details: Hidden,
-        main_engine: MainEngine,
-        DWT: DWT,
-        email: Email,
-        phone: MobileNO,
-        brief_description: BriefDescription,
-        image: Image,
-        thumbnail_image: thumbnailImage,
-        main_category:selectedCategory,
-        value:formData
-      };
+    setLoading(true);
+  
+    // Create a new FormData object to handle file uploads properly
+    const formData = new FormData();
+    formData.append('title', Title);
+    formData.append('vessel_type', vesselType);
+    formData.append('short_description', ShortDescription);
+    formData.append('flag', Flag);
+    if (YearBuilt === "null" || YearBuilt === null) {
+      formData.append('year_built', '');  // Or do not append this key if it's optional
+  } else {
+      formData.append('year_built', YearBuilt);
+  }
+    formData.append('capacity', Capacity);
+    if (LOA) {
+      formData.append('LOA', LOA);
+  } else {
+      formData.append('LOA', '');  // Or skip appending if it's optional
+  }
+    formData.append('Class', Class);
+    formData.append('GRT_NRT', GRTNRT);
+    formData.append('Teu', Teu);
+    formData.append('hidden_details', Hidden);
+    formData.append('main_engine', MainEngine);
+    formData.append('DWT', DWT);
+    formData.append('email', Email);
+    formData.append('phone', MobileNO);
+    formData.append('brief_description', BriefDescription);
+    formData.append('main_category', selectedCategory);
+  
+    // Append amenities as key-value pairs
+    Object.entries(formDataA).forEach(([key, value]) => {
+      formData.append(`value[${key}]`, value);
+    });
+  
+    // Append the updated list of images (mainImages)
+    if (mainImages.length > 0) {
+      mainImages.forEach((img) => {
+        formData.append("image", img); // Multiple images
+      });
+    }
+  
+    // Append thumbnail image if provided
+    if (thumbnailImage) {
+      formData.append('thumbnail_image', thumbnailImage);
+    }
+  
     try {
-        const response = await axios.put(`${config.base_url}/api/HappyMarineShipping/updateShip/${id}`,data,{
-          headers:{
-            'Content-Type':'multipart/form-data',
+      const response = await axios.put(
+        `${config.base_url}/api/HappyMarineShipping/updateShip/${id}`,
+        formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
           }
+        }
+      );
+  
+      console.log('Backend Response:', response.data);
+      console.log(...formData);
+  
+      if (response.data.status === 200) {
+        setLoading(false);
+        setCount(id);
+        toast.success("Ship Updated Successfully!", {
+          autoClose: 1500,
+          position: 'top-right',
         });
-        if(response.data.status===200){
-            // navigate('/admin/viewSubCategory')
-          console.log(response)
-          setLoading(false)
-          setCount(id)
-          toast.success("Ship Updated Successfully!",{
-            autoClose:1500,
-            position:'top-right',
-            
-          });
-        }
-        else{
-            setLoading(false)
-          console.log("error1")
-          toast.error("Fill the required Fields",{
-            autoClose:1500,
-            position: "top-right",
-          })
-        }
-        
-      } catch (err) {
-        setLoading(false)
-        console.log("error2",err)
-        toast.error("Error",{
-          autoClose:2000,
+        navigate('/admin/viewShip');
+      } else {
+        setLoading(false);
+        toast.error("Fill the required Fields", {
+          autoClose: 1500,
           position: "top-right",
-        })
+        });
       }
-    
-}
+    } catch (err) {
+      setLoading(false);
+      toast.error("Error", {
+        autoClose: 2000,
+        position: "top-right",
+      });
+      console.log("Error during the submit:", err);
+    }
+  };
+  
+  
+  
+
+  const handleDeleteImage = async (id) => {
+    if (!id) {
+      console.error("Error: Image ID is undefined");
+      toast.error("Error: Invalid Image ID", { autoClose: 2000, position: "top-right" });
+      return;
+    }
+  
+    try {
+      const response = await axios.delete(`${config.base_url}/api/HappyMarineShipping/deleteShipImage/${id}`, {
+        headers: { "Content-Type": "application/json" },
+      });
+  
+      if (response.data.status === 200) {
+        setMainImages(mainImages.filter(img => img.id !== id)); // Remove deleted image from state
+        toast.success("Image Deleted!", { autoClose: 1000, position: "top-right" });
+      } else {
+        console.log("Error: Image deletion failed");
+        toast.error("Error", { autoClose: 2000, position: "top-right" });
+      }
+    } catch (err) {
+      console.log("Error:", err);
+      toast.error("Error deleting image", { autoClose: 2000, position: "top-right" });
+    }
+  };
+  
+  
 
   return (
     <div className="h-screen flex flex-col bg-gray-100">
@@ -1198,7 +1288,7 @@ const handleChange = (e, name) => {
       <div key={index} className="flex flex-col gap-1 xm:w-[100%]">
         <label htmlFor={amenity.amenities}>{amenity.amenities}</label>
         <input
-          value={formData[amenity.amenities] || ""}
+          value={formDataA[amenity.amenities] || ""}
           onChange={(e) => handleChange(e, amenity.amenities)}
           className="w-full mt-2 rounded border border-gray-400 text-gray-500 p-2"
           placeholder={`Enter ${amenity.amenities}`}
@@ -1256,38 +1346,49 @@ const handleChange = (e, name) => {
                 ></textarea>
               </div>
 
-              {/* upoad image */}
-              <div className="p-5">
-                <label htmlFor="Upload Image" className="">
-                  Upload Thumbnail Image
-                </label>
-                <div className='flex flex-col '>
-                <img src={ci} alt="ci"   className='w-[200px] h-[100px] mt-3 '/>
-                </div>
-                <input
-                  type="file"
-                  onChange={(e) => setThumbnailImage(e.target.files[0])}
-                  className="imageInput w-full mt-2 rounded border border-gray-400  text-gray-500 p-2"
-                  name=""
-                  id="Upload Image"
-                />
-              </div>
+              {/* Thumbnail Image */}
+<div className="p-5">
+  <label htmlFor="UploadThumbnail">Upload Thumbnail Image</label>
+  <div className="flex flex-col">
+    {thumbnailImage ? (
+      <img src={thumbnailImage} alt="Thumbnail" className="w-[200px] h-[100px] mt-3 object-cover" />
+    ) : (
+      <p className="text-gray-500">No Thumbnail Available</p>
+    )}
+  </div>
+  <input
+    type="file"
+    onChange={(e) => setThumbnailImage(e.target.files[0])}
+    className="imageInput w-full mt-2 rounded border border-gray-400 text-gray-500 p-2"
+    id="UploadThumbnail"
+  />
+</div>
 
-              <div className="p-5">
-                <label htmlFor="Upload Image" className="">
-                  Upload  Image
-                </label>
-                <div className='flex flex-col '>
-                <img src={cImage} alt="cImage"   className='w-[200px] h-[100px] mt-3 '/>
-                </div>
-                <input
-                  type="file"
-                  onChange={(e) => setImage(e.target.files[0])}
-                  className="imageInput w-full mt-2 rounded border border-gray-400  text-gray-500 p-2"
-                  name=""
-                  id="Upload Image"
-                />
-              </div>
+{/* Display All Images */}
+<div className="p-5">
+  <label>Uploaded Images</label>
+  <div className="flex flex-wrap  gap-4 mt-3">
+  {mainImages.map((img, index) => (
+  <div key={img.id} className="relative">
+    <img src={img.image} alt={`Image ${index}`} className="w-[200px] h-[150px]" />
+    <Link onClick={() => handleDeleteImage(img.id)} className="p-1 text-red-500">
+      Delete
+    </Link>
+  </div>
+))}
+  </div>
+</div>
+{/* Upload New Images */}
+<div className="p-5">
+  <label htmlFor="UploadImage">Upload Image</label>
+  <input
+    type="file"
+    multiple
+    onChange={handleImageChange}
+    className="imageInput w-full mt-2 rounded border border-gray-400 text-gray-500 p-2"
+    id="UploadImage"
+  />
+</div>
 
               <hr className="text-gray-500 w-full" />
               <div className="p-4">

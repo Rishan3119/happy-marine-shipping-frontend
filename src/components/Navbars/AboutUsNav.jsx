@@ -30,18 +30,7 @@ export default function AboutUsNav() {
     setTimeout(() => setIsFlipped((prevState) => !prevState), 10); // Reapply the flipped state
   };
 
-  useEffect(() => {
-    const flipTwice = async () => {
-      setIsFlipped(true); // First flip
-      await new Promise((resolve) => setTimeout(resolve, 600)); // Wait for animation to complete
-      setIsFlipped(false); // Flip back
-      await new Promise((resolve) => setTimeout(resolve, 600)); // Wait again
-      setIsFlipped(true); // Flip again
-    };
-
-    flipTwice();
-  }, []);
-
+  
   return (
     <div>
       <nav>

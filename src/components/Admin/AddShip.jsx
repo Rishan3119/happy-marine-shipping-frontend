@@ -31,10 +31,15 @@ export default function AddShip() {
   const [Email, setEmail] = useState("");
   const [MobileNO, setMobileNO] = useState("");
   const [BriefDescription, setBriefDescription] = useState("");
-  const [Image, setImage] = useState("");
+  const [images, setImages] = useState([]);
   const [ThumbnailImage, setThumbnailImage] = useState("");
   const [count, setCount] = useState(0);
   const navigate = useNavigate();
+
+  const handleImageChange = (e) => {
+    // Ensure only selected files are added to the state
+    setImages([...images, ...e.target.files]);
+  };
 
   const toggleDropdown = (id) => {
     if (openDropdown === id) {
@@ -85,7 +90,7 @@ export default function AddShip() {
   }, [config.base_url, count]);
 
   const [amenities, setAmenities] = useState([]);
-  const [formData, setFormData] = useState({});
+  const [formDataA, setFormDataA] = useState({});
 
   // Fetch amenities from the backend
   // fetch ship data
@@ -116,7 +121,7 @@ export default function AddShip() {
 
   const handleChange = (e, amenity) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setFormDataA((prevData) => ({
       ...prevData,
       [name]: value,  // This updates the specific amenity input in formData
     }));
@@ -136,32 +141,45 @@ export default function AddShip() {
 
   const handleSubmitSale = async (e, id) => {
     e.preventDefault();
-  
     setLoading(true);
   
-    // Collect form data
-    const data = {
-      title: Title,
-      vessel_type: vesselType,
-      short_description: ShortDescription,
-      flag: Flag,
-      year_built: YearBuilt,
-      capacity: Capacity,
-      LOA: LOA,
-      hidden_details: HiddenDetails,
-      email: Email,
-      phone: MobileNO,
-      brief_description: BriefDescription,
-      image: Image,
-      thumbnail_image: ThumbnailImage,
-      main_category: selectedCategory,
-      value:formData
-    };
+    // Create FormData object to send files
+    const formData = new FormData();
+  
+    // Append text fields
+    formData.append("title", Title);
+    formData.append("vessel_type", vesselType);
+    formData.append("short_description", ShortDescription);
+    formData.append("flag", Flag);
+    formData.append("year_built", YearBuilt);
+    formData.append("capacity", Capacity);
+    formData.append("LOA", LOA);
+    formData.append("hidden_details", HiddenDetails);
+    formData.append("email", Email);
+    formData.append("phone", MobileNO);
+    formData.append("brief_description", BriefDescription);
+    formData.append("main_category", selectedCategory);
+  
+    // Append amenities as key-value pairs
+    Object.entries(formDataA).forEach(([key, value]) => {
+      formData.append(`value[${key}]`, value); 
+    });
+  
+    // Append images
+    if (ThumbnailImage) {
+      formData.append("thumbnail_image", ThumbnailImage); // Single image
+    }
+  
+    if (images.length > 0) {
+      images.forEach((img) => {
+        formData.append("image", img); // Multiple images
+      });
+    }
   
     try {
       const response = await axios.post(
         `${config.base_url}/api/HappyMarineShipping/RegShipForSale`,
-        data,
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -171,50 +189,45 @@ export default function AddShip() {
   
       if (response.data.status === 200) {
         navigate("/admin/viewShip");
-        console.log(response);
-        setLoading(false);
         toast.success("Ship Registered Successfully!", {
           autoClose: 1500,
           position: "top-right",
         });
-        setCount(id);
   
-        // Reset form data after successful submission
+        // Reset form data
+        setTitle("");
         setvesselType("");
         setShortDescription("");
         setFlag("");
         setCapacity("");
-        setClass("");
-        setDWT("");
         setEmail("");
-        setImage("");
-        setThumbnailImage("");
+        setImages([]);
+        setThumbnailImage(null);
         setMobileNO("");
-        setMainEngine("");
-        setGRTNRT("");
         setLOA("");
         setHiddenDetails("");
         setYearBuilt("");
-        setTeu("");
-        setGRTNRT("");
         setBriefDescription("");
       } else {
-        setLoading(false);
-        console.log("error1");
         toast.error("Fill the required Fields", {
           autoClose: 1500,
           position: "top-right",
         });
       }
     } catch (err) {
-      setLoading(false);
-      console.log("error2", err);
-      toast.error("Error", {
+      console.error("Error:", err);
+      toast.error("Error submitting form", {
         autoClose: 2000,
         position: "top-right",
       });
+    } finally {
+      setLoading(false);
     }
   };
+  
+
+  
+  
 
   useEffect(() => {
     const handleResize = () => {
@@ -1141,7 +1154,7 @@ export default function AddShip() {
               {amenity.amenities}
             </label>
             <input
-              value={formData[amenity.amenities] || ""}
+              value={formDataA[amenity.amenities] || ""}
               onChange={(e) => handleChange(e, amenity.amenities)}
               className="w-full mt-2 rounded border border-gray-400 text-gray-500 p-2"
               placeholder={`Enter ${amenity.amenities}`}
@@ -1208,26 +1221,26 @@ export default function AddShip() {
                   Upload Thumbnail Image
                 </label>
                 <input
-                  type="file"
-                  onChange={(e) => setThumbnailImage(e.target.files[0])}
-                  className="imageInput w-full mt-2 rounded border border-gray-400  text-gray-500 p-2"
-                  name=""
-                  id="Upload Image"
-                />
+  type="file"
+  onChange={(e) => setThumbnailImage(e.target.files[0])}
+  className="imageInput w-full mt-2 rounded border border-gray-400 text-gray-500 p-2"
+  id="thumbnail_image"
+/>
               </div>
 
               <div className="p-5">
-                <label htmlFor="Upload Image" className="">
-                  Upload Image
-                </label>
-                <input
-                  type="file"
-                  onChange={(e) => setImage(e.target.files[0])}
-                  className="imageInput w-full mt-2 rounded border border-gray-400  text-gray-500 p-2"
-                  name=""
-                  id="Upload Image"
-                />
-              </div>
+        <label htmlFor="Upload Image" className="">
+          Upload Images
+        </label>
+        <input
+  type="file"
+  onChange={handleImageChange} // Convert FileList to array
+  multiple
+  className="imageInput w-full mt-2 rounded border border-gray-400 text-gray-500 p-2"
+  id="image"
+/>
+      </div>
+
 
               <hr className="text-gray-500 w-full" />
               <div className="p-4">

@@ -40,7 +40,7 @@ export default function ViewShip() {
           }
         );
         if (res1.data.status === 200) {
-          console.log(res1);
+          console.log("Sub_Category Data:",res1);
           setallSubCategory(res1.data.data);
         } else {
           console.log("error");
@@ -54,7 +54,7 @@ export default function ViewShip() {
           }
         );
         if (res2.data.status === 200) {
-          console.log(res2);
+          console.log("Category Data :",res2);
           setallCategory(res2.data.data);
         } else {
           console.log("error");
@@ -81,8 +81,34 @@ export default function ViewShip() {
           }
         );
         if (res1.data.status === 200) {
-          console.log(res1);
+          console.log("Ship Data :",res1);
           setallShips(res1.data.data.reverse());
+        } else {
+          console.log("error");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchdata();
+  }, [config.base_url,input,count]);
+
+  const [allImages,setAllImages] = useState([])
+
+  useEffect(() => {
+    async function fetchdata() {
+      try {
+        const res3 = await axios.get(
+          `${config.base_url}/api/HappyMarineShipping/ship_images`,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            }
+          }
+        );
+        if (res3.data.status === 200) {
+          console.log("Images :",res3);
+          setAllImages(res3.data.data);
         } else {
           console.log("error");
         }
@@ -1016,16 +1042,23 @@ const handleStatusD = async (id)=>{
       <td className="py-5 px-4 text-sm text-left ">{itm.title}</td>
       <td className="py-5 px-3 text-sm text-left ">{itm.hidden_details||"None"}</td>
       <td className="py-5 px-3 text-left">
-        <img src={itm.image} className="w-full h-20 object-cover rounded-md" alt="" />
-      </td>
+  <img
+    src={
+      allImages.find((img) => img.ship === itm.id && img.thumbnail_image)?.thumbnail_image || "fallback-image-url"
+    }
+    className="w-full h-20  rounded-md"
+    alt={itm.title}
+  />
+</td>
       <td className="py-5 px-3 text-center ">
         {itm.is_status===false?(
-          <button onClick={(e)=>{e.preventDefault();handleStatus(itm.id)}} className="bg-[#00c292] transition-all duration-300 hover:bg-[#246656] rounded px-2 py-1 text-white">
-          Enable
-        </button>
-        ):(
-          <button onClick={(e)=>{e.preventDefault();handleStatusD(itm.id)}} className="bg-red-500 transition-all duration-300 hover:bg-red-400 rounded px-2 py-1 text-white">
+          <button onClick={(e)=>{e.preventDefault();handleStatus(itm.id)}} className="bg-red-500 transition-all duration-300 hover:bg-red-400 rounded px-2 py-1 text-white">
           Disable
+        </button>
+          
+        ):(
+          <button onClick={(e)=>{e.preventDefault();handleStatusD(itm.id)}} className="bg-[#00c292] transition-all duration-300 hover:bg-[#246656] rounded px-2 py-1 text-white">
+          Enable
         </button>
         )}
         
